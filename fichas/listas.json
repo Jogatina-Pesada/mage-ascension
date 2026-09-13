@@ -4,7 +4,17 @@
     {
       "name": "default",
       "passwordHash": "",
-      "characters": ["baba_yaga.json", "fatima.json", "teste_criacao.json"]
+      "characters": [
+        "baba_yaga.json",
+        "teste_criacao.json"
+      ]
+    },
+    {
+      "name": "Gi",
+      "passwordHash": "5c9291a897dfc87d6641de067f90c889eb19ce5298e5075f028a96875e494ce1",
+      "characters": [
+        "fatima.json"
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "creation": {
-    "mode": true,
+    "mode": false,
     "attributePriorities": {
       "primary": "mental",
       "secondary": "social",
@@ -109,7 +109,7 @@
     "sanctum": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho como refugio o palácio da rainha que fica no norte de Castela"
   },
   "creationSnapshot": {
-    "capturedAt": "2026-09-13T16:56:16.986Z",
+    "capturedAt": "2026-09-13T21:46:43.580Z",
     "identity": {
       "experience": 0,
       "chronicle": "Idade Média",
@@ -195,16 +195,31 @@
       "pastLives": 0
     },
     "backgroundJustifications": {
-      "backup": "Faço parte da organização ultrassecreta das \"irmãs da Lilith\"",
-      "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos",
-      "allies": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns aliados",
+      "backup": "Faço parte da organização ultrassecreta, as \"irmãs da Lilith\"",
+      "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos, todos ligados a missões que cumpri anteriormente ou no futuro",
+      "allies": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns aliados, entre sua maioria outras freiras, a rainha e pessoas de sua confiança",
       "mentor": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como mentora",
       "patron": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como Patrono",
       "sanctum": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho como refugio o palácio da rainha que fica no norte de Castela"
     },
-    "aspirations": "",
-    "obsession": "",
-    "world": {},
+    "origin": "- Familia pequena do Reino de Granada\n-  Pai diplomata, viajava bastante entre reinos\n- Um dia quando estava todo mundo em casa, tive um pesadelo do qual não me lembro, porém quando acordei estava sozinha, minha familia nunca mais voltou\n- Alguns dias depois umas freiras vieram me buscar e desde então vivo no castelo da rainha\n- Tenho 30 anos e estou no irmãs da Lilith desde criança e conheço a rainha a bastante tempo",
+    "aspirations": "- Fatima não pensa muito sobre futuro, é uma pessoa que tem tendencias de pensar no presente \n- Seu objetivo é cumprir bem sua função",
+    "obsession": "Tem intresse em entender e descobrir para onde sua familia foi, que fim eles tiveram com mais detalhes, embora saiba que provavelmente foi culpa sua o desaparecimento de todos",
+    "world": {
+      "magic": {
+        "belief": "Acredito em magia pois desde jovem fui ensinada sobre ela e sobre como lidar com ela",
+        "method": "Principalmente com o poder da mente, quando era mais jovem usava por acidente",
+        "tools": "Não (ainda não)",
+        "style": "Não tem estilo é algo focado em adaptação, em passar despercebido, etc"
+      },
+      "reality": {
+        "profession": "Sou uma freira para a sociedade e uma guerreira de Lillith por vocação",
+        "life": "Devota de Lilith",
+        "relationships": "Minha familia sumiu desde que sou criança, faço amigos na vida",
+        "home": "Castelo da Rainha Isabel I",
+        "places": "depende de onde a missão vai me levar, porém é comum que eu habite, castelos, monasterios, conventos, etc"
+      }
+    },
     "creation": {
       "mode": true,
       "attributePriorities": {
@@ -235,5 +250,6 @@
       "places": "depende de onde a missão vai me levar, porém é comum que eu habite, castelos, monasterios, conventos, etc"
     }
   },
-  "obsession": "Tem intresse em entender e descobrir para onde sua familia foi, que fim eles tiveram com mais detalhes, embora saiba que provavelmente foi culpa sua o desaparecimento de todos"
+  "obsession": "Tem intresse em entender e descobrir para onde sua familia foi, que fim eles tiveram com mais detalhes, embora saiba que provavelmente foi culpa sua o desaparecimento de todos",
+  "origin": "- Familia pequena do Reino de Granada\n-  Pai diplomata, viajava bastante entre reinos\n- Um dia quando estava todo mundo em casa, tive um pesadelo do qual não me lembro, porém quando acordei estava sozinha, minha familia nunca mais voltou\n- Alguns dias depois umas freiras vieram me buscar e desde então vivo no castelo da rainha\n- Tenho 30 anos e estou no irmãs da Lilith desde criança e conheço a rainha a bastante tempo"
 }

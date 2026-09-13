@@ -185,7 +185,7 @@ function githubModalTemplate() {
         <label>Usuario GitHub<input id="githubUser" autocomplete="username" required /></label>
         <label>PAT<input id="githubPat" type="password" autocomplete="off" required /></label>
         <div id="githubCharacterListFields" class="github-character-list-fields">
-          <label>Associar à lista<select id="githubCharacterList"><option value="default">default</option></select></label>
+          <label>Associar à lista<select id="githubCharacterList"><option value="default">outros personagens</option></select></label>
           <button id="createGithubCharacterListBtn" type="button" aria-label="Criar nova lista">+</button>
           <div id="newGithubCharacterListFields" hidden>
             <label>Nome da lista<input id="newGithubCharacterListName" /></label>

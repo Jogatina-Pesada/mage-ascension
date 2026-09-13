@@ -1288,6 +1288,7 @@ test('upload permite escolher default ou informar uma nova lista protegida', asy
   resetApp(win, { identity: { name: 'Lari' } });
   await win.prepareGithubCharacterLists();
   assert.equal(doc.getElementById('githubCharacterList').value, 'default');
+  assert.equal(doc.getElementById('githubCharacterList').options[0].textContent, 'outros personagens');
   assert.equal(doc.getElementById('githubCharacterList').options.length, 2);
   click(doc.getElementById('createGithubCharacterListBtn'));
   assert.equal(doc.getElementById('newGithubCharacterListFields').hidden, false);
@@ -1303,13 +1304,15 @@ test('abrir pelo GitHub filtra personagens pela lista e sua senha', async () => 
   win.fetch = async url => ({
     ok: true,
     json: async () => url.includes('listas.json')
-      ? { lists: [{ name: 'default', characters: [] }, { name: 'circulo', passwordHash, characters: ['fatima.json'] }] }
+      ? { lists: [{ name: 'default', characters: ['baba.json'] }, { name: 'circulo', passwordHash, characters: ['fatima.json'] }] }
       : [{ file: 'fatima.json', name: 'Fátima' }, { file: 'baba.json', name: 'Baba' }]
   });
   await win.loadGitSheetList();
-  assert.equal(doc.getElementById('gitCharacterList').value, '');
-  assert.equal(doc.getElementById('gitCharacterList').options[0].textContent, 'selecione uma lista');
-  assert.equal(doc.getElementById('resetGitListPasswordBtn').disabled, true);
+  assert.equal(doc.getElementById('gitCharacterList').value, 'default');
+  assert.equal(doc.getElementById('gitCharacterList').options[0].textContent, 'outros personagens');
+  assert.equal(doc.getElementById('resetGitListPasswordBtn').disabled, false);
+  assert.equal(doc.getElementById('gitSheetList').children.length, 1);
+  assert.includes(doc.getElementById('gitSheetList').textContent, 'Baba');
   assert.equal(doc.getElementById('unlockGitListBtn'), null);
   change(doc.getElementById('gitCharacterList'), 'circulo');
   await tick();

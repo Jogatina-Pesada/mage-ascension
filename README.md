@@ -54,7 +54,7 @@ No GitHub Pages, o navegador nao consegue gravar diretamente no repositorio hosp
 
 ## Upload para GitHub
 
-O botao de envio abre um modal que exige usuario GitHub e PAT para autenticar a chamada para a API do GitHub. O repositorio padrao e `uneluneravie/mage-ascension`, e tambem e possivel informar branch e pasta das fichas.
+O botao de envio abre um modal que exige usuario GitHub e PAT para autenticar a chamada para a API do GitHub. O repositorio padrao e `jogatina-pesada/mage-ascension`, e tambem e possivel informar branch e pasta das fichas.
 
 O PAT precisa ter permissao de escrita no repositorio. Para tokens fine-grained, conceda acesso ao repositorio escolhido com `Contents: Read and write`. O PAT nao e salvo no navegador; apenas usuario, repositorio, branch e pasta ficam guardados para preencher o modal na proxima vez.
 

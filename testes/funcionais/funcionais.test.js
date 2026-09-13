@@ -878,8 +878,18 @@ test('antecedente com ponto abre justificativa persistente', () => withApp((win,
 test('criacao edita aspiracoes e obsessao em antecedentes', () => withApp((win, doc) => {
   click(doc.getElementById('newCharacterBtn'));
   const panel = doc.querySelector('.backgrounds-panel');
-  input(panel.querySelector('[data-field="aspirations"]'), 'Conseguir um sanctum seguro.');
-  input(panel.querySelector('[data-field="obsession"]'), 'Compreender a voz nos sonhos.');
+  const aspirations = panel.querySelector('[data-field="aspirations"]');
+  const obsession = panel.querySelector('[data-field="obsession"]');
+  [aspirations, obsession].forEach(field => {
+    [' ', 'Enter'].forEach(key => {
+      const event = new win.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      field.dispatchEvent(event);
+      assert.equal(event.defaultPrevented, false);
+      assert.equal(doc.getElementById('wikiModal').hidden, true);
+    });
+  });
+  input(aspirations, 'Conseguir um sanctum seguro.');
+  input(obsession, 'Compreender a voz nos sonhos.');
   assert.equal(win.getPath(appState(win), 'aspirations'), 'Conseguir um sanctum seguro.');
   assert.equal(win.getPath(appState(win), 'obsession'), 'Compreender a voz nos sonhos.');
 }));
@@ -930,6 +940,13 @@ test('modal de GitHub exige nome do personagem', () => withApp((win, doc) => {
   click(doc.getElementById('githubUploadBtn'));
   assert.equal(doc.getElementById('githubModal').hidden, true);
   assert.includes(doc.querySelector('[data-field="identity.name"]').validationMessage, 'Preencha o nome');
+}));
+
+test('modal de GitHub usa o repositorio padrao da Jogatina Pesada', () => withApp((win, doc) => {
+  win.localStorage.removeItem('mage-ascension-github-settings');
+  resetApp(win, { identity: { name: 'Lari' } });
+  click(doc.getElementById('githubUploadBtn'));
+  assert.equal(doc.getElementById('githubRepo').value, 'jogatina-pesada/mage-ascension');
 }));
 
 test('modal de GitHub abre com nome e carrega settings sem PAT', () => withApp((win, doc) => {

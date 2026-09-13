@@ -176,7 +176,7 @@ function githubModalTemplate() {
       <form class="github-form" id="githubForm">
         <label>Usuario GitHub<input id="githubUser" autocomplete="username" required /></label>
         <label>PAT<input id="githubPat" type="password" autocomplete="off" required /></label>
-        <label>Repositorio<input id="githubRepo" value="uneluneravie/mage-ascension" required /></label>
+        <label>Repositorio<input id="githubRepo" value="jogatina-pesada/mage-ascension" required /></label>
         <label>Branch<input id="githubBranch" value="main" required /></label>
         <label>Pasta das fichas<input id="githubSheetsPath" value="fichas" required /></label>
         <button id="githubSubmitBtn" type="submit">Enviar ficha</button>

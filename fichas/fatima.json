@@ -219,5 +219,10 @@
       }
     }
   },
-  "aspirations": "faksdçasdjçaljsdjha"
+  "aspirations": "",
+  "world": {
+    "magic": {
+      "belief": ""
+    }
+  }
 }

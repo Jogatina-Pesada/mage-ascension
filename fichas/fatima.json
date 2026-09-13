@@ -222,8 +222,9 @@
   "aspirations": "- Fatima não pensa muito sobre futuro, é uma pessoa que tem tendencias de pensar no presente \n- Seu objetivo é cumprir bem sua função",
   "world": {
     "magic": {
-      "belief": "",
-      "method": ""
+      "belief": "Acredito em magia pois desde jovem fui ensinada sobre ela e sobre como lidar com ela",
+      "method": "Principalmente com o poder da mente, quando era mais jovem usava por acidente",
+      "tools": "Não (ainda não)"
     }
   }
 }

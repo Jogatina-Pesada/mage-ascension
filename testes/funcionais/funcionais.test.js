@@ -463,6 +463,11 @@ test('wiki agrupa atributos e habilidades como a ficha', () => withApp((win, doc
     Array.from(doc.querySelectorAll('.wiki-entry-group-title')).map(title => title.textContent),
     ['Físicos', 'Sociais', 'Mentais']
   );
+  const attributeEntries = Array.from(doc.querySelectorAll('.wiki-entry'));
+  const intelligence = attributeEntries.find(entry => entry.textContent.includes('Inteligência'));
+  const wits = attributeEntries.find(entry => entry.textContent.includes('Raciocínio'));
+  assert.includes(intelligence.textContent, 'Capacidade de aprender, compreender, analisar e aplicar conhecimentos.');
+  assert.includes(wits.textContent, 'Capacidade de pensar e reagir rapidamente diante de situações inesperadas.');
 
   click(doc.querySelector('[data-wiki-topic="abilities"]'));
   assert.deepEqual(

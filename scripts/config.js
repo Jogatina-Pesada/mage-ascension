@@ -50,8 +50,8 @@ const fieldDescriptions = {
   'attributes.manipulation': 'Habilidade de influenciar, enganar ou persuadir indiretamente.',
   'attributes.appearance': 'Atratividade física e impacto causado pela presença visual.',
   'attributes.perception': 'Capacidade de notar detalhes, pistas e mudanças no ambiente.',
-  'attributes.intelligence': 'Raciocínio lógico, aprendizado e compreensão de conceitos.',
-  'attributes.wits': 'Pensamento rápido, improvisação e reação imediata.',
+  'attributes.intelligence': 'Capacidade de aprender, compreender, analisar e aplicar conhecimentos.',
+  'attributes.wits': 'Capacidade de pensar e reagir rapidamente diante de situações inesperadas.',
 
   'abilities.alertness': 'Perceber perigos, sons, movimentos e eventos inesperados.',
   'abilities.athletics': 'Corrida, salto, escalada e desempenho físico geral.',

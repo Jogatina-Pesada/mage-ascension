@@ -1,0 +1,10 @@
+{
+  "adminPasswordHash": "553ab0f9d3c000eda8fa4313fdf963175960f54d76cd79150a112f83bf419264",
+  "lists": [
+    {
+      "name": "default",
+      "passwordHash": "",
+      "characters": ["baba_yaga.json", "fatima.json", "teste_criacao.json"]
+    }
+  ]
+}

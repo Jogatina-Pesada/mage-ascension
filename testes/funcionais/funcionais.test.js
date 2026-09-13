@@ -780,6 +780,7 @@ test('confirmar conclusao muda a ficha para edicao e registra snapshot', () => w
   assert.equal(doc.getElementById('creationPanel').hidden, true);
   assert.equal(doc.getElementById('resourceLabel').textContent, 'Experiência');
   assert.equal(doc.getElementById('openBackgroundsModalBtn').hidden, false);
+  assert.equal(doc.getElementById('creationCharacterList'), null);
 }));
 
 test('campos de identidade atualizam o estado', () => withApp((win, doc) => {
@@ -1012,14 +1013,19 @@ test('modal de GitHub exige nome do personagem', () => withApp((win, doc) => {
   assert.includes(doc.querySelector('[data-field="identity.name"]').validationMessage, 'Preencha o nome');
 }));
 
-test('modal de GitHub usa o repositorio padrao da Jogatina Pesada', () => withApp((win, doc) => {
+test('modal de GitHub oculta repositorio, branch e pasta hardcoded', () => withApp((win, doc) => {
   win.localStorage.removeItem('mage-ascension-github-settings');
   resetApp(win, { identity: { name: 'Lari' } });
   click(doc.getElementById('githubUploadBtn'));
-  assert.equal(doc.getElementById('githubRepo').value, 'jogatina-pesada/mage-ascension');
+  assert.equal(doc.getElementById('githubRepo'), null);
+  assert.equal(doc.getElementById('githubBranch'), null);
+  assert.equal(doc.getElementById('githubSheetsPath'), null);
+  assert.equal(win.eval('defaultGithubRepo'), 'jogatina-pesada/mage-ascension');
+  assert.equal(win.eval('defaultGithubBranch'), 'main');
+  assert.equal(win.eval('defaultGithubSheetsPath'), 'fichas');
 }));
 
-test('modal de GitHub abre com nome e carrega settings sem PAT', () => withApp((win, doc) => {
+test('modal de GitHub abre com nome e carrega apenas usuario sem PAT', () => withApp((win, doc) => {
   win.localStorage.setItem('mage-ascension-github-settings', JSON.stringify({
     user: 'lari',
     repo: 'org/repo',
@@ -1031,7 +1037,9 @@ test('modal de GitHub abre com nome e carrega settings sem PAT', () => withApp((
   assert.equal(doc.getElementById('githubModal').hidden, false);
   assert.equal(doc.getElementById('githubUser').value, 'lari');
   assert.equal(doc.getElementById('githubPat').value, '');
-  assert.equal(doc.getElementById('githubRepo').value, 'org/repo');
+  assert.deepEqual(win.getGithubSettings(), {
+    user: 'lari', repo: 'jogatina-pesada/mage-ascension', branch: 'main', sheetsPath: 'fichas'
+  });
 }));
 
 test('modal de IA gera prompt com respostas e JSON da ficha', async () => withApp(async (win, doc) => {
@@ -1207,6 +1215,42 @@ test('reviver membro remove contribuicao da linhagem', () => withApp((win, doc) 
   assert.equal(lineage.members[0].dead, false);
   assert.deepEqual(lineage.members[0].lineageContribution, {});
   assert.equal(lineage.sphereExperience.life, 0);
+}));
+
+test('upload permite escolher default ou informar uma nova lista protegida', async () => withApp(async (win, doc) => {
+  win.fetch = async url => url.includes('listas.json')
+    ? { ok: true, json: async () => ({ lists: [{ name: 'default', characters: [] }, { name: 'cabala', characters: [] }] }) }
+    : { ok: false };
+  resetApp(win, { identity: { name: 'Lari' } });
+  await win.prepareGithubCharacterLists();
+  assert.equal(doc.getElementById('githubCharacterList').value, 'default');
+  assert.equal(doc.getElementById('githubCharacterList').options.length, 2);
+  click(doc.getElementById('createGithubCharacterListBtn'));
+  assert.equal(doc.getElementById('newGithubCharacterListFields').hidden, false);
+  input(doc.getElementById('newGithubCharacterListName'), 'circulo');
+  input(doc.getElementById('newGithubCharacterListPassword'), 'lua');
+  assert.equal(win.captureGithubCharacterList(), true);
+  assert.equal(win.eval('selectedCharacterList'), 'circulo');
+  assert.equal(win.eval('pendingCharacterList.password'), 'lua');
+}));
+
+test('abrir pelo GitHub filtra personagens pela lista e sua senha', async () => withApp(async (win, doc) => {
+  const passwordHash = await win.hashListPassword('lua');
+  win.fetch = async url => ({
+    ok: true,
+    json: async () => url.includes('listas.json')
+      ? { lists: [{ name: 'default', characters: [] }, { name: 'circulo', passwordHash, characters: ['fatima.json'] }] }
+      : [{ file: 'fatima.json', name: 'Fátima' }, { file: 'baba.json', name: 'Baba' }]
+  });
+  await win.loadGitSheetList();
+  change(doc.getElementById('gitCharacterList'), 'circulo');
+  await tick();
+  assert.equal(doc.getElementById('gitSheetList').children.length, 0);
+  input(doc.getElementById('gitListPassword'), 'lua');
+  click(doc.getElementById('unlockGitListBtn'));
+  await tick();
+  assert.equal(doc.getElementById('gitSheetList').children.length, 1);
+  assert.includes(doc.getElementById('gitSheetList').textContent, 'Fátima');
 }));
 
 runTests();

@@ -541,13 +541,22 @@ const wikiTopics = [
     title: 'Antecedentes',
     intro: 'Relações, posses e vantagens sociais definidas durante a criação.',
     paths: [
-      ['backgrounds.allies', 'Aliados'], ['backgrounds.backup', 'Apoio'], ['backgrounds.contacts', 'Contatos'],
-      ['backgrounds.spies', 'Espiões'], ['backgrounds.fame', 'Fama'], ['backgrounds.influence', 'Influência'],
-      ['backgrounds.wonder', 'Maravilha'], ['backgrounds.mentor', 'Mentor'], ['backgrounds.patron', 'Patrono'],
-      ['backgrounds.resources', 'Recursos'], ['backgrounds.sanctum', 'Refúgio'], ['backgrounds.dream', 'Sonho'],
-      ['backgrounds.pastLives', 'Vidas Passadas']
+      ['backgrounds.allies', 'Aliados', 'Pessoas próximas dispostas a ajudar você ativamente quando necessário. ● um aliado modesto → ●●● alguns aliados úteis ou um aliado influente → ●●●●● aliados numerosos ou extremamente poderosos.'],
+      ['backgrounds.backup', 'Apoio', 'Uma organização ou grupo ao qual você pode recorrer para conseguir ajuda operacional. ● ajuda pequena e ocasional → ●●● apoio consistente e especializado → ●●●●● grande estrutura capaz de mobilizar muitos recursos por você.'],
+      ['backgrounds.contacts', 'Contatos', 'Pessoas que fornecem informações, rumores e acesso a determinados meios. ● poucos contatos locais → ●●● boa rede em vários círculos → ●●●●● extensa rede capaz de descobrir informações raras ou protegidas.'],
+      ['backgrounds.spies', 'Espiões', 'Pessoas infiltradas que coletam informações secretamente para você. ● uma fonte infiltrada de baixo nível → ●●● pequena rede com bom acesso → ●●●●● extensa rede infiltrada até em círculos altamente restritos.'],
+      ['backgrounds.fame', 'Fama', 'O quanto você é conhecida e reconhecida publicamente. ● conhecida em um pequeno meio → ●●● reconhecida regionalmente → ●●●●● figura de enorme notoriedade.'],
+      ['backgrounds.influence', 'Influência', 'O poder social que você exerce sobre instituições, comunidades ou grupos. ● influência em um pequeno círculo → ●●● poder relevante sobre uma instituição ou região → ●●●●● influência capaz de afetar decisões de grande escala.'],
+      ['backgrounds.wonder', 'Maravilha', 'Um objeto mágico capaz de produzir efeitos sobrenaturais ou armazenar poder. ● objeto com efeito pequeno ou limitado → ●●● artefato mágico bastante útil → ●●●●● relíquia excepcional com poderes extraordinários.'],
+      ['backgrounds.mentor', 'Mentor', 'Uma pessoa mais experiente que ensina, aconselha e ocasionalmente auxilia você. ● mentor experiente, mas limitado → ●●● figura poderosa e respeitada → ●●●●● mestre extraordinário, com enorme conhecimento e influência.'],
+      ['backgrounds.patron', 'Patrono', 'Uma pessoa ou entidade poderosa que protege, financia ou favorece você, geralmente esperando algo em troca. ● patrono de recursos modestos → ●●● protetor poderoso e influente → ●●●●● patrono de poder e alcance extraordinários.'],
+      ['backgrounds.resources', 'Recursos', 'Sua riqueza pessoal e capacidade de conseguir dinheiro, propriedades e bens materiais. ● vida simples, mas estável → ●●● riqueza confortável e patrimônio significativo → ●●●●● enorme fortuna e acesso a bens excepcionais.'],
+      ['backgrounds.sanctum', 'Refúgio', 'Também chamado de Santuário: um local seguro e preparado para estudo, descanso e práticas mágicas. ● refúgio pequeno e simples → ●●● santuário seguro e bem equipado → ●●●●● domínio vasto, extremamente protegido e profundamente ligado à magia.'],
+      ['backgrounds.dream', 'Sonho', 'Sua conexão sobrenatural com sonhos, visões e o inconsciente, permitindo obter intuições e conhecimentos. ● pressentimentos vagos → ●●● sonhos reveladores relativamente confiáveis → ●●●●● visões profundas capazes de revelar verdades extraordinárias.'],
+      ['backgrounds.pastLives', 'Vidas Passadas', 'Memórias e conhecimentos provenientes de encarnações anteriores. ● lembranças fragmentadas → ●●● memórias úteis e acessíveis → ●●●●● ligação excepcional com múltiplas vidas e conhecimentos antigos.']
     ],
     entries: [
+      ['Biblioteca', 'Uma coleção de livros, registros e materiais úteis para pesquisas mundanas ou ocultas. ● pequena coleção especializada → ●●● biblioteca extensa e diversificada → ●●●●● acervo excepcional contendo conhecimentos extremamente raros.'],
       ['Aspirações', 'Coisas que a bruxa deseja a curto prazo.'],
       ['Obsessão / vício', 'Coisas que a bruxa anseia de forma compulsiva a longo prazo.']
     ]
@@ -587,9 +596,11 @@ function normalizedWikiText(value) {
 }
 
 function wikiTopicEntries(topic) {
-  const described = (topic.paths || []).map(([path, label]) => [label, fieldDescriptions[path] || '']);
+  const described = (topic.paths || []).map(([path, label, description]) => (
+    [label, description || fieldDescriptions[path] || '']
+  ));
   const grouped = (topic.groups || []).flatMap(group => (
-    group.paths.map(([path, label]) => [label, fieldDescriptions[path] || ''])
+    group.paths.map(([path, label, description]) => [label, description || fieldDescriptions[path] || ''])
   ));
   return [...described, ...grouped, ...(topic.entries || [])];
 }
@@ -754,7 +765,9 @@ function renderWikiTopic(topic, query = '') {
     });
   } else if (topic.groups?.length) {
     topic.groups.forEach(group => {
-      const entries = group.paths.map(([path, label]) => [label, fieldDescriptions[path] || '']);
+      const entries = group.paths.map(([path, label, description]) => (
+        [label, description || fieldDescriptions[path] || '']
+      ));
       appendEntries(entries, group.title);
     });
     appendEntries(topic.entries || []);

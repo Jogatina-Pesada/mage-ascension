@@ -417,7 +417,8 @@ const wikiTopics = [
       ['Nome', 'Nome da personagem. Também define o nome do arquivo salvo em snake_case.'],
       ['Crônica', 'Período e cenário em que a história acontece.'],
       ['Experiência e Freebies', 'Experiência compra níveis depois da criação. Durante a criação, os Freebies complementam os pontos iniciais. O botão de concluir só permite encerrar a criação depois que todos os pools e Freebies forem gastos.'],
-      ['Imagem', 'Imagem quadrada da personagem, salva separadamente quando a ficha usa integrações externas.']
+      ['Imagem', 'Imagem quadrada da personagem, salva separadamente quando a ficha usa integrações externas.'],
+      ['Listas de personagens', 'Ao enviar uma personagem nova ou existente ao GitHub, ela pode ser associada à lista default ou a uma nova lista com senha opcional. Ao abrir pelo GitHub, selecione a lista e informe sua senha quando ela estiver protegida. A redefinição exige a senha administrativa e as credenciais de salvamento do GitHub.']
     ]
   },
   {

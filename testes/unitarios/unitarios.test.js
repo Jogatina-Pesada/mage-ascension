@@ -352,7 +352,29 @@ test('dataUrlBase64 retorna apenas payload', () => withApp(win => {
 
 test('getGithubSettings tolera JSON invalido', () => withApp(win => {
   win.localStorage.setItem(appVar(win, 'githubSettingsKey'), '{invalido');
-  assert.deepEqual(win.getGithubSettings(), {});
+  assert.deepEqual(win.getGithubSettings(), {
+    user: '', repo: 'jogatina-pesada/mage-ascension', branch: 'main', sheetsPath: 'fichas'
+  });
+}));
+
+test('normalizeCharacterLists cria default e limpa entradas invalidas', () => withApp(win => {
+  const result = win.normalizeCharacterLists({
+    adminPasswordHash: 'admin',
+    lists: [{ name: ' protegida ', passwordHash: 'hash', characters: ['a.json', 4] }, { name: '' }]
+  });
+  assert.equal(result.adminPasswordHash, 'admin');
+  assert.equal(result.lists[0].name, 'default');
+  assert.equal(result.lists[1].name, 'protegida');
+  assert.deepEqual(result.lists[1].characters, ['a.json']);
+}));
+
+test('hash de senha de lista e comparacao usam SHA-256 sem armazenar texto puro', async () => withApp(async win => {
+  const hash = await win.hashListPassword('segredo');
+  assert.equal(hash.length, 64);
+  assert.equal(hash.includes('segredo'), false);
+  assert.equal(await win.listPasswordMatches('segredo', hash), true);
+  assert.equal(await win.listPasswordMatches('errada', hash), false);
+  assert.equal(await win.listPasswordMatches('', ''), true);
 }));
 
 runTests();

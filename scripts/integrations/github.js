@@ -157,31 +157,38 @@ async function updateGitHubManifest(repo, branch, sheetsPath, fileName, token, p
 async function uploadJsonToGithub(event) {
   event.preventDefault();
 
-  if (!requireCharacterName(setGithubModalStatus)) return;
-  if (!requireLineageName(setGithubModalStatus)) return;
+  const passwordReset = Boolean(pendingListPasswordReset);
+
+  if (!passwordReset && !requireCharacterName(setGithubModalStatus)) return;
+  if (!passwordReset && !requireLineageName(setGithubModalStatus)) return;
   ensureHealthDamage();
   ensureNumberDefaults();
 
   const user = document.getElementById('githubUser').value.trim();
   const token = document.getElementById('githubPat').value.trim();
-  const repo = document.getElementById('githubRepo').value.trim();
-  const branch = document.getElementById('githubBranch').value.trim();
-  const sheetsPath = cleanGitHubPath(document.getElementById('githubSheetsPath').value || 'fichas');
+  const repo = defaultGithubRepo;
+  const branch = defaultGithubBranch;
+  const sheetsPath = defaultGithubSheetsPath;
   const fileName = currentSheetName();
   const previousFileName = currentSheetFile && currentSheetFile !== fileName ? currentSheetFile : '';
 
-  if (!/^[^/\s]+\/[^/\s]+$/.test(repo)) {
-    setGithubModalStatus('Informe o repositorio no formato usuario/repositorio.');
-    return;
-  }
+  if (!passwordReset && !captureGithubCharacterList()) return;
 
   const submitButton = document.getElementById('githubSubmitBtn');
   submitButton.disabled = true;
   setGithubModalStatus('Enviando ficha...');
 
   try {
-    storeGithubSettings({ user, repo, branch, sheetsPath });
+    storeGithubSettings({ user });
     const auth = { user, token, repo, branch, sheetsPath };
+    if (passwordReset) {
+      await verifyGithubUser(user, token);
+      await resetCharacterListPassword(auth);
+      pendingListPasswordReset = null;
+      setGithubModalStatus('Senha da lista redefinida.');
+      document.getElementById('githubPat').value = '';
+      return;
+    }
     await pullLatestLineage(auth);
     await loadCoven(auth);
     const sheetPath = await uploadSheetToGithub(
@@ -191,6 +198,7 @@ async function uploadJsonToGithub(event) {
       `Atualiza ficha ${fileName}`,
       previousFileName
     );
+    await updateCharacterListsOnGithub(auth, fileName, previousFileName);
     const lineagePath = await uploadLineageToGithub(auth, `Atualiza linhagem ${lineageFileName()}`);
     const imageRelativePath = await uploadCharacterImageToGithub(auth, `Atualiza imagem ${characterImageFileName()}`);
     const removedImagePath = await removeCharacterImageFromGithub(auth, imageRelativePath);

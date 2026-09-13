@@ -29,6 +29,7 @@
     tab.addEventListener('click', () => selectBackgroundsModalTab(tab.dataset.backgroundsModalTab));
   });
   document.getElementById('githubUploadBtn').addEventListener('click', openGithubModal);
+  document.getElementById('createGithubCharacterListBtn')?.addEventListener('click', toggleNewGithubCharacterList);
   document.getElementById('closeGithubModal').addEventListener('click', closeGithubModal);
   document.getElementById('aiIntegrationBtn').addEventListener('click', openAiModal);
   document.getElementById('closeAiModal').addEventListener('click', closeAiModal);

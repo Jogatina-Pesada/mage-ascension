@@ -156,6 +156,12 @@ function startModalTemplate() {
           <span>WIKI</span>
         </a>
       </div>
+      <div id="gitListAccess" class="list-access" hidden>
+        <label>Lista<select id="gitCharacterList"></select></label>
+        <label id="gitListPasswordLabel" hidden>Senha da lista<input id="gitListPassword" type="password" autocomplete="off" /></label>
+        <button id="unlockGitListBtn" type="button">Listar personagens</button>
+        <button id="resetGitListPasswordBtn" type="button">Redefinir senha da lista</button>
+      </div>
       <div class="sheet-list" id="gitSheetList"></div>
       <p class="modal-status" id="startModalStatus"></p>
     </div>
@@ -179,9 +185,18 @@ function githubModalTemplate() {
       <form class="github-form" id="githubForm">
         <label>Usuario GitHub<input id="githubUser" autocomplete="username" required /></label>
         <label>PAT<input id="githubPat" type="password" autocomplete="off" required /></label>
-        <label>Repositorio<input id="githubRepo" value="jogatina-pesada/mage-ascension" required /></label>
-        <label>Branch<input id="githubBranch" value="main" required /></label>
-        <label>Pasta das fichas<input id="githubSheetsPath" value="fichas" required /></label>
+        <div id="githubCharacterListFields" class="github-character-list-fields">
+          <label>Associar à lista<select id="githubCharacterList"><option value="default">default</option></select></label>
+          <button id="createGithubCharacterListBtn" type="button" aria-label="Criar nova lista">+</button>
+          <div id="newGithubCharacterListFields" hidden>
+            <label>Nome da lista<input id="newGithubCharacterListName" /></label>
+            <label>Senha da lista (opcional)<input id="newGithubCharacterListPassword" type="password" autocomplete="new-password" /></label>
+          </div>
+        </div>
+        <div id="githubListResetFields" hidden>
+          <label>Senha admin<input id="githubListAdminPassword" type="password" autocomplete="off" /></label>
+          <label>Nova senha da lista (opcional)<input id="githubListNewPassword" type="password" autocomplete="new-password" /></label>
+        </div>
         <button id="githubSubmitBtn" type="submit">Enviar ficha</button>
       </form>
       <p class="modal-status" id="githubModalStatus"></p>

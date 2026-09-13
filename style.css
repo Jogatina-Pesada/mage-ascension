@@ -1083,6 +1083,34 @@ textarea.large { min-height: 220px; }
   gap: 10px;
   grid-template-columns: repeat(4, 1fr);
 }
+
+.list-access,
+.github-character-list-fields {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.list-access label,
+.github-character-list-fields label,
+#newGithubCharacterListFields,
+#githubListResetFields {
+  flex: 1 1 190px;
+}
+
+#newGithubCharacterListFields,
+#githubListResetFields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#newGithubCharacterListFields[hidden],
+#githubListResetFields[hidden] {
+  display: none;
+}
 #gitSheetList {
   margin-top: 14px;
 }

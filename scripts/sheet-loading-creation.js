@@ -207,7 +207,7 @@ function closeCreationCompletionModal() {
   if (modal) modal.hidden = true;
 }
 
-function requestCreationCompletion() {
+async function requestCreationCompletion() {
   const pending = incompleteCreationPools();
   if (pending.length) {
     document.getElementById('creationPointsWarningMessage').textContent = `Ainda há pontos para distribuir: ${pending.join('; ')}.`;
@@ -286,10 +286,27 @@ async function loadGitSheetList() {
   setStartModalStatus('Carregando fichas do GitHub...');
 
   try {
-    const response = await fetch(`${githubRawBase}/fichas/index.json?v=${Date.now()}`);
+    const [response, lists] = await Promise.all([
+      fetch(`${githubRawBase}/fichas/index.json?v=${Date.now()}`),
+      fetchRawCharacterLists()
+    ]);
     if (!response.ok) throw new Error('manifest');
     const entries = (await response.json()).map(normalizeSheetEntry).filter(entry => entry.file);
-    entries.forEach(entry => {
+    const access = document.getElementById('gitListAccess');
+    const select = document.getElementById('gitCharacterList');
+    fillCharacterListSelect(select, lists.lists);
+    access.hidden = false;
+    const renderSelected = async () => {
+      const selected = lists.lists.find(item => item.name === (select.value || 'default'));
+      const password = document.getElementById('gitListPassword').value;
+      document.getElementById('gitListPasswordLabel').hidden = !selected?.passwordHash;
+      list.innerHTML = '';
+      if (!selected || !await listPasswordMatches(password, selected.passwordHash)) {
+        setStartModalStatus(password ? 'Senha da lista incorreta.' : 'Informe a senha da lista.');
+        return;
+      }
+      const allowed = new Set(selected.characters);
+      entries.filter(entry => allowed.has(entry.file)).forEach(entry => {
       const button = document.createElement('button');
       const name = document.createElement('span');
       const file = document.createElement('small');
@@ -300,8 +317,16 @@ async function loadGitSheetList() {
       button.append(name, file);
       button.addEventListener('click', () => loadSheetFromGithub(entry.file));
       list.appendChild(button);
-    });
-    setStartModalStatus(entries.length ? '' : 'Nenhuma ficha encontrada no GitHub.');
+      });
+      setStartModalStatus(list.children.length ? '' : 'Nenhum personagem nesta lista.');
+    };
+    select.onchange = () => { document.getElementById('gitListPassword').value = ''; renderSelected(); };
+    document.getElementById('gitListPassword').oninput = renderSelected;
+    document.getElementById('resetGitListPasswordBtn').onclick = () => {
+      pendingListPasswordReset = select.value;
+      openGithubModal(true);
+    };
+    await renderSelected();
   } catch (err) {
     setStartModalStatus('Não foi possível carregar as fichas do GitHub.');
   }

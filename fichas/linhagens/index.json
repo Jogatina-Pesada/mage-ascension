@@ -2,5 +2,9 @@
   {
     "file": "linhagem_teste.json",
     "name": "linhagem teste"
+  },
+  {
+    "file": "linhagem_teste_2.json",
+    "name": "linhagem teste 2"
   }
 ]

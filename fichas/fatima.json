@@ -1,0 +1,222 @@
+{
+  "creation": {
+    "mode": true,
+    "attributePriorities": {
+      "primary": "mental",
+      "secondary": "social",
+      "tertiary": "physical"
+    },
+    "abilityPriorities": {
+      "primary": "skills",
+      "secondary": "talents",
+      "tertiary": "knowledges"
+    }
+  },
+  "spheres": {
+    "fate": 0,
+    "space": 1,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 3,
+    "death": 0,
+    "prime": 0,
+    "time": 0,
+    "life": 2
+  },
+  "advantages": {
+    "arcana": 4,
+    "willpower": 0,
+    "willpowerTemporary": 0,
+    "quintessence": 0,
+    "paradox": 0
+  },
+  "attributes": {
+    "strength": 1,
+    "dexterity": 1,
+    "stamina": 1,
+    "charisma": 2,
+    "manipulation": 2,
+    "appearance": 1,
+    "perception": 3,
+    "intelligence": 3,
+    "wits": 1
+  },
+  "abilities": {
+    "alertness": 2,
+    "athletics": 0,
+    "awareness": 3,
+    "brawl": 0,
+    "empathy": 0,
+    "expression": 1,
+    "intimidation": 1,
+    "leadership": 0,
+    "streetwise": 0,
+    "subterfuge": 2,
+    "crafts": 2,
+    "drive": 0,
+    "etiquette": 2,
+    "firearms": 1,
+    "meditation": 0,
+    "melee": 2,
+    "research": 2,
+    "stealth": 2,
+    "survival": 2,
+    "technology": 0,
+    "academics": 0,
+    "computer": 0,
+    "cosmology": 0,
+    "enigmas": 0,
+    "esoterica": 1,
+    "investigation": 1,
+    "law": 0,
+    "medicine": 1,
+    "occult": 2,
+    "science": 0
+  },
+  "backgrounds": {
+    "allies": 1,
+    "backup": 2,
+    "contacts": 1,
+    "spies": 0,
+    "fame": 0,
+    "influence": 0,
+    "wonder": 0,
+    "mentor": 2,
+    "patron": 3,
+    "resources": 0,
+    "sanctum": 1,
+    "dream": 0,
+    "pastLives": 0
+  },
+  "identity": {
+    "experience": 0,
+    "chronicle": "Idade Média",
+    "name": "Fatima",
+    "image": "imagens/fatima.png",
+    "lineage": "irmãs da Lilith"
+  },
+  "health": {
+    "damage": [],
+    "level": "healthy"
+  },
+  "backgroundJustifications": {
+    "backup": "Faço parte da organização ultrassecreta das \"irmãs da Lilith\"",
+    "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos",
+    "allies": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns aliados",
+    "mentor": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como mentora",
+    "patron": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como Patrono",
+    "sanctum": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho como refugio o palácio da rainha que fica no norte de Castela"
+  },
+  "creationSnapshot": {
+    "capturedAt": "2026-09-13T16:56:16.986Z",
+    "identity": {
+      "experience": 0,
+      "chronicle": "Idade Média",
+      "name": "Fatima",
+      "image": "imagens/fatima.png",
+      "lineage": "irmãs da Lilith"
+    },
+    "attributes": {
+      "strength": 1,
+      "dexterity": 1,
+      "stamina": 1,
+      "charisma": 2,
+      "manipulation": 2,
+      "appearance": 1,
+      "perception": 3,
+      "intelligence": 3,
+      "wits": 1
+    },
+    "abilities": {
+      "alertness": 2,
+      "athletics": 0,
+      "awareness": 3,
+      "brawl": 0,
+      "empathy": 0,
+      "expression": 1,
+      "intimidation": 1,
+      "leadership": 0,
+      "streetwise": 0,
+      "subterfuge": 2,
+      "crafts": 2,
+      "drive": 0,
+      "etiquette": 2,
+      "firearms": 1,
+      "meditation": 0,
+      "melee": 2,
+      "research": 2,
+      "stealth": 2,
+      "survival": 2,
+      "technology": 0,
+      "academics": 0,
+      "computer": 0,
+      "cosmology": 0,
+      "enigmas": 0,
+      "esoterica": 1,
+      "investigation": 1,
+      "law": 0,
+      "medicine": 1,
+      "occult": 2,
+      "science": 0
+    },
+    "spheres": {
+      "fate": 0,
+      "space": 1,
+      "spirit": 0,
+      "forces": 0,
+      "matter": 0,
+      "mind": 3,
+      "death": 0,
+      "prime": 0,
+      "time": 0,
+      "life": 2
+    },
+    "advantages": {
+      "arcana": 4,
+      "willpower": 0,
+      "willpowerTemporary": 0,
+      "quintessence": 0,
+      "paradox": 0
+    },
+    "backgrounds": {
+      "allies": 1,
+      "backup": 2,
+      "contacts": 1,
+      "spies": 0,
+      "fame": 0,
+      "influence": 0,
+      "wonder": 0,
+      "mentor": 2,
+      "patron": 3,
+      "resources": 0,
+      "sanctum": 1,
+      "dream": 0,
+      "pastLives": 0
+    },
+    "backgroundJustifications": {
+      "backup": "Faço parte da organização ultrassecreta das \"irmãs da Lilith\"",
+      "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos",
+      "allies": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns aliados",
+      "mentor": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como mentora",
+      "patron": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como Patrono",
+      "sanctum": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho como refugio o palácio da rainha que fica no norte de Castela"
+    },
+    "aspirations": "",
+    "obsession": "",
+    "world": {},
+    "creation": {
+      "mode": true,
+      "attributePriorities": {
+        "primary": "mental",
+        "secondary": "social",
+        "tertiary": "physical"
+      },
+      "abilityPriorities": {
+        "primary": "skills",
+        "secondary": "talents",
+        "tertiary": "knowledges"
+      }
+    }
+  }
+}

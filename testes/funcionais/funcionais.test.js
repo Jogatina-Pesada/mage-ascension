@@ -374,6 +374,25 @@ test('wiki do coven explica importacao independente por ID', () => withApp((win,
   assert.includes(content, 'são independentes');
 }));
 
+test('wiki detalha os niveis dos antecedentes e indexa nomes alternativos', () => withApp((win, doc) => {
+  click(doc.getElementById('openWikiBtn'));
+  click(doc.querySelector('[data-wiki-topic="backgrounds"]'));
+  const content = doc.getElementById('wikiTopicContent').textContent;
+  assert.includes(content, 'Pessoas próximas dispostas a ajudar você ativamente');
+  assert.includes(content, '● um aliado modesto → ●●● alguns aliados úteis');
+  assert.includes(content, '●●●●● extensa rede infiltrada');
+  assert.includes(content, 'Biblioteca');
+  assert.includes(content, 'Santuário');
+  assert.includes(content, 'ligação excepcional com múltiplas vidas');
+
+  input(doc.getElementById('wikiSearchInput'), 'Biblioteca conhecimentos raros');
+  assert.deepEqual(
+    Array.from(doc.querySelectorAll('[data-wiki-topic]')).map(button => button.textContent),
+    ['Antecedentes']
+  );
+  assert(doc.querySelectorAll('.wiki-highlight').length >= 2);
+}));
+
 test('inicializacao renderiza controles principais', () => withApp((win, doc) => {
   assert.equal(doc.querySelectorAll('[data-dots]').length, 77);
   assert.equal(doc.querySelectorAll('[data-dots] .dot').length, 395);

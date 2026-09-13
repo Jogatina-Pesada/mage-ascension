@@ -294,6 +294,38 @@ function characterImageRemoveModalTemplate() {
   `;
 }
 
+function creationCompletionModalsTemplate() {
+  return `
+<div class="modal-backdrop no-print" id="creationPointsWarningModal" hidden>
+  <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="creationPointsWarningModalTitle" aria-describedby="creationPointsWarningMessage">
+    <header class="modal-header">
+      <h2 id="creationPointsWarningModalTitle">Criação incompleta</h2>
+      <button id="closeCreationPointsWarningModal" class="icon-btn modal-close" type="button" aria-label="Fechar" title="Fechar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </header>
+    <p id="creationPointsWarningMessage" class="modal-status"></p>
+    <div class="ai-actions"><button id="acknowledgeCreationPointsWarningBtn" type="button">Continuar criação</button></div>
+  </div>
+</div>
+<div class="modal-backdrop no-print" id="creationCompletionModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="creationCompletionModalTitle" aria-describedby="creationCompletionMessage">
+    <header class="modal-header">
+      <h2 id="creationCompletionModalTitle">Concluir criação</h2>
+      <button id="closeCreationCompletionModal" class="icon-btn modal-close" type="button" aria-label="Fechar" title="Fechar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </header>
+    <p id="creationCompletionMessage" class="modal-status">Todos os pontos foram gastos. Deseja concluir a criação e mudar a ficha para o modo de edição?</p>
+    <div class="ai-actions">
+      <button id="confirmCreationCompletionBtn" type="button">Confirmar</button>
+      <button id="cancelCreationCompletionBtn" type="button">Cancelar</button>
+    </div>
+  </div>
+</div>
+  `;
+}
+
 function covenItemModalTemplate() {
   return `
 <div class="modal-backdrop no-print" id="covenItemModal" hidden>

@@ -416,7 +416,7 @@ const wikiTopics = [
     entries: [
       ['Nome', 'Nome da personagem. Também define o nome do arquivo salvo em snake_case.'],
       ['Crônica', 'Período e cenário em que a história acontece.'],
-      ['Experiência e Freebies', 'Experiência compra níveis depois da criação. Durante a criação, os Freebies complementam os pontos iniciais.'],
+      ['Experiência e Freebies', 'Experiência compra níveis depois da criação. Durante a criação, os Freebies complementam os pontos iniciais. O botão de concluir só permite encerrar a criação depois que todos os pools e Freebies forem gastos.'],
       ['Imagem', 'Imagem quadrada da personagem, salva separadamente quando a ficha usa integrações externas.']
     ]
   },

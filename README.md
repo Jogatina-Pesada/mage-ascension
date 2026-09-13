@@ -24,6 +24,8 @@ Ao criar um personagem novo, o campo de experiencia vira `Freebies` e comeca em 
 
 Durante a criacao, a ficha mostra apenas as areas necessarias para distribuir pontos e definir conceitos iniciais. Anotacoes, Paradigma/Foco/Instrumentos e Coven ficam ocultos ate a criacao terminar.
 
+O botão com ícone de check conclui a criação. Antes de pedir confirmação, ele verifica se todos os pontos de Atributos, Habilidades, Antecedentes, Arcana/Esferas/Força de Vontade e Freebies foram gastos. Se houver pontos restantes, um aviso informa quais pools ainda estão incompletos. Ao confirmar a conclusão, a ficha registra o snapshot de criação e passa ao modo normal de edição.
+
 A secao `Quem voce e no mundo` aparece durante a criacao com duas colunas de perguntas: `Como lida com magia` e `Como lida com a realidade`. As respostas sao salvas em `world.magic.*` e `world.reality.*`. Depois da criacao, esses campos ficam disponiveis em uma segunda aba dentro do modal de Antecedentes.
 
 Antecedentes usam pontos de bolinha e tambem entram no calculo de criacao. Durante a criacao, o personagem recebe 7 pontos de Antecedentes para distribuir livremente; nenhum Antecedente pode comecar acima de 3 pontos. Pontos acima do pool inicial custam 1 Freebie por ponto.

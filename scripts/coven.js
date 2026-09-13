@@ -95,6 +95,12 @@ function covenLockBelongsToSession(lock = covenState.lock) {
   return covenLockIsActive(lock) && lock.sessionId === covenEditorSessionId;
 }
 
+function covenLockBelongsToUser(lock, auth = autosaveAuth) {
+  const lockOwner = String(lock?.owner || '').trim().toLowerCase();
+  const syncedUser = String(auth?.user || '').trim().toLowerCase();
+  return covenLockIsActive(lock) && Boolean(lockOwner) && lockOwner === syncedUser;
+}
+
 function covenGithubPath(auth) {
   return joinGitHubPath(auth.sheetsPath, covenFileName);
 }
@@ -627,7 +633,9 @@ async function beginCovenEditing() {
   setCovenStatus('Verificando lock do coven...');
   try {
     const { file, data } = await fetchCovenFromGithub(autosaveAuth);
-    if (covenLockIsActive(data.lock) && data.lock.sessionId !== covenEditorSessionId) {
+    if (covenLockIsActive(data.lock)
+      && data.lock.sessionId !== covenEditorSessionId
+      && !covenLockBelongsToUser(data.lock, autosaveAuth)) {
       const owner = data.lock.owner ? ` por ${data.lock.owner}` : '';
       replaceCovenState(data);
       renderCoven();

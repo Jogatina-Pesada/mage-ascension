@@ -1266,7 +1266,7 @@ function bindWiki() {
   document.addEventListener('keydown', event => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     const label = event.target.closest('[data-wiki-path], [data-wiki-topic-link]');
-    if (!label) return;
+    if (!label || isNestedWikiLabelControl(event.target, label)) return;
     event.preventDefault();
     openWikiFromLabel(label);
   });

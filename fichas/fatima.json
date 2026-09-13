@@ -224,7 +224,12 @@
     "magic": {
       "belief": "Acredito em magia pois desde jovem fui ensinada sobre ela e sobre como lidar com ela",
       "method": "Principalmente com o poder da mente, quando era mais jovem usava por acidente",
-      "tools": "Não (ainda não)"
+      "tools": "Não (ainda não)",
+      "style": "Não tem estilo é algo focado em adaptação, em passar despercebido, etc"
+    },
+    "reality": {
+      "profession": "Sou uma freira para a sociedade e uma",
+      "life": "Devota de Lilith"
     }
   }
 }

@@ -2,5 +2,9 @@
   {
     "file": "baba_yaga.json",
     "name": "Baba Yaga"
+  },
+  {
+    "file": "teste_criacao.json",
+    "name": "teste-criacao"
   }
 ]

@@ -418,7 +418,7 @@ const wikiTopics = [
       ['Crônica', 'Período e cenário em que a história acontece.'],
       ['Experiência e Freebies', 'Experiência compra níveis depois da criação. Durante a criação, os Freebies complementam os pontos iniciais. O botão de concluir só permite encerrar a criação depois que todos os pools e Freebies forem gastos.'],
       ['Imagem', 'Imagem quadrada da personagem, salva separadamente quando a ficha usa integrações externas.'],
-      ['Listas de personagens', 'Ao enviar uma personagem nova ou existente ao GitHub, ela pode ser associada à lista default ou a uma nova lista com senha opcional. Ao abrir pelo GitHub, nenhuma lista começa selecionada: escolha uma para listar suas personagens automaticamente e informe a senha quando ela estiver protegida. A redefinição exige a senha administrativa e as credenciais de salvamento do GitHub.']
+      ['Listas de personagens', 'Ao enviar ou abrir uma personagem pelo GitHub, a lista Outros personagens começa selecionada. Também é possível associar a personagem a uma nova lista com senha opcional. Ao escolher uma lista protegida, informe a senha para visualizar suas personagens. A redefinição exige a senha administrativa e as credenciais de salvamento do GitHub.']
     ]
   },
   {

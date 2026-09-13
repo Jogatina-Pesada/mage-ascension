@@ -294,10 +294,10 @@ async function loadGitSheetList() {
     const entries = (await response.json()).map(normalizeSheetEntry).filter(entry => entry.file);
     const access = document.getElementById('gitListAccess');
     const select = document.getElementById('gitCharacterList');
-    fillCharacterListSelect(select, lists.lists, '', 'selecione uma lista');
+    fillCharacterListSelect(select, lists.lists, 'default');
     access.hidden = false;
     const resetPasswordButton = document.getElementById('resetGitListPasswordBtn');
-    resetPasswordButton.disabled = true;
+    resetPasswordButton.disabled = false;
     const renderSelected = async () => {
       const selected = lists.lists.find(item => item.name === select.value);
       const password = document.getElementById('gitListPassword').value;

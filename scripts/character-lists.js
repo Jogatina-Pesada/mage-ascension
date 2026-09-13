@@ -42,7 +42,7 @@ function fillCharacterListSelect(select, lists, selected = 'default', placeholde
   lists.forEach(list => {
     const option = document.createElement('option');
     option.value = list.name;
-    option.textContent = list.name;
+    option.textContent = list.name === 'default' ? 'outros personagens' : list.name;
     select.appendChild(option);
   });
   select.value = lists.some(list => list.name === selected) ? selected : (placeholder ? '' : 'default');

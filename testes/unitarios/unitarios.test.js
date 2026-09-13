@@ -311,6 +311,7 @@ test('sheetJson preserva justificativas de backgrounds no snapshot', () => withA
     identity: { name: 'Teste' },
     backgrounds: { allies: 1 },
     backgroundJustifications: { allies: 'Jornalista amigo.' },
+    origin: 'Veio de uma vila costeira.',
     aspirations: 'Achar um aliado.',
     obsession: 'Entender a visao.',
     world: {
@@ -321,6 +322,8 @@ test('sheetJson preserva justificativas de backgrounds no snapshot', () => withA
   const json = JSON.parse(win.sheetJson());
   assert.equal(json.backgroundJustifications.allies, 'Jornalista amigo.');
   assert.equal(json.creationSnapshot.backgroundJustifications.allies, 'Jornalista amigo.');
+  assert.equal(json.origin, 'Veio de uma vila costeira.');
+  assert.equal(json.creationSnapshot.origin, 'Veio de uma vila costeira.');
   assert.equal(json.aspirations, 'Achar um aliado.');
   assert.equal(json.obsession, 'Entender a visao.');
   assert.equal(json.creationSnapshot.aspirations, 'Achar um aliado.');

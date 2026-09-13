@@ -30,7 +30,7 @@ Antecedentes usam pontos de bolinha e tambem entram no calculo de criacao. Duran
 
 Quando um Antecedente tem pelo menos 1 ponto, a ficha abre um campo de justificativa abaixo dele para explicar de onde aquele recurso veio. Esses textos sao salvos em `backgroundJustifications`, separados dos valores numericos de `backgrounds`.
 
-Na area de Antecedentes, a ficha tambem registra `aspirations` e `obsession`: Aspirações descrevem coisas que a bruxa deseja a curto prazo, e Obsessão / vício descreve coisas que a bruxa anseia de forma compulsiva a longo prazo.
+Na area de Antecedentes, a ficha tambem registra `origin`, `aspirations` e `obsession`: Origem descreve a história e as circunstâncias da personagem, Aspirações descrevem coisas que a bruxa deseja a curto prazo, e Obsessão / vício descreve coisas que a bruxa anseia de forma compulsiva a longo prazo.
 
 Depois que a criacao termina, os pontos de Antecedentes ficam bloqueados: eles nao podem ser aumentados ou reduzidos por XP no modo de edicao. A secao de Antecedentes sai da ficha principal e passa a ser acessada por um botao ao lado de `Cronica`, abrindo um modal. As justificativas continuam editaveis para detalhar os Antecedentes ja comprados.
 

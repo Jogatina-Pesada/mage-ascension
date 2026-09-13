@@ -294,14 +294,20 @@ async function loadGitSheetList() {
     const entries = (await response.json()).map(normalizeSheetEntry).filter(entry => entry.file);
     const access = document.getElementById('gitListAccess');
     const select = document.getElementById('gitCharacterList');
-    fillCharacterListSelect(select, lists.lists);
+    fillCharacterListSelect(select, lists.lists, '', 'selecione uma lista');
     access.hidden = false;
+    const resetPasswordButton = document.getElementById('resetGitListPasswordBtn');
+    resetPasswordButton.disabled = true;
     const renderSelected = async () => {
       const selected = lists.lists.find(item => item.name === select.value);
       const password = document.getElementById('gitListPassword').value;
       document.getElementById('gitListPasswordLabel').hidden = !selected?.passwordHash;
       list.innerHTML = '';
-      if (!selected || !await listPasswordMatches(password, selected.passwordHash)) {
+      if (!selected) {
+        setStartModalStatus('Selecione uma lista.');
+        return;
+      }
+      if (!await listPasswordMatches(password, selected.passwordHash)) {
         setStartModalStatus('Senha da lista incorreta.');
         return;
       }
@@ -320,9 +326,13 @@ async function loadGitSheetList() {
       });
       setStartModalStatus(list.children.length ? '' : 'Nenhum personagem nesta lista.');
     };
-    select.onchange = () => { document.getElementById('gitListPassword').value = ''; renderSelected(); };
-    document.getElementById('unlockGitListBtn').onclick = renderSelected;
-    document.getElementById('resetGitListPasswordBtn').onclick = () => {
+    select.onchange = () => {
+      document.getElementById('gitListPassword').value = '';
+      resetPasswordButton.disabled = !select.value;
+      renderSelected();
+    };
+    document.getElementById('gitListPassword').oninput = renderSelected;
+    resetPasswordButton.onclick = () => {
       pendingListPasswordReset = select.value;
       openGithubModal(true);
     };

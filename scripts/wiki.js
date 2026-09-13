@@ -557,6 +557,7 @@ const wikiTopics = [
     ],
     entries: [
       ['Biblioteca', 'Uma coleção de livros, registros e materiais úteis para pesquisas mundanas ou ocultas. ● pequena coleção especializada → ●●● biblioteca extensa e diversificada → ●●●●● acervo excepcional contendo conhecimentos extremamente raros.'],
+      ['Origem', 'História, lugar e circunstâncias que formaram a personagem antes e durante seu contato com a magia.'],
       ['Aspirações', 'Coisas que a bruxa deseja a curto prazo.'],
       ['Obsessão / vício', 'Coisas que a bruxa anseia de forma compulsiva a longo prazo.']
     ]

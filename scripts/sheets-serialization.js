@@ -250,6 +250,7 @@ function creationSnapshotData() {
     advantages: cloneData(getPath(state, 'advantages', {})),
     backgrounds: cloneData(getPath(state, 'backgrounds', {})),
     backgroundJustifications: cloneData(getPath(state, 'backgroundJustifications', {})),
+    origin: getPath(state, 'origin', ''),
     aspirations: getPath(state, 'aspirations', ''),
     obsession: getPath(state, 'obsession', ''),
     world: cloneData(getPath(state, 'world', {})),

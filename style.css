@@ -995,6 +995,14 @@ textarea.large { min-height: 220px; }
   gap: 10px;
   margin: 12px 0 4px;
 }
+.background-origin-field {
+  display: block;
+  margin: 12px 0 4px;
+}
+.background-origin-field textarea {
+  min-height: 132px;
+  resize: vertical;
+}
 .background-extra-fields textarea {
   min-height: 86px;
   resize: vertical;

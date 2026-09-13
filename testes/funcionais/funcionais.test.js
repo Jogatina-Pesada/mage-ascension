@@ -683,6 +683,7 @@ test('antecedentes de personagem criado ficam somente no modal', () => withApp((
   resetApp(win, {
     identity: { experience: 100 },
     backgrounds: { allies: 1 },
+    origin: 'Criada por uma ordem itinerante.',
     aspirations: 'Encontrar um grimorio.',
     obsession: 'Desvendar a Torre.',
     world: {
@@ -701,10 +702,13 @@ test('antecedentes de personagem criado ficam somente no modal', () => withApp((
   assert.equal(modal.querySelector('[data-backgrounds-modal-panel="backgrounds"]').hidden, false);
   assert.equal(modal.querySelector('[data-backgrounds-modal-panel="world"]').hidden, true);
   assert.equal(dot(modal, 'backgrounds.allies', 1).getAttribute('aria-checked'), 'true');
+  assert.equal(modal.querySelector('[data-field="origin"]').value, 'Criada por uma ordem itinerante.');
   assert.equal(modal.querySelector('[data-field="aspirations"]').value, 'Encontrar um grimorio.');
   assert.equal(modal.querySelector('[data-field="obsession"]').value, 'Desvendar a Torre.');
+  input(modal.querySelector('[data-field="origin"]'), 'Nascida em uma comunidade isolada.');
   input(modal.querySelector('[data-field="aspirations"]'), 'Salvar a mentora.');
   input(modal.querySelector('[data-field="obsession"]'), 'Reabrir o portal.');
+  assert.equal(win.getPath(appState(win), 'origin'), 'Nascida em uma comunidade isolada.');
   assert.equal(win.getPath(appState(win), 'aspirations'), 'Salvar a mentora.');
   assert.equal(win.getPath(appState(win), 'obsession'), 'Reabrir o portal.');
   click(modal.querySelector('[data-backgrounds-modal-tab="world"]'));
@@ -899,12 +903,13 @@ test('antecedente com ponto abre justificativa persistente', () => withApp((win,
   assert.equal(win.getPath(appState(win), 'backgroundJustifications.allies'), 'Jornalista amigo que cobre a prefeitura.');
 }));
 
-test('criacao edita aspiracoes e obsessao em antecedentes', () => withApp((win, doc) => {
+test('criacao edita origem, aspiracoes e obsessao em antecedentes', () => withApp((win, doc) => {
   click(doc.getElementById('newCharacterBtn'));
   const panel = doc.querySelector('.backgrounds-panel');
+  const origin = panel.querySelector('[data-field="origin"]');
   const aspirations = panel.querySelector('[data-field="aspirations"]');
   const obsession = panel.querySelector('[data-field="obsession"]');
-  [aspirations, obsession].forEach(field => {
+  [origin, aspirations, obsession].forEach(field => {
     [' ', 'Enter'].forEach(key => {
       const event = new win.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
       field.dispatchEvent(event);
@@ -912,8 +917,11 @@ test('criacao edita aspiracoes e obsessao em antecedentes', () => withApp((win, 
       assert.equal(doc.getElementById('wikiModal').hidden, true);
     });
   });
+  assert.equal(origin.closest('label').nextElementSibling, panel.querySelector('.background-extra-fields'));
+  input(origin, 'Veio de uma aldeia esquecida.');
   input(aspirations, 'Conseguir um sanctum seguro.');
   input(obsession, 'Compreender a voz nos sonhos.');
+  assert.equal(win.getPath(appState(win), 'origin'), 'Veio de uma aldeia esquecida.');
   assert.equal(win.getPath(appState(win), 'aspirations'), 'Conseguir um sanctum seguro.');
   assert.equal(win.getPath(appState(win), 'obsession'), 'Compreender a voz nos sonhos.');
 }));

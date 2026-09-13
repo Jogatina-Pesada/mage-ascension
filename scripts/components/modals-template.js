@@ -40,6 +40,9 @@ function backgroundsModalTemplate() {
           <div data-dots="backgrounds.dream" data-label="Sonho"></div>
           <div data-dots="backgrounds.pastLives" data-label="Vidas Passadas"></div>
         </div>
+        <label class="background-origin-field" data-wiki-topic-link="backgrounds" data-wiki-query="Origem">Origem
+          <textarea class="large" data-field="origin" placeholder="História, lugar e circunstâncias de origem da personagem"></textarea>
+        </label>
         <div class="background-extra-fields">
           <label data-wiki-topic-link="backgrounds" data-wiki-query="Aspirações">Aspirações
             <textarea data-field="aspirations" placeholder="coisas que a bruxa deseja a curto prazo"></textarea>

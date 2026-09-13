@@ -5,7 +5,13 @@
   const button = document.getElementById('levelEditBtn');
   if (button) {
     button.classList.toggle('active', editable);
-    button.title = editable ? 'Concluir edição de níveis' : 'Editar níveis';
+    if (creationMode) {
+      button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+      button.title = 'Concluir criação';
+    } else {
+      button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 20 9-9-8-8-9 9v8h8z"></path><path d="m16 7 1 1"></path></svg>';
+      button.title = editable ? 'Concluir edição de níveis' : 'Editar níveis';
+    }
     button.setAttribute('aria-label', button.title);
   }
   document.querySelectorAll('[data-dots]').forEach(container => {
@@ -146,6 +152,10 @@ function changeWillpower(level, container) {
 
 function bindLevelEditor() {
   document.getElementById('levelEditBtn')?.addEventListener('click', () => {
+    if (creationMode) {
+      requestCreationCompletion();
+      return;
+    }
     setLevelEditing(!levelEditMode);
   });
   setLevelEditing(false);

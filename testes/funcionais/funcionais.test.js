@@ -740,6 +740,44 @@ test('novo personagem entra em modo criacao e fecha modal inicial', () => withAp
   assert.equal(win.getPath(state, 'advantages.arcana'), 1);
 }));
 
+test('concluir criacao avisa quando ainda ha pontos para gastar', () => withApp((win, doc) => {
+  click(doc.getElementById('newCharacterBtn'));
+  const button = doc.getElementById('levelEditBtn');
+  assert.equal(button.getAttribute('aria-label'), 'Concluir criação');
+  assert.equal(button.querySelector('path').getAttribute('d'), 'm5 12 4 4L19 6');
+  click(button);
+  const modal = doc.getElementById('creationPointsWarningModal');
+  assert.equal(modal.hidden, false);
+  assert.includes(doc.getElementById('creationPointsWarningMessage').textContent, 'Atributos Físicos');
+  assert.includes(doc.getElementById('creationPointsWarningMessage').textContent, 'Freebies');
+  assert.equal(doc.getElementById('creationCompletionModal').hidden, true);
+}));
+
+test('confirmar conclusao muda a ficha para edicao e registra snapshot', () => withApp((win, doc) => {
+  click(doc.getElementById('newCharacterBtn'));
+  const state = appState(win);
+  win.setPath(state, 'attributes.strength', 7);
+  win.setPath(state, 'attributes.charisma', 5);
+  win.setPath(state, 'attributes.perception', 3);
+  win.setPath(state, 'abilities.alertness', 13);
+  win.setPath(state, 'abilities.crafts', 9);
+  win.setPath(state, 'abilities.academics', 5);
+  win.setPath(state, 'backgrounds.allies', 3);
+  win.setPath(state, 'backgrounds.contacts', 3);
+  win.setPath(state, 'backgrounds.resources', 1);
+  win.setPath(state, 'advantages.willpower', 6);
+  win.setPath(state, 'identity.experience', 0);
+  click(doc.getElementById('levelEditBtn'));
+  assert.equal(doc.getElementById('creationCompletionModal').hidden, false);
+  click(doc.getElementById('confirmCreationCompletionBtn'));
+  assert.equal(win.getPath(state, 'creation.mode'), false);
+  assert.equal(Boolean(state.creationSnapshot), true);
+  assert.equal(state.creationSnapshot.creation.mode, true);
+  assert.equal(doc.getElementById('creationPanel').hidden, true);
+  assert.equal(doc.getElementById('resourceLabel').textContent, 'Experiência');
+  assert.equal(doc.getElementById('openBackgroundsModalBtn').hidden, false);
+}));
+
 test('campos de identidade atualizam o estado', () => withApp((win, doc) => {
   resetApp(win);
   input(doc.querySelector('[data-field="identity.name"]'), 'Lari');

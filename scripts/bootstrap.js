@@ -12,6 +12,7 @@
   bindWiki();
   populatePriorityControls();
   bindPriorityControls();
+  bindCreationCompletion();
   setCreationMode(false);
   document.getElementById('newCharacterBtn').addEventListener('click', startNewCharacter);
   document.getElementById('loadGitSheetsBtn').addEventListener('click', loadGitSheetList);
@@ -50,6 +51,8 @@
       closeLineageDeathModal();
       closeLineageReviveModal();
       closeCharacterImageRemoveModal();
+      closeCreationPointsWarningModal();
+      closeCreationCompletionModal();
       closeCovenItemModal();
       closeCovenItemDeleteModal();
       closeCovenItemUseModal();

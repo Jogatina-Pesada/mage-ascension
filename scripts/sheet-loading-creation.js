@@ -173,6 +173,64 @@ function renderCreationSummary() {
   updateLineageSphereBonusButton();
 }
 
+function incompleteCreationPools() {
+  const pending = [];
+  const groupLabels = {
+    physical: 'Físicos', social: 'Sociais', mental: 'Mentais',
+    talents: 'Talentos', skills: 'Perícias', knowledges: 'Conhecimentos'
+  };
+  Object.keys(creationGroups.attributes).forEach(group => {
+    const spent = spentInPriorityPool(creationGroups.attributes[group][0]);
+    const budget = priorityBudget('attributes', group);
+    if (spent < budget) pending.push(`Atributos ${groupLabels[group]}: faltam ${budget - spent}`);
+  });
+  Object.keys(creationGroups.abilities).forEach(group => {
+    const spent = spentInPriorityPool(creationGroups.abilities[group][0]);
+    const budget = priorityBudget('abilities', group);
+    if (spent < budget) pending.push(`Habilidades ${groupLabels[group]}: faltam ${budget - spent}`);
+  });
+  const backgroundsRemaining = backgroundPoolRemaining();
+  if (backgroundsRemaining) pending.push(`Antecedentes: faltam ${backgroundsRemaining}`);
+  const sharedPoolRemaining = arcanaSpherePoolRemaining();
+  if (sharedPoolRemaining) pending.push(`Arcana + Esferas + Força de Vontade: faltam ${sharedPoolRemaining}`);
+  if (freebies()) pending.push(`Freebies: faltam gastar ${freebies()}`);
+  return pending;
+}
+
+function closeCreationPointsWarningModal() {
+  const modal = document.getElementById('creationPointsWarningModal');
+  if (modal) modal.hidden = true;
+}
+
+function closeCreationCompletionModal() {
+  const modal = document.getElementById('creationCompletionModal');
+  if (modal) modal.hidden = true;
+}
+
+function requestCreationCompletion() {
+  const pending = incompleteCreationPools();
+  if (pending.length) {
+    document.getElementById('creationPointsWarningMessage').textContent = `Ainda há pontos para distribuir: ${pending.join('; ')}.`;
+    document.getElementById('creationPointsWarningModal').hidden = false;
+    return;
+  }
+  document.getElementById('creationCompletionModal').hidden = false;
+}
+
+function confirmCreationCompletion() {
+  state.creationSnapshot = creationSnapshotData();
+  closeCreationCompletionModal();
+  setCreationMode(false);
+}
+
+function bindCreationCompletion() {
+  document.getElementById('closeCreationPointsWarningModal')?.addEventListener('click', closeCreationPointsWarningModal);
+  document.getElementById('acknowledgeCreationPointsWarningBtn')?.addEventListener('click', closeCreationPointsWarningModal);
+  document.getElementById('closeCreationCompletionModal')?.addEventListener('click', closeCreationCompletionModal);
+  document.getElementById('cancelCreationCompletionBtn')?.addEventListener('click', closeCreationCompletionModal);
+  document.getElementById('confirmCreationCompletionBtn')?.addEventListener('click', confirmCreationCompletion);
+}
+
 function setCreationMode(enabled) {
   creationMode = enabled;
   creationSettings().mode = enabled;

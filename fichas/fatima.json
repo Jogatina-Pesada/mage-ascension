@@ -102,7 +102,7 @@
   },
   "backgroundJustifications": {
     "backup": "Faço parte da organização ultrassecreta, as \"irmãs da Lilith\"",
-    "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos, tod",
+    "contacts": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns contatos, todos ligados a missões que cumpri anteriormente ou no futuro",
     "allies": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho alguns aliados, entre sua maioria outras freiras, a rainha e pessoas de sua confiança",
     "mentor": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como mentora",
     "patron": "Por fazer parte da organização ultrassecreta das \"irmãs da Lilith\" tenho A Rainha Isabel I como Patrono",
@@ -218,5 +218,6 @@
         "tertiary": "knowledges"
       }
     }
-  }
+  },
+  "aspirations": "faksdçasdjçaljsdjha"
 }

@@ -29,15 +29,23 @@ async function fetchRawCharacterLists() {
   return normalizeCharacterLists(await response.json());
 }
 
-function fillCharacterListSelect(select, lists, selected = 'default') {
+function fillCharacterListSelect(select, lists, selected = 'default', placeholder = '') {
   select.innerHTML = '';
+  if (placeholder) {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = placeholder;
+    option.disabled = true;
+    option.selected = true;
+    select.appendChild(option);
+  }
   lists.forEach(list => {
     const option = document.createElement('option');
     option.value = list.name;
     option.textContent = list.name;
     select.appendChild(option);
   });
-  select.value = lists.some(list => list.name === selected) ? selected : 'default';
+  select.value = lists.some(list => list.name === selected) ? selected : (placeholder ? '' : 'default');
 }
 
 async function prepareGithubCharacterLists() {

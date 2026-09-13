@@ -1307,11 +1307,15 @@ test('abrir pelo GitHub filtra personagens pela lista e sua senha', async () => 
       : [{ file: 'fatima.json', name: 'Fátima' }, { file: 'baba.json', name: 'Baba' }]
   });
   await win.loadGitSheetList();
+  assert.equal(doc.getElementById('gitCharacterList').value, '');
+  assert.equal(doc.getElementById('gitCharacterList').options[0].textContent, 'selecione uma lista');
+  assert.equal(doc.getElementById('resetGitListPasswordBtn').disabled, true);
+  assert.equal(doc.getElementById('unlockGitListBtn'), null);
   change(doc.getElementById('gitCharacterList'), 'circulo');
   await tick();
+  assert.equal(doc.getElementById('resetGitListPasswordBtn').disabled, false);
   assert.equal(doc.getElementById('gitSheetList').children.length, 0);
   input(doc.getElementById('gitListPassword'), 'lua');
-  click(doc.getElementById('unlockGitListBtn'));
   await tick();
   assert.equal(doc.getElementById('gitSheetList').children.length, 1);
   assert.includes(doc.getElementById('gitSheetList').textContent, 'Fátima');

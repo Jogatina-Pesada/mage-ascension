@@ -307,6 +307,70 @@ test('item da dispensa exige confirmacao antes da exclusao', () => withApp((win,
   assert.equal(doc.getElementById('covenItemModal').hidden, true);
 }));
 
+test('excluir item da dispensa força o envio imediato do coven ao GitHub', () => withApp(async (win, doc) => {
+  resetApp(win);
+  const sessionId = win.eval('covenEditorSessionId');
+  const lock = {
+    owner: 'lari',
+    sessionId,
+    acquiredAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
+  };
+  win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
+  win.eval('covenEditMode = true');
+  win.eval(`Object.assign(covenState, ${JSON.stringify({
+    name: 'Circulo', pantry: [{ id: 'interno-2', name: 'Vela', description: '', image: '', images: [] }, ...Array(15).fill(null)], lock
+  })})`);
+  const uploads = [];
+  win.fetch = async (_url, options = {}) => {
+    if (!options.method) {
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: 'sha-coven', content: win.btoa(JSON.stringify(win.eval('covenState'))) })
+      };
+    }
+    uploads.push(JSON.parse(options.body));
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  win.renderCoven();
+  click(doc.querySelector('[data-coven-pantry-slot="0"]'));
+  click(doc.getElementById('deleteCovenItemBtn'));
+  click(doc.getElementById('confirmCovenItemDeleteBtn'));
+  await win.eval('covenProgressSaveQueue');
+  assert.equal(uploads.length, 1);
+  assert.equal(JSON.parse(win.atob(uploads[0].content)).pantry[0], null);
+}));
+
+test('lock ativo do mesmo usuario sincronizado pode ser readquirido apos refresh', () => withApp(async (win, doc) => {
+  resetApp(win);
+  const previousLock = {
+    owner: 'Lari',
+    sessionId: 'sessao-da-pagina-anterior',
+    acquiredAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
+  };
+  win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
+  let uploaded = null;
+  win.fetch = async (_url, options = {}) => {
+    if (!options.method) {
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: 'sha-coven', content: win.btoa(JSON.stringify({ pantry: [], lock: previousLock })) })
+      };
+    }
+    uploaded = JSON.parse(win.atob(JSON.parse(options.body).content));
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  await win.beginCovenEditing();
+  assert.equal(win.eval('covenEditMode'), true);
+  assert.equal(uploaded.lock.owner, 'lari');
+  assert.equal(uploaded.lock.sessionId, win.eval('covenEditorSessionId'));
+  assert.includes(doc.getElementById('covenLockStatus').textContent, 'Edição habilitada');
+  win.clearTimeout(win.eval('covenLockTimer'));
+}));
+
 test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(async (win) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');

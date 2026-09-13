@@ -26,6 +26,13 @@
   },
   "members": [
     {
+      "name": "Fatima",
+      "chronicle": "Idade Média",
+      "status": "alive",
+      "dead": false,
+      "lineageContribution": {}
+    },
+    {
       "name": "",
       "chronicle": "Idade Média",
       "status": "alive",

@@ -407,6 +407,45 @@ test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(a
   assert.equal(win.eval('covenEditMode'), true);
 }));
 
+test('autosave geral e salvamento da dispensa compartilham a mesma fila do coven', () => withApp(async (win) => {
+  resetApp(win);
+  const sessionId = win.eval('covenEditorSessionId');
+  const lock = {
+    owner: 'lari',
+    sessionId,
+    acquiredAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
+  };
+  const auth = { user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' };
+  win.eval(`autosaveAuth = ${JSON.stringify(auth)}`);
+  win.eval('covenEditMode = true');
+  win.eval(`Object.assign(covenState, ${JSON.stringify({ pantry: Array(16).fill(null), lock })})`);
+  let activeRequests = 0;
+  let maximumActiveRequests = 0;
+  let uploads = 0;
+  win.fetch = async (_url, options = {}) => {
+    activeRequests += 1;
+    maximumActiveRequests = Math.max(maximumActiveRequests, activeRequests);
+    await new Promise(resolve => win.setTimeout(resolve, 5));
+    activeRequests -= 1;
+    if (!options.method) {
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: `sha-coven-${uploads}`, content: win.btoa(JSON.stringify(win.eval('covenState'))) })
+      };
+    }
+    uploads += 1;
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  const pantrySave = win.queueCovenProgressSave('Exclusão de item da dispensa');
+  const generalAutosave = win.uploadCovenToGithub(auth, 'Autosave coven');
+  await Promise.all([pantrySave, generalAutosave]);
+  assert.equal(uploads, 2);
+  assert.equal(maximumActiveRequests, 1);
+  assert.equal(win.eval('covenEditMode'), true);
+}));
+
 test('normalizacao do coven preserva imagem unica legada e ID de inventario valido', () => withApp((win) => {
   const normalized = win.normalizeCovenData({
     pantry: [{ id: 'interno', inventoryId: 'ABC12345', name: 'Legado', image: 'imagens/coven/legado.png' }]

@@ -555,41 +555,45 @@ async function uploadPendingCovenItemImages(auth) {
   }
 }
 
-function queueCovenProgressSave(reason = 'Atualização da dispensa') {
+function enqueueCovenSave(save) {
   covenProgressSaveQueue = covenProgressSaveQueue
     .catch(() => {})
-    .then(async () => {
-      if (!covenEditMode || !autosaveAuth) return false;
-      setCovenStatus(`${reason}. Salvando automaticamente sem liberar o lock...`);
-      try {
-        const { file, data } = await fetchCovenFromGithub(autosaveAuth);
-        if (!file?.sha || !covenLockBelongsToSession(data.lock)) {
-          stopCovenEditing('O lock do coven mudou antes do salvamento automático. A edição foi pausada.');
-          setCovenStatus('O lock do coven mudou antes do salvamento automático. A edição foi pausada.', true);
-          return false;
-        }
-        await uploadPendingCovenItemImages(autosaveAuth);
-        const next = normalizeCovenData({ ...covenState, lock: data.lock });
-        await putGitHubFile(
-          autosaveAuth.repo,
-          autosaveAuth.branch,
-          covenGithubPath(autosaveAuth),
-          JSON.stringify(next, null, 2),
-          `Autosave do coven: ${reason}`,
-          autosaveAuth.token,
-          file.sha
-        );
-        replaceCovenState(next);
-        renderCoven();
-        setCovenStatus('Dispensa salva automaticamente. O lock de edição continua ativo.');
-        return true;
-      } catch (error) {
-        console.error('[coven] Falha no salvamento automático da dispensa.', error);
-        setCovenStatus('Não foi possível salvar automaticamente a Dispensa. Tente concluir a edição novamente.', true);
+    .then(save);
+  return covenProgressSaveQueue;
+}
+
+function queueCovenProgressSave(reason = 'Atualização da dispensa') {
+  return enqueueCovenSave(async () => {
+    if (!covenEditMode || !autosaveAuth) return false;
+    setCovenStatus(`${reason}. Salvando automaticamente sem liberar o lock...`);
+    try {
+      const { file, data } = await fetchCovenFromGithub(autosaveAuth);
+      if (!file?.sha || !covenLockBelongsToSession(data.lock)) {
+        stopCovenEditing('O lock do coven mudou antes do salvamento automático. A edição foi pausada.');
+        setCovenStatus('O lock do coven mudou antes do salvamento automático. A edição foi pausada.', true);
         return false;
       }
-    });
-  return covenProgressSaveQueue;
+      await uploadPendingCovenItemImages(autosaveAuth);
+      const next = normalizeCovenData({ ...covenState, lock: data.lock });
+      await putGitHubFile(
+        autosaveAuth.repo,
+        autosaveAuth.branch,
+        covenGithubPath(autosaveAuth),
+        JSON.stringify(next, null, 2),
+        `Autosave do coven: ${reason}`,
+        autosaveAuth.token,
+        file.sha
+      );
+      replaceCovenState(next);
+      renderCoven();
+      setCovenStatus('Dispensa salva automaticamente. O lock de edição continua ativo.');
+      return true;
+    } catch (error) {
+      console.error('[coven] Falha no salvamento automático da dispensa.', error);
+      setCovenStatus('Não foi possível salvar automaticamente a Dispensa. Tente concluir a edição novamente.', true);
+      return false;
+    }
+  });
 }
 
 function stopCovenEditing(message = '') {
@@ -726,17 +730,19 @@ async function finishCovenEditing({ automatic = false, allowExpiredOwnLock = fal
 }
 
 async function uploadCovenToGithub(auth, message = 'Autosave coven') {
-  if (!covenEditMode || !covenLockBelongsToSession()) return '';
-  const { file, data } = await fetchCovenFromGithub(auth);
-  if (!covenLockBelongsToSession(data.lock)) {
-    replaceCovenState(data);
-    stopCovenEditing('O lock do coven não está mais ativo; alterações não enviadas.');
-    return '';
-  }
-  covenState.lock = data.lock;
-  await uploadPendingCovenItemImages(auth);
-  await putGitHubFile(auth.repo, auth.branch, covenGithubPath(auth), covenJson(), message, auth.token, file.sha);
-  return covenGithubPath(auth);
+  return enqueueCovenSave(async () => {
+    if (!covenEditMode || !covenLockBelongsToSession()) return '';
+    const { file, data } = await fetchCovenFromGithub(auth);
+    if (!covenLockBelongsToSession(data.lock)) {
+      replaceCovenState(data);
+      stopCovenEditing('O lock do coven não está mais ativo; alterações não enviadas.');
+      return '';
+    }
+    covenState.lock = data.lock;
+    await uploadPendingCovenItemImages(auth);
+    await putGitHubFile(auth.repo, auth.branch, covenGithubPath(auth), covenJson(), message, auth.token, file.sha);
+    return covenGithubPath(auth);
+  });
 }
 
 function bindCoven() {

@@ -6,7 +6,15 @@
   "fame": 0,
   "lab": "",
   "pantry": [
-    null,
+    {
+      "id": "item-1789422112165-1",
+      "inventoryId": "",
+      "used": false,
+      "name": "teste",
+      "description": "",
+      "image": "",
+      "images": []
+    },
     {
       "id": "item-1788027609343-2",
       "inventoryId": "COD03161",

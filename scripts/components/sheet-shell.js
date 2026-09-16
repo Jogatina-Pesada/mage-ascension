@@ -25,6 +25,7 @@ function appShellTemplate() {
   ${sheetModalTemplate()}
   ${startModalTemplate()}
   ${githubModalTemplate()}
+  ${covenGithubModalTemplate()}
   ${lineageLoadModalTemplate()}
   ${aiModalTemplate()}
   ${characterImageRemoveModalTemplate()}

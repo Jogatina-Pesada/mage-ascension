@@ -371,6 +371,48 @@ test('lock ativo do mesmo usuario sincronizado pode ser readquirido apos refresh
   win.clearTimeout(win.eval('covenLockTimer'));
 }));
 
+test('edicao do coven sem autosave solicita credenciais e inicia lock dedicado', () => withApp(async (win, doc) => {
+  resetApp(win);
+  win.eval('autosaveAuth = null; covenSyncAuth = null');
+  click(doc.getElementById('covenEditBtn'));
+  assert.equal(doc.getElementById('covenGithubModal').hidden, false);
+  assert.equal(doc.getElementById('covenGithubModal').textContent.includes('somente nesta sessão'), true);
+
+  const requests = [];
+  win.fetch = async (url, options = {}) => {
+    requests.push({ url, options });
+    if (url === 'https://api.github.com/user') {
+      return { status: 200, ok: true, text: async () => '{"login":"lari"}' };
+    }
+    if (!options.method) {
+      return { status: 200, ok: true, text: async () => JSON.stringify({ sha: 'sha-coven', content: win.btoa('{"pantry":[],"lock":null}') }) };
+    }
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  input(doc.getElementById('covenGithubUser'), 'lari');
+  input(doc.getElementById('covenGithubPat'), 'pat-coven');
+  doc.getElementById('covenGithubForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
+  await tick();
+  await win.eval('covenProgressSaveQueue');
+  assert.equal(doc.getElementById('covenGithubModal').hidden, true);
+  assert.equal(doc.getElementById('covenGithubPat').value, '');
+  assert.equal(win.eval('autosaveAuth'), null);
+  assert.equal(win.eval('covenEditMode'), true);
+  assert.equal(win.eval('covenSyncAuth.user'), 'lari');
+  assert(requests.some(request => request.options.method === 'PUT'));
+  win.clearTimeout(win.eval('covenLockTimer'));
+}));
+
+test('secao do coven exibe proprietario e horario de lock ativo', () => withApp((win, doc) => {
+  resetApp(win);
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+  win.eval(`covenState.lock = ${JSON.stringify({ owner: 'Morgana', sessionId: 'outra-sessao', expiresAt })}`);
+  win.renderCoven();
+  const status = doc.getElementById('covenLockStatus').textContent;
+  assert.includes(status, 'Coven em edição por Morgana até');
+  assert.equal(doc.getElementById('covenEditBtn').getAttribute('aria-label'), 'Editar coven');
+}));
+
 test('aquisicao do lock relê e tenta novamente após conflito de escrita', () => withApp(async (win, doc) => {
   resetApp(win);
   win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
@@ -1301,7 +1343,7 @@ test('Escape fecha modais abertos', () => withApp((win, doc) => {
 
 test('clique no backdrop nao fecha nenhum modal da ficha', () => withApp((win, doc) => {
   const modalIds = [
-    'backgroundsModal', 'sheetModal', 'startModal', 'githubModal', 'lineageLoadModal', 'aiModal',
+    'backgroundsModal', 'sheetModal', 'startModal', 'githubModal', 'covenGithubModal', 'lineageLoadModal', 'aiModal',
     'characterImageRemoveModal', 'covenItemModal', 'covenItemDeleteModal', 'covenItemUseModal', 'lineageDeathModal', 'lineageReviveModal', 'wikiModal'
   ];
   modalIds.forEach(id => {

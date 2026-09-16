@@ -58,7 +58,8 @@ async function getGitHubFile(repo, branch, path, token) {
   const encodedPath = path.split('/').map(encodeURIComponent).join('/');
   return githubRequest(
     `https://api.github.com/repos/${repo}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`,
-    token
+    token,
+    { cache: 'no-store' }
   );
 }
 

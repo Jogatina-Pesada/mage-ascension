@@ -2,7 +2,7 @@
   "name": "",
   "quintessence": 0,
   "paradox": 0,
-  "obolOfTheDead": 0,
+  "obolOfTheDead": 1,
   "fame": 0,
   "lab": "",
   "pantry": [
@@ -44,10 +44,5 @@
     null,
     null
   ],
-  "lock": {
-    "owner": "uneluneravie",
-    "sessionId": "1789582258543-ccnl1ownxf",
-    "acquiredAt": "2026-09-16T18:54:44.015Z",
-    "expiresAt": "2026-09-16T19:04:44.015Z"
-  }
+  "lock": null
 }

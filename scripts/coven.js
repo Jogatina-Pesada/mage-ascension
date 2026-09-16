@@ -636,38 +636,49 @@ async function beginCovenEditing() {
   button.disabled = true;
   setCovenStatus('Verificando lock do coven...');
   try {
-    const { file, data } = await fetchCovenFromGithub(autosaveAuth);
-    if (covenLockIsActive(data.lock)
-      && data.lock.sessionId !== covenEditorSessionId
-      && !covenLockBelongsToUser(data.lock, autosaveAuth)) {
-      const owner = data.lock.owner ? ` por ${data.lock.owner}` : '';
-      replaceCovenState(data);
-      renderCoven();
-      setCovenStatus(`Coven em edição${owner} até ${new Date(data.lock.expiresAt).toLocaleTimeString('pt-BR')}.`, true);
-      return;
-    }
+    await enqueueCovenSave(async () => {
+      const maximumAttempts = 3;
+      for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
+        const { file, data } = await fetchCovenFromGithub(autosaveAuth);
+        if (covenLockIsActive(data.lock)
+          && data.lock.sessionId !== covenEditorSessionId
+          && !covenLockBelongsToUser(data.lock, autosaveAuth)) {
+          const owner = data.lock.owner ? ` por ${data.lock.owner}` : '';
+          replaceCovenState(data);
+          renderCoven();
+          setCovenStatus(`Coven em edição${owner} até ${new Date(data.lock.expiresAt).toLocaleTimeString('pt-BR')}.`, true);
+          return;
+        }
 
-    const acquiredAt = new Date();
-    data.lock = {
-      owner: autosaveAuth.user || autosaveAuth.repo.split('/')[0],
-      sessionId: covenEditorSessionId,
-      acquiredAt: acquiredAt.toISOString(),
-      expiresAt: new Date(acquiredAt.getTime() + covenLockDurationMs).toISOString()
-    };
-    await putGitHubFile(
-      autosaveAuth.repo,
-      autosaveAuth.branch,
-      covenGithubPath(autosaveAuth),
-      JSON.stringify(data, null, 2),
-      'Adquire lock de edição do coven',
-      autosaveAuth.token,
-      file?.sha || null
-    );
-    replaceCovenState(data);
-    covenEditMode = true;
-    scheduleCovenLockExpiry();
-    renderCoven();
-    setCovenStatus('Edição habilitada por até 10 minutos.');
+        const acquiredAt = new Date();
+        data.lock = {
+          owner: autosaveAuth.user || autosaveAuth.repo.split('/')[0],
+          sessionId: covenEditorSessionId,
+          acquiredAt: acquiredAt.toISOString(),
+          expiresAt: new Date(acquiredAt.getTime() + covenLockDurationMs).toISOString()
+        };
+        try {
+          await putGitHubFile(
+            autosaveAuth.repo,
+            autosaveAuth.branch,
+            covenGithubPath(autosaveAuth),
+            JSON.stringify(data, null, 2),
+            'Adquire lock de edição do coven',
+            autosaveAuth.token,
+            file?.sha || null
+          );
+        } catch (error) {
+          if (error.status === 409 && attempt < maximumAttempts) continue;
+          throw error;
+        }
+        replaceCovenState(data);
+        covenEditMode = true;
+        scheduleCovenLockExpiry();
+        renderCoven();
+        setCovenStatus('Edição habilitada por até 10 minutos.');
+        return;
+      }
+    });
   } catch (err) {
     console.error('[coven] Não foi possível adquirir o lock.', err);
     setCovenStatus('O lock não pôde ser adquirido; releia o coven e tente novamente.', true);

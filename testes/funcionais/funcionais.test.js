@@ -371,6 +371,34 @@ test('lock ativo do mesmo usuario sincronizado pode ser readquirido apos refresh
   win.clearTimeout(win.eval('covenLockTimer'));
 }));
 
+test('aquisicao do lock relê e tenta novamente após conflito de escrita', () => withApp(async (win, doc) => {
+  resetApp(win);
+  win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
+  let reads = 0;
+  let writes = 0;
+  win.fetch = async (_url, options = {}) => {
+    if (!options.method) {
+      reads += 1;
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: `sha-coven-${reads}`, content: win.btoa(JSON.stringify({ pantry: [], lock: null })) })
+      };
+    }
+    writes += 1;
+    if (writes === 1) {
+      return { status: 409, ok: false, text: async () => JSON.stringify({ message: 'sha does not match' }) };
+    }
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  await win.beginCovenEditing();
+  assert.equal(reads, 2);
+  assert.equal(writes, 2);
+  assert.equal(win.eval('covenEditMode'), true);
+  assert.includes(doc.getElementById('covenLockStatus').textContent, 'Edição habilitada');
+  win.clearTimeout(win.eval('covenLockTimer'));
+}));
+
 test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(async (win) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');

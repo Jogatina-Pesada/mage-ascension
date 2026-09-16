@@ -39,7 +39,9 @@ async function githubRequest(url, token, options = {}) {
   const text = await response.text();
   const data = text ? JSON.parse(text) : {};
   if (!response.ok) {
-    throw new Error(data.message || 'github-api-error');
+    const error = new Error(data.message || 'github-api-error');
+    error.status = response.status;
+    throw error;
   }
 
   return data;

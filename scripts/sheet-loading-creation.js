@@ -297,11 +297,11 @@ async function loadGitSheetList() {
     fillCharacterListSelect(select, lists.lists, 'default');
     access.hidden = false;
     const resetPasswordButton = document.getElementById('resetGitListPasswordBtn');
-    resetPasswordButton.disabled = false;
     const renderSelected = async () => {
       const selected = lists.lists.find(item => item.name === select.value);
       const password = document.getElementById('gitListPassword').value;
       document.getElementById('gitListPasswordLabel').hidden = !selected?.passwordHash;
+      resetPasswordButton.hidden = !selected?.passwordHash;
       list.innerHTML = '';
       if (!selected) {
         setStartModalStatus('Selecione uma lista.');
@@ -328,7 +328,6 @@ async function loadGitSheetList() {
     };
     select.onchange = () => {
       document.getElementById('gitListPassword').value = '';
-      resetPasswordButton.disabled = !select.value;
       renderSelected();
     };
     document.getElementById('gitListPassword').oninput = renderSelected;

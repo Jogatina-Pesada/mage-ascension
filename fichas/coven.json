@@ -6,15 +6,7 @@
   "fame": 0,
   "lab": "",
   "pantry": [
-    {
-      "id": "item-1789422112165-1",
-      "inventoryId": "",
-      "used": false,
-      "name": "teste",
-      "description": "",
-      "image": "",
-      "images": []
-    },
+    null,
     null,
     null,
     null,

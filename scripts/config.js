@@ -139,7 +139,10 @@ const covenFameLevels = [
 ];
 const covenFileName = 'coven.json';
 const covenLockDurationMs = 10 * 60 * 1000;
-const covenEditorSessionId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+const covenEditorSessionStorageKey = 'mage-coven-editor-session-id';
+const storedCovenEditorSessionId = window.sessionStorage.getItem(covenEditorSessionStorageKey);
+const covenEditorSessionId = storedCovenEditorSessionId || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+if (!storedCovenEditorSessionId) window.sessionStorage.setItem(covenEditorSessionStorageKey, covenEditorSessionId);
 const backgroundJustificationHints = {
   allies: 'Ex.: jornalista amigo, policial honesto, médico, advogado, hacker.',
   backup: 'Ex.: sindicato, universidade, corporação, convenção tecnocrática.',

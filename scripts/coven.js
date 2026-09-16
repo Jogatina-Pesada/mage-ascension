@@ -95,12 +95,6 @@ function covenLockBelongsToSession(lock = covenState.lock) {
   return covenLockIsActive(lock) && lock.sessionId === covenEditorSessionId;
 }
 
-function covenLockBelongsToUser(lock, auth = autosaveAuth) {
-  const lockOwner = String(lock?.owner || '').trim().toLowerCase();
-  const syncedUser = String(auth?.user || '').trim().toLowerCase();
-  return covenLockIsActive(lock) && Boolean(lockOwner) && lockOwner === syncedUser;
-}
-
 function covenGithubPath(auth) {
   return joinGitHubPath(auth.sheetsPath, covenFileName);
 }
@@ -144,7 +138,12 @@ function activeCovenLockMessage(lock = covenState.lock) {
 }
 
 function renderCovenLockStatus() {
-  if (covenEditMode) return;
+  if (covenEditMode && covenLockBelongsToSession()) {
+    const owner = String(covenState.lock.owner || 'usuário desconhecido').trim();
+    const expiresAt = new Date(covenState.lock.expiresAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    setCovenStatus(`Edição habilitada para ${owner} até ${expiresAt}.`);
+    return;
+  }
   setCovenStatus(activeCovenLockMessage());
 }
 
@@ -703,9 +702,7 @@ async function beginCovenEditing() {
       const maximumAttempts = 3;
       for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
         const { file, data } = await fetchCovenFromGithub(auth);
-        if (covenLockIsActive(data.lock)
-          && data.lock.sessionId !== covenEditorSessionId
-          && !covenLockBelongsToUser(data.lock, auth)) {
+        if (covenLockIsActive(data.lock) && data.lock.sessionId !== covenEditorSessionId) {
           replaceCovenState(data);
           renderCoven();
           setCovenStatus(activeCovenLockMessage(data.lock), true);
@@ -737,7 +734,6 @@ async function beginCovenEditing() {
         covenEditMode = true;
         scheduleCovenLockExpiry();
         renderCoven();
-        setCovenStatus('Edição habilitada por até 10 minutos.');
         return;
       }
     });

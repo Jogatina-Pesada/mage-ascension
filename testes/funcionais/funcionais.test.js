@@ -342,11 +342,12 @@ test('excluir item da dispensa força o envio imediato do coven ao GitHub', () =
   assert.equal(JSON.parse(win.atob(uploads[0].content)).pantry[0], null);
 }));
 
-test('lock ativo do mesmo usuario sincronizado pode ser readquirido apos refresh', () => withApp(async (win, doc) => {
+test('lock ativo da mesma sessao pode ser readquirido apos refresh', () => withApp(async (win, doc) => {
   resetApp(win);
+  const sessionId = win.eval('covenEditorSessionId');
   const previousLock = {
     owner: 'Lari',
-    sessionId: 'sessao-da-pagina-anterior',
+    sessionId,
     acquiredAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
   };
@@ -369,6 +370,33 @@ test('lock ativo do mesmo usuario sincronizado pode ser readquirido apos refresh
   assert.equal(uploaded.lock.sessionId, win.eval('covenEditorSessionId'));
   assert.includes(doc.getElementById('covenLockStatus').textContent, 'Edição habilitada');
   win.clearTimeout(win.eval('covenLockTimer'));
+}));
+
+test('lock ativo de outra sessao do mesmo usuario nao pode ser sobrescrito', () => withApp(async (win, doc) => {
+  resetApp(win);
+  const previousLock = {
+    owner: 'Lari',
+    sessionId: 'outra-aba',
+    acquiredAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
+  };
+  win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
+  let writes = 0;
+  win.fetch = async (_url, options = {}) => {
+    if (!options.method) {
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: 'sha-coven', content: win.btoa(JSON.stringify({ pantry: [], lock: previousLock })) })
+      };
+    }
+    writes += 1;
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+  await win.beginCovenEditing();
+  assert.equal(win.eval('covenEditMode'), false);
+  assert.equal(writes, 0);
+  assert.includes(doc.getElementById('covenLockStatus').textContent, 'Coven em edição por Lari até');
 }));
 
 test('edicao do coven sem autosave solicita credenciais e inicia lock dedicado', () => withApp(async (win, doc) => {
@@ -411,6 +439,16 @@ test('secao do coven exibe proprietario e horario de lock ativo', () => withApp(
   const status = doc.getElementById('covenLockStatus').textContent;
   assert.includes(status, 'Coven em edição por Morgana até');
   assert.equal(doc.getElementById('covenEditBtn').getAttribute('aria-label'), 'Editar coven');
+}));
+
+test('secao do coven exibe proprietario e horario durante a propria edicao', () => withApp((win, doc) => {
+  resetApp(win);
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+  const sessionId = win.eval('covenEditorSessionId');
+  win.eval(`covenState.lock = ${JSON.stringify({ owner: 'Morgana', sessionId: '__SESSION__', expiresAt })}`.replace('__SESSION__', sessionId));
+  win.eval('covenEditMode = true');
+  win.renderCoven();
+  assert.includes(doc.getElementById('covenLockStatus').textContent, 'Edição habilitada para Morgana até');
 }));
 
 test('aquisicao do lock relê e tenta novamente após conflito de escrita', () => withApp(async (win, doc) => {

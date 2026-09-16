@@ -479,6 +479,38 @@ test('aquisicao do lock relê e tenta novamente após conflito de escrita', () =
   win.clearTimeout(win.eval('covenLockTimer'));
 }));
 
+test('conclusao do coven relê o lock sem usar resposta em cache', () => withApp(async (win, doc) => {
+  resetApp(win);
+  win.eval(`autosaveAuth = ${JSON.stringify({ user: 'lari', token: 'pat', repo: 'lari/repo', branch: 'main', sheetsPath: 'fichas' })}`);
+  let remoteCoven = { pantry: [], lock: null };
+  let remoteSha = 'sha-coven-1';
+  let cachedCoven = null;
+  let writes = 0;
+  win.fetch = async (_url, options = {}) => {
+    if (!options.method) {
+      if (options.cache === 'no-store' || !cachedCoven) cachedCoven = JSON.parse(JSON.stringify(remoteCoven));
+      return {
+        status: 200,
+        ok: true,
+        text: async () => JSON.stringify({ sha: remoteSha, content: win.btoa(JSON.stringify(cachedCoven)) })
+      };
+    }
+    const body = JSON.parse(options.body);
+    remoteCoven = JSON.parse(win.atob(body.content));
+    writes += 1;
+    remoteSha = `sha-coven-${writes + 1}`;
+    return { status: 200, ok: true, text: async () => '{}' };
+  };
+
+  await win.beginCovenEditing();
+  await win.finishCovenEditing();
+
+  assert.equal(writes, 2);
+  assert.equal(remoteCoven.lock, null);
+  assert.equal(win.eval('covenEditMode'), false);
+  assert.equal(doc.getElementById('covenLockStatus').textContent, 'Coven salvo.');
+}));
+
 test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(async (win) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');

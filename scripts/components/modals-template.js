@@ -204,6 +204,28 @@ function githubModalTemplate() {
   `;
 }
 
+function covenGithubModalTemplate() {
+  return `
+<div class="modal-backdrop no-print" id="covenGithubModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="covenGithubModalTitle">
+    <header class="modal-header">
+      <h2 id="covenGithubModalTitle">Sincronizar coven</h2>
+      <button id="closeCovenGithubModal" class="icon-btn modal-close" type="button" aria-label="Fechar" title="Fechar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </header>
+    <p class="modal-status">Estas credenciais serão usadas somente nesta sessão para sincronizar o coven. O PAT não será armazenado.</p>
+    <form class="github-form" id="covenGithubForm">
+      <label>Usuário GitHub<input id="covenGithubUser" autocomplete="username" required /></label>
+      <label>PAT<input id="covenGithubPat" type="password" autocomplete="off" required /></label>
+      <button id="covenGithubSubmitBtn" type="submit">Iniciar edição</button>
+    </form>
+    <p class="modal-status" id="covenGithubModalStatus" role="status" aria-live="polite"></p>
+  </div>
+</div>
+  `;
+}
+
 function lineageLoadModalTemplate() {
   return `
 <div class="modal-backdrop no-print" id="lineageLoadModal" hidden>

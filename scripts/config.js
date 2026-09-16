@@ -213,6 +213,7 @@ let autosaveTickTimer = null;
 let autosaveNextAt = 0;
 let autosaveLastSavedJson = '';
 let autosaveAuth = null;
+let covenSyncAuth = null;
 let aiPreviewState = null;
 let pendingLineageDeathId = null;
 let pendingLineageReviveId = null;

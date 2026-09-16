@@ -47,6 +47,7 @@
       closeSheetModal();
       closeBackgroundsModal();
       closeGithubModal();
+      closeCovenGithubModal();
       closeAiModal();
       closeLineageLoadModal();
       closeLineageDeathModal();

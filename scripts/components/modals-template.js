@@ -159,7 +159,7 @@ function startModalTemplate() {
       <div id="gitListAccess" class="list-access" hidden>
         <label>Lista<select id="gitCharacterList"></select></label>
         <label id="gitListPasswordLabel" hidden>Senha da lista<input id="gitListPassword" type="password" autocomplete="off" /></label>
-        <button id="resetGitListPasswordBtn" type="button">Redefinir senha da lista</button>
+        <button id="resetGitListPasswordBtn" type="button" hidden>Redefinir senha da lista</button>
       </div>
       <div class="sheet-list" id="gitSheetList"></div>
       <p class="modal-status" id="startModalStatus"></p>

@@ -27,12 +27,14 @@
   },
   {
     "id": "GRI70745",
-    "name": "Grimoire du Pape Honorius",
-    "description": "",
+    "name": "Liber Iuratus Honorii",
+    "description": "O Livro Juramentado de Honório é um grimório medieval escrito entre os séculos XIII e XIV para proteger o conhecimento mágico da perseguição da Igreja Católica. Ensina rituais complexos, orações e conjurações para comandar anjos e demônios, permitindo alcançar a visão divina.\n\nUm ritual de destaque é o Sigillum Dei Aemeth (Selo de Deus), o amuleto sagrado  que concede poder sobre todas as criaturas e revela os segredos dos céus. É um círculo místico de geometria sagrada e de nomes divinos que, segundo a tradição ocultista, servia como um poderoso amuleto de proteção e elevação espiritual, elaborado em materiais puros como ouro ou pergaminho virgem.",
     "imageFolder": "imagens/itens/grimoire_du_pape_honorius-GRI70745",
     "images": [
       "imagens/itens/grimoire_du_pape_honorius-GRI70745/grimoire_du_pape_honorius_allegedly_1760-cdaea1a6.jpg",
-      "imagens/itens/grimoire_du_pape_honorius-GRI70745/grimoire_du_pape_honorius_allegedly_1760_copy-05f3d92a.jpg"
+      "imagens/itens/grimoire_du_pape_honorius-GRI70745/grimoire_du_pape_honorius_allegedly_1760_copy-05f3d92a.jpg",
+      "imagens/itens/grimoire_du_pape_honorius-GRI70745/1000008166-98f3df27.jpg",
+      "imagens/itens/grimoire_du_pape_honorius-GRI70745/1000008167-9ae8458c.jpg"
     ],
     "effects": []
   }

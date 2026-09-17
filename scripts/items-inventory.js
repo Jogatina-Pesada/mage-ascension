@@ -6,7 +6,8 @@
   const SHARED_GITHUB_SETTINGS_KEY = 'mage-ascension-github-settings';
   const GITHUB_REPO = 'jogatina-pesada/mage-ascension';
   const GITHUB_BRANCH = 'main';
-  const GITHUB_FOLDER = 'fichas';
+  const GITHUB_FOLDER = '';
+  const INVENTORY_PATH = '/itens.json';
   const PASSWORD_HASH = 'b1529e22616716e47e4bb526bd1673c2e3b987ad7475d608ee615549e2cd5cd4';
   const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
   const sphereLabels = {
@@ -112,7 +113,7 @@
 
   async function loadItems() {
     try {
-      const response = await fetch(new URL('itens.json', document.baseURI), { cache: 'no-store' });
+      const response = await fetch(new URL(INVENTORY_PATH, document.baseURI), { cache: 'no-store' });
       if (!response.ok) throw new Error(`Falha ao carregar itens.json (${response.status}).`);
       const catalog = await response.json();
       if (!Array.isArray(catalog)) throw new Error('O conteúdo de itens.json é inválido.');

@@ -4,7 +4,9 @@
   const STORAGE_KEY = 'mage-ascension-items-v1';
   const GITHUB_SETTINGS_KEY = 'mage-ascension-items-github-v1';
   const SHARED_GITHUB_SETTINGS_KEY = 'mage-ascension-github-settings';
-  const DEFAULT_GITHUB_REPO = 'uneluneravie/mage-ascension';
+  const GITHUB_REPO = 'jogatina-pesada/mage-ascension';
+  const GITHUB_BRANCH = 'main';
+  const GITHUB_FOLDER = 'fichas';
   const PASSWORD_HASH = 'b1529e22616716e47e4bb526bd1673c2e3b987ad7475d608ee615549e2cd5cd4';
   const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
   const sphereLabels = {
@@ -132,12 +134,7 @@
     try {
       const inventory = JSON.parse(localStorage.getItem(GITHUB_SETTINGS_KEY) || '{}');
       const character = JSON.parse(localStorage.getItem(SHARED_GITHUB_SETTINGS_KEY) || '{}');
-      return {
-        user: character.user || inventory.user || '',
-        repo: character.repo || inventory.repo || DEFAULT_GITHUB_REPO,
-        branch: character.branch || inventory.branch || 'main',
-        folder: character.sheetsPath || inventory.folder || 'fichas'
-      };
+      return { user: character.user || inventory.user || '' };
     } catch (_) {
       return {};
     }
@@ -341,10 +338,6 @@
     return true;
   }
 
-  function updateGitHubFilePath() {
-    elements.githubFilePath.textContent = joinGitHubPath(elements.githubFolder.value, 'itens.json');
-  }
-
   function requestGitHubSync(nextItems, message, onSuccess) {
     pendingSync = { nextItems, message, onSuccess };
     if (githubSessionAuth) {
@@ -357,13 +350,9 @@
   function openGitHubDialog(status = '') {
     const settings = loadGitHubSettings();
     elements.githubUser.value = settings.user || '';
-    elements.githubRepo.value = settings.repo || DEFAULT_GITHUB_REPO;
-    elements.githubBranch.value = settings.branch || 'main';
-    elements.githubFolder.value = settings.folder || 'fichas';
     elements.githubPat.value = '';
     elements.githubStatus.textContent = status;
     elements.githubStatus.className = status ? 'form-message is-error' : 'form-message';
-    updateGitHubFilePath();
     if (!elements.githubDialog.open) elements.githubDialog.showModal();
     (elements.githubUser.value ? elements.githubPat : elements.githubUser).focus();
   }
@@ -377,22 +366,14 @@
   function readGitHubAuth() {
     const user = elements.githubUser.value.trim();
     const token = elements.githubPat.value.trim();
-    const repo = elements.githubRepo.value.trim();
-    const branch = elements.githubBranch.value.trim();
-    const folder = cleanGitHubPath(elements.githubFolder.value);
-    return { user, token, repo, branch, folder };
+    return { user, token, repo: GITHUB_REPO, branch: GITHUB_BRANCH, folder: GITHUB_FOLDER };
   }
 
   async function uploadPendingItems(event) {
     event.preventDefault();
     if (!pendingSync || !elements.githubForm.reportValidity()) return;
     const auth = readGitHubAuth();
-    const { user, token, repo, branch, folder } = auth;
-    if (!/^[^/\s]+\/[^/\s]+$/.test(repo)) {
-      elements.githubStatus.textContent = 'Informe o repositório no formato usuario/repositorio.';
-      elements.githubStatus.className = 'form-message is-error';
-      return;
-    }
+    const { user, token } = auth;
     elements.githubSubmitBtn.disabled = true;
     try {
       await verifyGithubUser(user, token);
@@ -541,7 +522,6 @@
     elements.githubForm.addEventListener('submit', uploadPendingItems);
     elements.closeGithubDialogBtn.addEventListener('click', closeGitHubDialog);
     elements.cancelGithubBtn.addEventListener('click', closeGitHubDialog);
-    elements.githubFolder.addEventListener('input', updateGitHubFilePath);
     elements.itemImage.addEventListener('change', async () => {
       const files = Array.from(elements.itemImage.files || []);
       if (!files.length) return;
@@ -568,8 +548,8 @@
       'newItemBtn', 'inventorySummary', 'itemsGrid', 'emptyInventory', 'itemDialog', 'itemDialogTitle',
       'itemForm', 'itemId', 'itemIdDisplay', 'itemName', 'itemDescription', 'itemImage', 'imagePreviewWrap', 'imagePreviews',
       'effectsList', 'effectRowTemplate', 'addEffectBtn', 'itemFormError', 'closeItemDialogBtn',
-      'cancelItemBtn', 'githubDialog', 'githubForm', 'githubUser', 'githubPat', 'githubRepo', 'githubBranch', 'githubFolder',
-      'githubFilePath', 'githubStatus', 'githubSubmitBtn', 'closeGithubDialogBtn', 'cancelGithubBtn'
+      'cancelItemBtn', 'githubDialog', 'githubForm', 'githubUser', 'githubPat', 'githubStatus', 'githubSubmitBtn',
+      'closeGithubDialogBtn', 'cancelGithubBtn'
     ].forEach(id => { elements[id] = document.getElementById(id); });
     bindEvents();
   }

@@ -90,7 +90,7 @@
     return id;
   }
 
-  function loadItems() {
+  function readStoredItems() {
     let storedText = '[]';
     try {
       storedText = localStorage.getItem(STORAGE_KEY) || '[]';
@@ -106,6 +106,22 @@
       // A migracao continua valida em memoria mesmo se o armazenamento estiver cheio.
     }
     return items;
+  }
+
+  async function loadItems() {
+    try {
+      const response = await fetch(new URL('itens.json', document.baseURI), { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Falha ao carregar itens.json (${response.status}).`);
+      const catalog = await response.json();
+      if (!Array.isArray(catalog)) throw new Error('O conteúdo de itens.json é inválido.');
+      items = catalog.map(sanitizeItem).filter(item => item.name);
+      saveItems();
+      return items;
+    } catch (error) {
+      const stored = readStoredItems();
+      if (stored.length) return stored;
+      throw error;
+    }
   }
 
   function saveItems() {
@@ -497,11 +513,14 @@
         elements.passwordInput.value = '';
         elements.accessPanel.hidden = true;
         elements.inventoryApp.hidden = false;
-        loadItems();
+        elements.inventorySummary.textContent = 'Carregando itens...';
+        await loadItems();
         renderItems();
         elements.itemSearch.focus();
-      } catch (_) {
-        elements.accessError.textContent = 'Este navegador não oferece o recurso criptográfico necessário.';
+      } catch (error) {
+        elements.inventorySummary.textContent = error.message || 'Não foi possível carregar o inventário.';
+        elements.emptyInventory.hidden = false;
+        elements.emptyInventory.textContent = 'Confira a conexão e tente novamente.';
       }
     });
     elements.lockBtn.addEventListener('click', () => {
@@ -560,6 +579,7 @@
     createItemId,
     createItemImageFolder,
     itemForGitHub,
+    loadItems,
     normalizeSearch,
     sanitizeItem,
     validateEffects

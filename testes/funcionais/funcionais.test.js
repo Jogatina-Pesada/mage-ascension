@@ -39,6 +39,12 @@ async function withItemsPage(fn) {
     iframe.contentWindow.localStorage.removeItem('mage-ascension-items-v1');
     iframe.contentWindow.localStorage.removeItem('mage-ascension-items-github-v1');
     iframe.contentWindow.localStorage.removeItem('mage-ascension-github-settings');
+    iframe.contentWindow.fetch = async url => {
+      if (String(url).includes('itens.json')) {
+        return { ok: true, json: async () => [] };
+      }
+      return { ok: false, status: 404, json: async () => ({}) };
+    };
     return await fn(iframe.contentWindow, iframe.contentDocument);
   } finally {
     iframe.contentWindow.localStorage.removeItem('mage-ascension-items-v1');
@@ -47,6 +53,31 @@ async function withItemsPage(fn) {
     iframe.remove();
   }
 }
+
+test('inventario carrega os itens publicados em itens.json ao desbloquear', () => withItemsPage(async (win, doc) => {
+  win.fetch = async url => {
+    assert.includes(String(url), 'itens.json');
+    return {
+      ok: true,
+      json: async () => [{
+        id: 'GRI12345',
+        name: 'Grimório publicado',
+        description: 'Carregado do catálogo.',
+        images: [],
+        effects: []
+      }]
+    };
+  };
+
+  input(doc.getElementById('passwordInput'), 'itens123!');
+  doc.getElementById('accessForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
+  await tick();
+  await tick();
+
+  assert.equal(doc.querySelectorAll('.item-card').length, 1);
+  assert.includes(doc.querySelector('.item-card').textContent, 'Grimório publicado');
+  assert.equal(doc.getElementById('inventorySummary').textContent, '1 item encontrado');
+}));
 
 async function completeItemsGitHubUpload(win, doc) {
   const requests = [];

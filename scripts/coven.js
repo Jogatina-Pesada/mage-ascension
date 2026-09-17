@@ -271,25 +271,16 @@ function inventoryRootBaseUrl() {
 async function fetchInventoryCatalog() {
   const syncAuth = covenAuth();
   if (syncAuth) {
-    const apiPaths = [joinGitHubPath(syncAuth.sheetsPath, 'itens.json'), 'itens.json'];
-    for (const path of [...new Set(apiPaths)]) {
-      const file = await getGitHubFile(syncAuth.repo, syncAuth.branch, path, syncAuth.token);
-      if (file?.content) {
-        const inventoryPath = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
-        return {
-          items: JSON.parse(base64ToText(file.content)),
-          auth: { ...syncAuth, inventoryPath },
-          baseUrl: ''
-        };
-      }
+    const file = await getGitHubFile(syncAuth.repo, syncAuth.branch, 'itens.json', syncAuth.token);
+    if (file?.content) {
+      return {
+        items: JSON.parse(base64ToText(file.content)),
+        auth: { ...syncAuth, inventoryPath: '' },
+        baseUrl: ''
+      };
     }
   }
-  const bases = [
-    githubLoadedSheetSource?.sheetsBaseUrl,
-    inventoryRootBaseUrl(),
-    `${githubRawBase}/fichas`,
-    githubRawBase
-  ].filter(Boolean);
+  const bases = [inventoryRootBaseUrl(), githubRawBase].filter(Boolean);
   for (const baseUrl of [...new Set(bases)]) {
     const response = await fetch(githubRawFileUrl(baseUrl, 'itens.json'), { cache: 'no-store' });
     if (response.ok) return { items: await response.json(), auth: null, baseUrl };

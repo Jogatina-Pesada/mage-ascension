@@ -56,7 +56,7 @@ async function withItemsPage(fn) {
 
 test('inventario carrega os itens publicados em itens.json ao desbloquear', () => withItemsPage(async (win, doc) => {
   win.fetch = async url => {
-    assert.includes(String(url), 'itens.json');
+    assert.equal(new URL(String(url)).pathname, '/itens.json');
     return {
       ok: true,
       json: async () => [{
@@ -139,6 +139,7 @@ test('inventario cadastra item com efeito e busca por nome ou descricao sem acen
   assert.equal(doc.getElementById('githubRepo'), null);
   assert.equal(doc.getElementById('githubBranch'), null);
   assert.equal(doc.getElementById('githubFolder'), null);
+  assert.includes(doc.querySelector('.github-file-hint').textContent, '/itens.json');
   assert.equal(doc.querySelectorAll('.item-card').length, 0);
   const githubRequests = await completeItemsGitHubUpload(win, doc);
   assert.equal(doc.querySelectorAll('.item-card').length, 1);
@@ -146,7 +147,7 @@ test('inventario cadastra item com efeito e busca por nome ou descricao sem acen
   assert(/^ID POC\d{5}$/.test(doc.querySelector('.item-id').textContent));
   assert(githubRequests.some(request => request.options.method === 'PUT'));
   const upload = githubRequests.find(request => request.options.method === 'PUT');
-  assert.includes(upload.url, '/repos/jogatina-pesada/mage-ascension/contents/fichas/itens.json');
+  assert.includes(upload.url, '/repos/jogatina-pesada/mage-ascension/contents/itens.json');
   assert.equal(JSON.parse(upload.options.body).branch, 'main');
   const binary = win.atob(JSON.parse(upload.options.body).content);
   const uploadedText = new win.TextDecoder().decode(win.Uint8Array.from(binary, char => char.charCodeAt(0)));

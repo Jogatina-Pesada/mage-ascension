@@ -91,8 +91,6 @@ async function completeItemsGitHubUpload(win, doc) {
   };
   input(doc.getElementById('githubUser'), 'lari');
   input(doc.getElementById('githubPat'), 'github_pat_teste');
-  input(doc.getElementById('githubRepo'), 'lari/mage-ascension');
-  input(doc.getElementById('githubBranch'), 'main');
   doc.getElementById('githubForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
   await tick();
   await tick();
@@ -138,9 +136,9 @@ test('inventario cadastra item com efeito e busca por nome ou descricao sem acen
   doc.getElementById('itemForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
   assert.equal(doc.getElementById('githubDialog').open, true);
   assert.equal(doc.getElementById('githubUser').value, 'personagem-user');
-  assert.equal(doc.getElementById('githubRepo').value, 'personagem/repo');
-  assert.equal(doc.getElementById('githubBranch').value, 'cronica');
-  assert.equal(doc.getElementById('githubFolder').value, 'fichas');
+  assert.equal(doc.getElementById('githubRepo'), null);
+  assert.equal(doc.getElementById('githubBranch'), null);
+  assert.equal(doc.getElementById('githubFolder'), null);
   assert.equal(doc.querySelectorAll('.item-card').length, 0);
   const githubRequests = await completeItemsGitHubUpload(win, doc);
   assert.equal(doc.querySelectorAll('.item-card').length, 1);
@@ -148,6 +146,8 @@ test('inventario cadastra item com efeito e busca por nome ou descricao sem acen
   assert(/^ID POC\d{5}$/.test(doc.querySelector('.item-id').textContent));
   assert(githubRequests.some(request => request.options.method === 'PUT'));
   const upload = githubRequests.find(request => request.options.method === 'PUT');
+  assert.includes(upload.url, '/repos/jogatina-pesada/mage-ascension/contents/fichas/itens.json');
+  assert.equal(JSON.parse(upload.options.body).branch, 'main');
   const binary = win.atob(JSON.parse(upload.options.body).content);
   const uploadedText = new win.TextDecoder().decode(win.Uint8Array.from(binary, char => char.charCodeAt(0)));
   const uploadedItems = JSON.parse(uploadedText);

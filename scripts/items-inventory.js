@@ -132,11 +132,12 @@
     try {
       const inventory = JSON.parse(localStorage.getItem(GITHUB_SETTINGS_KEY) || '{}');
       const character = JSON.parse(localStorage.getItem(SHARED_GITHUB_SETTINGS_KEY) || '{}');
+      const inventoryFolder = inventory.folder === 'fichas' ? '' : inventory.folder;
       return {
         user: character.user || inventory.user || '',
         repo: character.repo || inventory.repo || DEFAULT_GITHUB_REPO,
         branch: character.branch || inventory.branch || 'main',
-        folder: character.sheetsPath || inventory.folder || 'fichas'
+        folder: inventoryFolder || ''
       };
     } catch (_) {
       return {};
@@ -359,7 +360,7 @@
     elements.githubUser.value = settings.user || '';
     elements.githubRepo.value = settings.repo || DEFAULT_GITHUB_REPO;
     elements.githubBranch.value = settings.branch || 'main';
-    elements.githubFolder.value = settings.folder || 'fichas';
+    elements.githubFolder.value = settings.folder || '';
     elements.githubPat.value = '';
     elements.githubStatus.textContent = status;
     elements.githubStatus.className = status ? 'form-message is-error' : 'form-message';

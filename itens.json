@@ -36,6 +36,13 @@
       "imagens/itens/grimoire_du_pape_honorius-GRI70745/1000008166-98f3df27.jpg",
       "imagens/itens/grimoire_du_pape_honorius-GRI70745/1000008167-9ae8458c.jpg"
     ],
-    "effects": []
+    "effects": [
+      {
+        "sphere": "spirit",
+        "points": 1,
+        "minLevel": 3,
+        "maxLevel": 4
+      }
+    ]
   }
 ]

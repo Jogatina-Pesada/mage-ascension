@@ -367,7 +367,7 @@ function covenItemModalTemplate() {
 <div class="modal-backdrop no-print" id="covenItemModal" hidden>
   <div class="modal coven-item-modal" role="dialog" aria-modal="true" aria-labelledby="covenItemModalTitle">
     <header class="modal-header">
-      <h2 id="covenItemModalTitle">Item da dispensa</h2>
+      <h2 id="covenItemModalTitle">Item da despensa</h2>
       <button id="closeCovenItemModal" class="icon-btn modal-close" type="button" aria-label="Fechar" title="Fechar">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M18 6 6 18"></path>
@@ -415,7 +415,7 @@ function covenItemDeleteModalTemplate() {
 <div class="modal-backdrop no-print" id="covenItemDeleteModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="covenItemDeleteModalTitle">
     <header class="modal-header">
-      <h2 id="covenItemDeleteModalTitle">Excluir item da dispensa</h2>
+      <h2 id="covenItemDeleteModalTitle">Excluir item da despensa</h2>
       <button id="closeCovenItemDeleteModal" class="icon-btn modal-close" type="button" aria-label="Fechar" title="Fechar">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
       </button>

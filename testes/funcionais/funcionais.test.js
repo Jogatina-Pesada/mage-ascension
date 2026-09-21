@@ -233,7 +233,7 @@ test('inventario envia varias imagens do item para uma pasta exclusiva', () => w
   assert(uploadedItem.images.every(path => path.startsWith(`${uploadedItem.imageFolder}/`)));
 }));
 
-test('dispensa importa item pelo ID sem copiar efeitos de esfera e navega pelas imagens', () => withApp(async (win, doc) => {
+test('despensa importa item pelo ID sem copiar efeitos de esfera e navega pelas imagens', () => withApp(async (win, doc) => {
   resetApp(win, { identity: { name: 'Lari' } });
   win.eval('covenEditMode = true');
   win.renderCoven();
@@ -321,7 +321,7 @@ test('uso de item do coven aplica efeitos elegiveis e ignora minimo nao atendido
   assert.equal(win.eval('covenState.pantry[0].used'), true);
 }));
 
-test('item da dispensa exige confirmacao antes da exclusao', () => withApp((win, doc) => {
+test('item da despensa exige confirmacao antes da exclusao', () => withApp((win, doc) => {
   resetApp(win);
   win.eval(`covenState.pantry[0] = ${JSON.stringify({
     id: 'interno-2', inventoryId: '', used: false, name: 'Vela', description: '', image: '', images: []
@@ -339,7 +339,7 @@ test('item da dispensa exige confirmacao antes da exclusao', () => withApp((win,
   assert.equal(doc.getElementById('covenItemModal').hidden, true);
 }));
 
-test('excluir item da dispensa força o envio imediato do coven ao GitHub', () => withApp(async (win, doc) => {
+test('excluir item da despensa força o envio imediato do coven ao GitHub', () => withApp(async (win, doc) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');
   const lock = {
@@ -543,7 +543,7 @@ test('conclusao do coven relê o lock sem usar resposta em cache', () => withApp
   assert.equal(doc.getElementById('covenLockStatus').textContent, 'Coven salvo.');
 }));
 
-test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(async (win) => {
+test('autosave da despensa preserva lock e mantem edicao ativa', () => withApp(async (win) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');
   const lock = {
@@ -571,7 +571,7 @@ test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(a
     uploadedBody = JSON.parse(options.body);
     return { status: 200, ok: true, text: async () => '{}' };
   };
-  await win.queueCovenProgressSave('Teste da Dispensa');
+  await win.queueCovenProgressSave('Teste da Despensa');
   const uploaded = JSON.parse(win.atob(uploadedBody.content));
   assert.equal(uploaded.lock.sessionId, sessionId);
   assert.equal(uploaded.lock.expiresAt, lock.expiresAt);
@@ -579,7 +579,7 @@ test('autosave da dispensa preserva lock e mantem edicao ativa', () => withApp(a
   assert.equal(win.eval('covenEditMode'), true);
 }));
 
-test('autosave geral e salvamento da dispensa compartilham a mesma fila do coven', () => withApp(async (win) => {
+test('autosave geral e salvamento da despensa compartilham a mesma fila do coven', () => withApp(async (win) => {
   resetApp(win);
   const sessionId = win.eval('covenEditorSessionId');
   const lock = {
@@ -610,7 +610,7 @@ test('autosave geral e salvamento da dispensa compartilham a mesma fila do coven
     uploads += 1;
     return { status: 200, ok: true, text: async () => '{}' };
   };
-  const pantrySave = win.queueCovenProgressSave('Exclusão de item da dispensa');
+  const pantrySave = win.queueCovenProgressSave('Exclusão de item da despensa');
   const generalAutosave = win.uploadCovenToGithub(auth, 'Autosave coven');
   await Promise.all([pantrySave, generalAutosave]);
   assert.equal(uploads, 2);
@@ -627,7 +627,7 @@ test('normalizacao do coven preserva imagem unica legada e ID de inventario vali
   assert.equal(normalized.pantry[0].image, 'imagens/coven/legado.png');
 }));
 
-test('modal da dispensa mostra item usado mesmo sem lock de edicao', () => withApp((win, doc) => {
+test('modal da despensa mostra item usado mesmo sem lock de edicao', () => withApp((win, doc) => {
   resetApp(win);
   win.eval(`covenState.pantry[0] = ${JSON.stringify({
     id: 'interno-usado', inventoryId: 'USO12345', used: true, name: 'Elixir usado', description: '', image: '', images: []

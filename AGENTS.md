@@ -138,10 +138,10 @@ Preserve estes contratos durante o refactor:
 - Nomes de arquivos gerados por `snake_case`.
 - Fluxos de salvar local, upload GitHub, autosave, preview de IA, morte/reviver linhagem e bonus de linhagem.
 - Fluxo read-only do coven, aquisicao/verificacao/liberacao do lock e sincronizacao do arquivo global.
-- Inventario da dispensa do coven com 16 slots, metadados no JSON global e imagens separadas em `fichas/imagens/coven/`.
+- Inventario da despensa do coven com 16 slots, metadados no JSON global e imagens separadas em `fichas/imagens/coven/`.
 - Fama do coven persistida como nivel de 0 a 6, com classificacao e descricao apresentadas na interface.
 - `obolOfTheDead` persiste o valor numerico do dinheiro compartilhado do coven, exibido como `Óbolo dos Mortos`.
-- Layout do coven em duas linhas: Recursos e Dispensa em colunas na primeira, Laboratorio ocupando a segunda; no mobile, as colunas devem ser empilhadas.
+- Layout do coven em duas linhas: Recursos e Despensa em colunas na primeira, Laboratorio ocupando a segunda; no mobile, as colunas devem ser empilhadas.
 - A seção Anotacoes ocupa toda a largura e aparece imediatamente abaixo do coven. Paradigma, Foco e Instrumentos nao possui mais painel proprio na ficha.
 - O nome do coven e persistido em `name` no arquivo global e aparece no topo da subseção Recursos.
 - Quintessencia e Paradoxo do coven sao transferidos da ficha: 2 Quintessencias do personagem geram 1 no coven; 1 Paradoxo do personagem gera 2 no coven. Ambos os recursos do personagem tem limite 10; o coven nao tem limite.

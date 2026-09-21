@@ -211,7 +211,7 @@ function openCovenItemModal(slot) {
   activeCovenItemImageDraft = null;
   activeCovenItemImageIndex = 0;
   const editable = covenEditMode;
-  document.getElementById('covenItemModalTitle').textContent = item ? item.name || 'Item da dispensa' : 'Adicionar item à dispensa';
+  document.getElementById('covenItemModalTitle').textContent = item ? item.name || 'Item da despensa' : 'Adicionar item à despensa';
   document.getElementById('covenItemName').value = item?.name || '';
   document.getElementById('covenItemDescription').value = item?.description || '';
   document.getElementById('covenInventoryItemId').value = '';
@@ -378,7 +378,7 @@ function openCovenItemDeleteModal() {
   if (!covenEditMode || activeCovenPantrySlot === null) return;
   const item = covenState.pantry[activeCovenPantrySlot];
   if (!item) return;
-  document.getElementById('covenItemDeleteMessage').textContent = `Excluir “${item.name}” da dispensa? A exclusão será salva automaticamente sem liberar o lock.`;
+  document.getElementById('covenItemDeleteMessage').textContent = `Excluir “${item.name}” da despensa? A exclusão será salva automaticamente sem liberar o lock.`;
   document.getElementById('covenItemDeleteModal').hidden = false;
 }
 
@@ -394,7 +394,7 @@ function confirmCovenItemDelete() {
   closeCovenItemDeleteModal();
   closeCovenItemModal();
   renderCovenPantry();
-  queueCovenProgressSave('Exclusão de item da dispensa');
+  queueCovenProgressSave('Exclusão de item da despensa');
 }
 
 function inventoryEffectPath(effect) {
@@ -570,7 +570,7 @@ function enqueueCovenSave(save) {
   return covenProgressSaveQueue;
 }
 
-function queueCovenProgressSave(reason = 'Atualização da dispensa') {
+function queueCovenProgressSave(reason = 'Atualização da despensa') {
   return enqueueCovenSave(async () => {
     const auth = covenAuth();
     if (!covenEditMode || !auth) return false;
@@ -595,11 +595,11 @@ function queueCovenProgressSave(reason = 'Atualização da dispensa') {
       );
       replaceCovenState(next);
       renderCoven();
-      setCovenStatus('Dispensa salva automaticamente. O lock de edição continua ativo.');
+      setCovenStatus('Despensa salva automaticamente. O lock de edição continua ativo.');
       return true;
     } catch (error) {
-      console.error('[coven] Falha no salvamento automático da dispensa.', error);
-      setCovenStatus('Não foi possível salvar automaticamente a Dispensa. Tente concluir a edição novamente.', true);
+      console.error('[coven] Falha no salvamento automático da despensa.', error);
+      setCovenStatus('Não foi possível salvar automaticamente a Despensa. Tente concluir a edição novamente.', true);
       return false;
     }
   });

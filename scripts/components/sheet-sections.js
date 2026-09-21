@@ -299,8 +299,8 @@ function covenantTemplate() {
       </label>
     </section>
     <section class="coven-subsection coven-pantry" aria-labelledby="covenPantryTitle">
-      <h3 id="covenPantryTitle">Dispensa</h3>
-      <div id="covenPantryGrid" class="coven-pantry-grid" aria-label="Inventário da dispensa com 16 espaços"></div>
+      <h3 id="covenPantryTitle">Despensa</h3>
+      <div id="covenPantryGrid" class="coven-pantry-grid" aria-label="Inventário da despensa com 16 espaços"></div>
     </section>
   </div>
   <!--

@@ -7,6 +7,9 @@ function wikiPanelTemplate({ fullPage = false } = {}) {
         <p>Consulte os campos e as regras de cada seção.</p>
       </div>
       <div class="wiki-header-actions">
+        <button id="printWikiTopicBtn" class="icon-btn wiki-print-topic" type="button" aria-label="Imprimir esta seção" title="Imprimir esta seção em PDF">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v7H6z"></path></svg>
+        </button>
         ${fullPage ? '' : `
         <a class="icon-btn wiki-open-page" href="wiki.html" target="_blank" rel="noopener" aria-label="Abrir wiki em página inteira" title="Abrir em página inteira">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7"></path><path d="m10 14 11-11"></path><path d="M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"></path></svg>

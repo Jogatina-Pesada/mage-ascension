@@ -689,6 +689,7 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.includes(fullPageTemplate, 'id="wikiPage"');
   assert.includes(fullPageTemplate, 'id="wikiTopicMenu"');
   assert.includes(fullPageTemplate, 'id="wikiTopicContent"');
+  assert.includes(fullPageTemplate, 'id="printWikiTopicBtn"');
 
   click(doc.getElementById('openWikiBtn'));
   const modal = doc.getElementById('wikiModal');
@@ -702,6 +703,19 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
   assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('[data-wiki-topic="notes"]'), null);
+
+  const originalPrint = win.print;
+  let printedTitle = '';
+  win.print = () => {
+    printedTitle = doc.title;
+    assert.equal(doc.body.classList.contains('wiki-printing'), true);
+  };
+  click(doc.getElementById('printWikiTopicBtn'));
+  assert.equal(printedTitle, 'Identidade - Wiki da ficha');
+  win.dispatchEvent(new win.Event('afterprint'));
+  assert.equal(doc.body.classList.contains('wiki-printing'), false);
+  assert.equal(doc.title, 'Ficha Editável - Mage: The Ascension');
+  win.print = originalPrint;
 
   input(search, 'teletransporte');
   const visibleTopics = Array.from(doc.querySelectorAll('[data-wiki-topic]')).map(button => button.textContent);

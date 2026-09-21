@@ -1271,6 +1271,20 @@ function clearWikiSearch() {
   input.focus();
 }
 
+function printWikiTopic() {
+  const topic = wikiTopics.find(item => item.id === activeWikiTopicId);
+  if (!topic) return;
+  const previousTitle = document.title;
+  const finishPrinting = () => {
+    document.body.classList.remove('wiki-printing');
+    document.title = previousTitle;
+  };
+  document.body.classList.add('wiki-printing');
+  document.title = `${topic.title} - Wiki da ficha`;
+  window.addEventListener('afterprint', finishPrinting, { once: true });
+  window.print();
+}
+
 function wikiTopicForLabel(label) {
   if (label.dataset.wikiTopicLink) return label.dataset.wikiTopicLink;
   const path = label.dataset.wikiPath || '';
@@ -1315,6 +1329,7 @@ function bindWiki() {
   document.getElementById('previousWikiMatchBtn')?.addEventListener('click', () => navigateWikiMatch(-1));
   document.getElementById('nextWikiMatchBtn')?.addEventListener('click', () => navigateWikiMatch(1));
   document.getElementById('clearWikiSearchBtn')?.addEventListener('click', clearWikiSearch);
+  document.getElementById('printWikiTopicBtn')?.addEventListener('click', printWikiTopic);
   document.addEventListener('click', event => {
     const label = event.target.closest('[data-wiki-path], [data-wiki-topic-link]');
     if (!label || isNestedWikiLabelControl(event.target, label)) return;

@@ -1180,7 +1180,12 @@ textarea.large { min-height: 220px; }
   width: 28px;
   height: 28px;
 }
-.wiki-open-page svg {
+.wiki-print-topic {
+  width: 28px;
+  height: 28px;
+}
+.wiki-open-page svg,
+.wiki-print-topic svg {
   width: 15px;
   height: 15px;
 }
@@ -1760,4 +1765,61 @@ textarea.large { min-height: 220px; }
 .backgrounds-modal {
   width: min(560px, 100%);
 }
-@media print { .no-print { display: none; } body { background: #080605; } .sheet { width: 100%; margin: 0; } }
+@media print {
+  @page { margin: 14mm; }
+  .no-print { display: none; }
+  body { background: #080605; }
+  .sheet { width: 100%; margin: 0; }
+
+  body.wiki-printing > * { display: none !important; }
+  body.wiki-printing > .wiki-page-shell,
+  body.wiki-printing > #wikiModal {
+    display: block !important;
+  }
+  body.wiki-printing #wikiModal {
+    position: static;
+    padding: 0;
+    background: transparent;
+  }
+  body.wiki-printing .wiki-page-shell {
+    min-height: 0;
+    padding: 0;
+  }
+  body.wiki-printing .wiki-modal {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body.wiki-printing .wiki-modal-header,
+  body.wiki-printing .wiki-search,
+  body.wiki-printing .wiki-search + .sr-only,
+  body.wiki-printing .wiki-topic-menu,
+  body.wiki-printing .wiki-empty-state {
+    display: none !important;
+  }
+  body.wiki-printing .wiki-layout {
+    display: block;
+  }
+  body.wiki-printing .wiki-topic-content {
+    overflow: visible;
+    padding: 0;
+  }
+  body.wiki-printing .wiki-table-scroll {
+    overflow: visible;
+  }
+  body.wiki-printing table,
+  body.wiki-printing .wiki-sphere-guide,
+  body.wiki-printing .wiki-combat-initiative,
+  body.wiki-printing .wiki-combat-flow > li,
+  body.wiki-printing .wiki-spellcasting-flow > li {
+    break-inside: avoid;
+  }
+}

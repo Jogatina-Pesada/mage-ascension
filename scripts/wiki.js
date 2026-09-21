@@ -272,6 +272,19 @@ const wikiCombatGuide = {
   ]
 };
 
+const wikiMovementGuide = {
+  chaseIntro: 'Perseguições são resolvidas como testes prolongados e resistidos de Destreza + Esportes. O fugitivo começa com uma vantagem entre 0 e 3:',
+  chaseResults: [
+    'Se o fugitivo obtiver mais sucessos, a vantagem aumenta em 1.',
+    'Se o perseguidor vencer, a vantagem diminui em 1.',
+    'Em caso de empate, a distância permanece igual.',
+    'Ao ultrapassar 3, o fugitivo escapa; ao chegar a 0, é alcançado.'
+  ],
+  chaseOptions: 'Cada rodada deve apresentar um obstáculo ou escolha, podendo substituir a parada habitual: Vigor + Esportes para uma corrida prolongada, Percepção + Prontidão para encontrar atalhos, Destreza + Furtividade para desaparecer ou outra combinação adequada.',
+  chaseActions: 'Atacar, conjurar magia ou realizar outra ação durante a perseguição pode exigir a divisão da parada de dados ou impor +1 de dificuldade. Magias e estratégias bem-sucedidas podem conceder sucessos, alterar a vantagem ou encerrar a perseguição quando impedirem sua continuação.',
+  example: 'Baba Yaga foge de dois inquisidores e começa com vantagem 1. Ela vence o primeiro teste de Destreza + Esportes, aumentando sua vantagem para 2. Na rodada seguinte, entra em uma feira e usa Manipulação + Lábia para criar confusão, chegando a 3. Antes que consiga escapar, os inquisidores vencem uma rodada e reduzem sua vantagem para 2. Baba Yaga então usa Entropia para fazer uma carroça bloquear a rua; o efeito funciona e encerra a perseguição.'
+};
+
 const wikiSpellcastingGuide = {
   steps: [
     {
@@ -498,6 +511,12 @@ const wikiTopics = [
     combat: wikiCombatGuide
   },
   {
+    id: 'movement',
+    title: 'Movimento',
+    intro: 'Em teatro da mente, as distâncias são divididas em quatro faixas: engajado (corpo a corpo), próximo (alcançável com movimento e ação), distante (exige correr durante o turno) e muito distante (requer vários turnos).',
+    movement: wikiMovementGuide
+  },
+  {
     id: 'spheres',
     title: 'Esferas',
     intro: 'Aspectos da realidade que a personagem consegue compreender e alterar com magia.',
@@ -636,6 +655,7 @@ function wikiTopicSearchText(topic) {
       ]
     : [];
   const casting = topic.casting ? flattenWikiValues(topic.casting) : [];
+  const movement = topic.movement ? flattenWikiValues(topic.movement) : [];
   const advantageGuides = topic.advantageGuides ? flattenWikiValues(topic.advantageGuides) : [];
   return [
     topic.title,
@@ -644,6 +664,7 @@ function wikiTopicSearchText(topic) {
     ...groupTitles,
     ...guides,
     ...combat,
+    ...movement,
     ...casting,
     ...advantageGuides,
     ...wikiTopicEntries(topic).flat()
@@ -713,6 +734,9 @@ function renderWikiTopic(topic, query = '') {
   if (topic.combat) {
     renderWikiCombat(content, topic.combat);
   }
+  if (topic.movement) {
+    renderWikiMovement(content, topic.movement);
+  }
   if (topic.casting) {
     renderWikiSpellcasting(content, topic.casting);
   }
@@ -780,6 +804,25 @@ function renderWikiTopic(topic, query = '') {
     topic.advantageGuides.forEach(guide => renderWikiAdvantageGuide(content, guide));
   }
   highlightWikiMatches(content, query);
+}
+
+function renderWikiMovement(content, movement) {
+  appendWikiSectionHeading(content, 'Perseguições');
+
+  const chaseIntro = document.createElement('p');
+  chaseIntro.textContent = movement.chaseIntro;
+  content.append(chaseIntro, createWikiTextList(movement.chaseResults));
+
+  [movement.chaseOptions, movement.chaseActions].forEach(text => {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = text;
+    content.append(paragraph);
+  });
+
+  appendWikiSectionHeading(content, 'Exemplo');
+  const example = document.createElement('p');
+  example.textContent = movement.example;
+  content.append(example);
 }
 
 function renderWikiAdvantageGuide(content, guide) {

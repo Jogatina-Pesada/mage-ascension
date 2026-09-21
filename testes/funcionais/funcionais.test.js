@@ -700,7 +700,7 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(doc.querySelectorAll('#previousWikiMatchBtn, #nextWikiMatchBtn').length, 2);
   assert.equal(doc.getElementById('previousWikiMatchBtn').disabled, true);
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
-  assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 12);
+  assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('[data-wiki-topic="notes"]'), null);
 
   input(search, 'teletransporte');
@@ -722,7 +722,7 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
 
   click(doc.getElementById('clearWikiSearchBtn'));
   assert.equal(search.value, '');
-  assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 12);
+  assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('.wiki-highlight'), null);
   assert.equal(doc.getElementById('previousWikiMatchBtn').disabled, true);
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
@@ -801,6 +801,35 @@ test('wiki exibe combate logo depois de habilidades com fluxo e exemplos', () =>
   assert.includes(combatText, 'Forças, Espaço, Primórdio, Tempo');
   assert.equal(combatText.includes('Matter, Forces, Prime'), false);
   assert.equal(combatText.includes('Forces, Correspondence, Prime, Time'), false);
+}));
+
+test('wiki exibe movimento logo depois de combate com faixas e regras de perseguição', () => withApp((win, doc) => {
+  click(doc.getElementById('openWikiBtn'));
+  const topics = Array.from(doc.querySelectorAll('[data-wiki-topic]'));
+  const combatIndex = topics.findIndex(button => button.dataset.wikiTopic === 'combat');
+  assert.equal(topics[combatIndex + 1].dataset.wikiTopic, 'movement');
+
+  click(doc.querySelector('[data-wiki-topic="movement"]'));
+  const movementText = doc.getElementById('wikiTopicContent').textContent;
+  assert.includes(movementText, 'engajado (corpo a corpo)');
+  assert.includes(movementText, 'muito distante (requer vários turnos)');
+  assert.includes(movementText, 'testes prolongados e resistidos de Destreza + Esportes');
+  assert.equal(doc.querySelectorAll('#wikiTopicContent ul li').length, 4);
+  assert.includes(movementText, 'Vigor + Esportes');
+  assert.includes(movementText, 'Percepção + Prontidão');
+  assert.includes(movementText, 'Destreza + Furtividade');
+  assert.includes(movementText, '+1 de dificuldade');
+  assert.includes(movementText, 'Baba Yaga foge de dois inquisidores');
+
+  const headings = Array.from(doc.querySelectorAll('#wikiTopicContent h4')).map(heading => heading.textContent);
+  assert.deepEqual(headings, ['Perseguições', 'Exemplo']);
+
+  input(doc.getElementById('wikiSearchInput'), 'Entropia carroça');
+  assert.deepEqual(
+    Array.from(doc.querySelectorAll('[data-wiki-topic]')).map(button => button.textContent),
+    ['Movimento']
+  );
+  assert(doc.querySelectorAll('.wiki-highlight').length >= 2);
 }));
 
 test('wiki detalha esferas na ordem da ficha e indexa os niveis', () => withApp((win, doc) => {

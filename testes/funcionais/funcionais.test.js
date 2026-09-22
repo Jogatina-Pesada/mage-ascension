@@ -752,9 +752,16 @@ test('nomes dos campos abrem diretamente o topico correspondente da wiki', () =>
   assert.equal(strength.getAttribute('tabindex'), '0');
   click(strength);
   assert.equal(doc.getElementById('wikiModal').hidden, false);
-  assert.equal(doc.getElementById('wikiSearchInput').value, 'Força');
+  assert.equal(doc.getElementById('wikiSearchInput').value, '#Força');
   assert.equal(doc.querySelector('[data-wiki-topic="attributes"]').classList.contains('is-active'), true);
   assert(doc.querySelector('.wiki-highlight.is-current'));
+
+  win.closeWikiModal();
+  const alertness = doc.querySelector('[data-dots="abilities.alertness"] .dot-label');
+  click(alertness);
+  assert.equal(doc.getElementById('wikiSearchInput').value, '#Prontidão');
+  assert.equal(doc.querySelector('[data-wiki-topic="abilities"]').classList.contains('is-active'), true);
+  assert.equal(doc.querySelector('.wiki-highlight.is-current').closest('dt').textContent, 'Prontidão');
 
   win.closeWikiModal();
   const aggravated = doc.querySelector('.health-type-label[data-wiki-query="Agravado"]');
@@ -762,6 +769,30 @@ test('nomes dos campos abrem diretamente o topico correspondente da wiki', () =>
   click(aggravated);
   assert.equal(doc.getElementById('wikiSearchInput').value, 'Agravado');
   assert.equal(doc.querySelector('[data-wiki-topic="health"]').classList.contains('is-active'), true);
+}));
+
+test('prefixo # abre referencias exatas de atributos, habilidades, esferas e vantagens', () => withApp((win, doc) => {
+  click(doc.getElementById('openWikiBtn'));
+  const search = doc.getElementById('wikiSearchInput');
+  [
+    ['#prontidão', 'abilities', 'Prontidão'],
+    ['#força', 'attributes', 'Força'],
+    ['#espírito', 'spheres', 'Espírito'],
+    ['#arcana', 'advantages', 'Arcana']
+  ].forEach(([query, topicId, label]) => {
+    input(search, query);
+    assert.deepEqual(
+      Array.from(doc.querySelectorAll('[data-wiki-topic]')).map(button => button.dataset.wikiTopic),
+      [topicId]
+    );
+    const current = doc.querySelector('.wiki-highlight.is-current');
+    assert.equal(current.textContent, label);
+    assert.equal(current.closest('[data-wiki-reference]').dataset.wikiReference, win.normalizedWikiText(label));
+  });
+
+  input(search, '#referência inexistente');
+  assert.equal(doc.getElementById('wikiLayout').hidden, true);
+  assert.equal(doc.getElementById('wikiEmptyState').hidden, false);
 }));
 
 test('wiki agrupa atributos e habilidades como a ficha', () => withApp((win, doc) => {

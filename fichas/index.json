@@ -6,5 +6,9 @@
   {
     "file": "fatima.json",
     "name": "Fatima"
+  },
+  {
+    "file": "caim.json",
+    "name": "Caim"
   }
 ]

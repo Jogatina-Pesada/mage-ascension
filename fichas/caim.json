@@ -35,9 +35,9 @@
     "strength": 0,
     "dexterity": 0,
     "stamina": 0,
-    "charisma": 0,
-    "manipulation": 0,
-    "appearance": 0,
+    "charisma": 1,
+    "manipulation": 2,
+    "appearance": 2,
     "perception": 0,
     "intelligence": 0,
     "wits": 0

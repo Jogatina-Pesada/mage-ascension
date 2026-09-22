@@ -7,9 +7,9 @@
       "tertiary": "physical"
     },
     "abilityPriorities": {
-      "primary": "talents",
+      "primary": "knowledges",
       "secondary": "skills",
-      "tertiary": "knowledges"
+      "tertiary": "talents"
     }
   },
   "spheres": {
@@ -52,7 +52,7 @@
     "intimidation": 0,
     "leadership": 0,
     "streetwise": 0,
-    "subterfuge": 0,
+    "subterfuge": 2,
     "crafts": 0,
     "drive": 0,
     "etiquette": 0,

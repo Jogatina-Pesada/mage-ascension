@@ -83,8 +83,8 @@
     "influence": 2,
     "wonder": 0,
     "mentor": 0,
-    "patron": 2,
-    "resources": 0,
+    "patron": 3,
+    "resources": 1,
     "sanctum": 0,
     "dream": 0,
     "pastLives": 0
@@ -205,6 +205,7 @@
   "backgroundJustifications": {
     "influence": "Política. ",
     "patron": "Demônio",
-    "fame": "Família famosa"
+    "fame": "Família famosa",
+    "resources": "Herança "
   }
 }

@@ -52,7 +52,7 @@
     "intimidation": 0,
     "leadership": 0,
     "streetwise": 0,
-    "subterfuge": 3,
+    "subterfuge": 4,
     "crafts": 0,
     "drive": 1,
     "etiquette": 3,
@@ -90,7 +90,7 @@
     "pastLives": 0
   },
   "identity": {
-    "experience": 7,
+    "experience": 5,
     "name": "Caim",
     "lineage": "Castillo",
     "image": "imagens/caim.png"

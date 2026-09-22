@@ -13,7 +13,7 @@
     }
   },
   "spheres": {
-    "fate": 0,
+    "fate": 1,
     "space": 0,
     "spirit": 0,
     "forces": 0,

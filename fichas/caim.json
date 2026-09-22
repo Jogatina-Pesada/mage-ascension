@@ -22,7 +22,7 @@
     "death": 0,
     "prime": 3,
     "time": 0,
-    "life": 0
+    "life": 1
   },
   "advantages": {
     "arcana": 3,
@@ -52,7 +52,7 @@
     "intimidation": 0,
     "leadership": 0,
     "streetwise": 0,
-    "subterfuge": 4,
+    "subterfuge": 3,
     "crafts": 0,
     "drive": 1,
     "etiquette": 3,
@@ -90,7 +90,7 @@
     "pastLives": 0
   },
   "identity": {
-    "experience": 5,
+    "experience": 0,
     "name": "Caim",
     "lineage": "Castillo",
     "image": "imagens/caim.png"

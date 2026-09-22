@@ -14,6 +14,13 @@
       "characters": [
         "fatima.json"
       ]
+    },
+    {
+      "name": "nat",
+      "passwordHash": "0b9403ca6cf8a604640266c088be873c4c21eb59ff46dcffc100fa6d201ed295",
+      "characters": [
+        "caim.json"
+      ]
     }
   ]
 }

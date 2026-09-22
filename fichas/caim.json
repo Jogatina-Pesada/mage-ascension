@@ -43,11 +43,11 @@
     "wits": 2
   },
   "abilities": {
-    "alertness": 0,
+    "alertness": 2,
     "athletics": 0,
     "awareness": 0,
     "brawl": 0,
-    "empathy": 0,
+    "empathy": 1,
     "expression": 0,
     "intimidation": 0,
     "leadership": 0,

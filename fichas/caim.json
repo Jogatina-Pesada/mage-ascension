@@ -13,7 +13,7 @@
     }
   },
   "spheres": {
-    "fate": 1,
+    "fate": 3,
     "space": 0,
     "spirit": 0,
     "forces": 0,
@@ -90,7 +90,7 @@
     "pastLives": 0
   },
   "identity": {
-    "experience": 15,
+    "experience": 7,
     "name": "Caim",
     "lineage": "Castillo",
     "image": "imagens/caim.png"

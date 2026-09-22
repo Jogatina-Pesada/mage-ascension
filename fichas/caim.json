@@ -33,14 +33,14 @@
   },
   "attributes": {
     "strength": 0,
-    "dexterity": 0,
-    "stamina": 0,
+    "dexterity": 2,
+    "stamina": 1,
     "charisma": 1,
     "manipulation": 2,
     "appearance": 2,
-    "perception": 0,
-    "intelligence": 0,
-    "wits": 0
+    "perception": 3,
+    "intelligence": 2,
+    "wits": 2
   },
   "abilities": {
     "alertness": 0,

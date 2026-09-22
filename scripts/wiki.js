@@ -616,6 +616,27 @@ function normalizedWikiText(value) {
   return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
 }
 
+const wikiDirectReferenceTopicIds = ['attributes', 'abilities', 'spheres', 'advantages'];
+
+function wikiDirectReference(query) {
+  const rawQuery = String(query || '').trim();
+  if (!rawQuery.startsWith('#')) return null;
+  const referenceName = normalizedWikiText(rawQuery.slice(1).trim());
+  if (!referenceName) return null;
+
+  for (const topic of wikiTopics.filter(item => wikiDirectReferenceTopicIds.includes(item.id))) {
+    const references = topic.guides?.length
+      ? topic.guides.map(guide => [guide.path, guide.title])
+      : [
+          ...(topic.paths || []).map(([path, label]) => [path, label]),
+          ...(topic.groups || []).flatMap(group => group.paths.map(([path, label]) => [path, label]))
+        ];
+    const reference = references.find(([, label]) => normalizedWikiText(label) === referenceName);
+    if (reference) return { topic, path: reference[0], label: reference[1] };
+  }
+  return null;
+}
+
 function wikiTopicEntries(topic) {
   const described = (topic.paths || []).map(([path, label, description]) => (
     [label, description || fieldDescriptions[path] || '']
@@ -678,6 +699,10 @@ function flattenWikiValues(value) {
 }
 
 function matchingWikiTopics(query) {
+  if (String(query || '').trim().startsWith('#')) {
+    const reference = wikiDirectReference(query);
+    return reference ? [reference.topic] : [];
+  }
   const terms = normalizedWikiText(query).split(/\s+/).filter(Boolean);
   if (!terms.length) return wikiTopics;
   return wikiTopics.filter(topic => {
@@ -724,6 +749,7 @@ function renderWikiTopic(topic, query = '') {
     entries.forEach(([label, description]) => {
       const term = document.createElement('dt');
       term.textContent = label;
+      term.dataset.wikiReference = normalizedWikiText(label);
       const detail = document.createElement('dd');
       detail.textContent = description;
       list.append(term, detail);
@@ -760,6 +786,7 @@ function renderWikiTopic(topic, query = '') {
       const groupHeading = document.createElement('h4');
       groupHeading.className = 'wiki-entry-group-title';
       groupHeading.textContent = guide.title;
+      groupHeading.dataset.wikiReference = normalizedWikiText(guide.title);
       const originalTitle = document.createElement('span');
       originalTitle.className = 'wiki-sphere-original-title';
       originalTitle.textContent = guide.originalTitle;
@@ -803,7 +830,14 @@ function renderWikiTopic(topic, query = '') {
   if (topic.advantageGuides?.length) {
     topic.advantageGuides.forEach(guide => renderWikiAdvantageGuide(content, guide));
   }
-  highlightWikiMatches(content, query);
+  const directReference = wikiDirectReference(query);
+  if (directReference?.topic.id === topic.id) {
+    const target = Array.from(content.querySelectorAll('[data-wiki-reference]'))
+      .find(element => element.dataset.wikiReference === normalizedWikiText(directReference.label));
+    if (target) highlightWikiMatches(target, directReference.label);
+  } else {
+    highlightWikiMatches(content, query);
+  }
 }
 
 function renderWikiMovement(content, movement) {
@@ -1303,7 +1337,8 @@ function openWikiFromLabel(label) {
   activeWikiTopicId = topicId;
   activeWikiHighlightIndex = 0;
   pendingWikiHighlightEdge = null;
-  document.getElementById('wikiSearchInput').value = label.dataset.wikiQuery || label.textContent.trim();
+  const query = label.dataset.wikiQuery || label.textContent.trim();
+  document.getElementById('wikiSearchInput').value = wikiDirectReferenceTopicIds.includes(topicId) ? `#${query}` : query;
   openWikiModal();
 }
 

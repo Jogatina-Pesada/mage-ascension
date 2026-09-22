@@ -79,7 +79,7 @@
     "backup": 0,
     "contacts": 0,
     "spies": 0,
-    "fame": 0,
+    "fame": 1,
     "influence": 2,
     "wonder": 0,
     "mentor": 0,
@@ -201,5 +201,9 @@
         "tertiary": "knowledges"
       }
     }
+  },
+  "backgroundJustifications": {
+    "influence": "Política. ",
+    "patron": "Demônio"
   }
 }

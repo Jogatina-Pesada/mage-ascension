@@ -52,7 +52,7 @@
     "intimidation": 0,
     "leadership": 0,
     "streetwise": 0,
-    "subterfuge": 2,
+    "subterfuge": 3,
     "crafts": 0,
     "drive": 0,
     "etiquette": 3,
@@ -63,7 +63,7 @@
     "stealth": 0,
     "survival": 1,
     "technology": 2,
-    "academics": 0,
+    "academics": 2,
     "computer": 0,
     "cosmology": 0,
     "enigmas": 0,
@@ -75,7 +75,7 @@
     "science": 0
   },
   "backgrounds": {
-    "allies": 3,
+    "allies": 0,
     "backup": 0,
     "contacts": 0,
     "spies": 0,

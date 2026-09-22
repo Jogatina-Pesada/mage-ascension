@@ -10,5 +10,9 @@
   {
     "file": "irmas_da_lilith.json",
     "name": "irmãs da Lilith"
+  },
+  {
+    "file": "castillo.json",
+    "name": "Castillo"
   }
 ]

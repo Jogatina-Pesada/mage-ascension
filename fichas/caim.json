@@ -87,10 +87,10 @@
     "resources": 1,
     "sanctum": 0,
     "dream": 0,
-    "pastLives": 0
+    "pastLives": 1
   },
   "identity": {
-    "experience": 1,
+    "experience": 0,
     "name": "Caim",
     "lineage": "Castillo",
     "image": "imagens/caim.png"
@@ -206,6 +206,7 @@
     "influence": "Política. ",
     "patron": "Marbas, entidade idolatrada pelo primeiro coven de Caim.",
     "fame": "Família Castillo, antigos condes da província de Urgell, Catalunha",
-    "resources": "Pouca herança do que sobrou da família Castillo."
+    "resources": "Pouca herança do que sobrou da família Castillo.",
+    "pastLives": "Conhecimentos adquiridos por meio das outras vezes que Caim morreu e voltou à vida."
   }
 }

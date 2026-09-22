@@ -2,9 +2,9 @@
   "creation": {
     "mode": true,
     "attributePriorities": {
-      "primary": "physical",
+      "primary": "mental",
       "secondary": "social",
-      "tertiary": "mental"
+      "tertiary": "physical"
     },
     "abilityPriorities": {
       "primary": "talents",
@@ -25,7 +25,7 @@
     "life": 0
   },
   "advantages": {
-    "arcana": 1,
+    "arcana": 2,
     "willpower": 0,
     "willpowerTemporary": 0,
     "quintessence": 0,

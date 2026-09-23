@@ -55,6 +55,10 @@ async function withItemsPage(fn) {
 }
 
 test('inventario carrega os itens publicados em itens.json ao desbloquear', () => withItemsPage(async (win, doc) => {
+  assert.equal(
+    win.ItemsInventory.inventoryUrl('https://example.test/mage-ascension/itens.html').href,
+    'https://example.test/mage-ascension/itens.json'
+  );
   win.fetch = async url => {
     assert.equal(new URL(String(url)).pathname, '/itens.json');
     return {

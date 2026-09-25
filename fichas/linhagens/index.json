@@ -14,5 +14,9 @@
   {
     "file": "castillo.json",
     "name": "Castillo"
+  },
+  {
+    "file": "kyteler.json",
+    "name": "Kyteler"
   }
 ]

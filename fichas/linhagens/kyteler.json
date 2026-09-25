@@ -1,0 +1,36 @@
+{
+  "name": "Kyteler",
+  "spheres": {
+    "fate": 0,
+    "space": 0,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 0,
+    "death": 0,
+    "prime": 0,
+    "time": 0,
+    "life": 0
+  },
+  "sphereExperience": {
+    "fate": 0,
+    "space": 0,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 0,
+    "death": 0,
+    "prime": 0,
+    "time": 0,
+    "life": 0
+  },
+  "members": [
+    {
+      "name": "",
+      "chronicle": "Idade Média",
+      "status": "alive",
+      "dead": false,
+      "lineageContribution": {}
+    }
+  ]
+}

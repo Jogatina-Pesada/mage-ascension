@@ -10,5 +10,9 @@
   {
     "file": "caim.json",
     "name": "Caim"
+  },
+  {
+    "file": "alice_kyteler.json",
+    "name": "Alice Kyteler"
   }
 ]

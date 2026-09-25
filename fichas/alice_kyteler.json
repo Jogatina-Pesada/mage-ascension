@@ -1,0 +1,208 @@
+{
+  "creation": {
+    "mode": true,
+    "attributePriorities": {
+      "primary": "social",
+      "secondary": "mental",
+      "tertiary": "physical"
+    },
+    "abilityPriorities": {
+      "primary": "talents",
+      "secondary": "knowledges",
+      "tertiary": "skills"
+    }
+  },
+  "spheres": {
+    "fate": 0,
+    "space": 0,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 3,
+    "death": 3,
+    "prime": 0,
+    "time": 0,
+    "life": 0
+  },
+  "advantages": {
+    "arcana": 3,
+    "willpower": 1,
+    "willpowerTemporary": 0,
+    "quintessence": 0,
+    "paradox": 0
+  },
+  "attributes": {
+    "strength": 0,
+    "dexterity": 2,
+    "stamina": 1,
+    "charisma": 3,
+    "manipulation": 2,
+    "appearance": 2,
+    "perception": 2,
+    "intelligence": 2,
+    "wits": 1
+  },
+  "abilities": {
+    "alertness": 3,
+    "athletics": 0,
+    "awareness": 2,
+    "brawl": 0,
+    "empathy": 2,
+    "expression": 3,
+    "intimidation": 0,
+    "leadership": 0,
+    "streetwise": 0,
+    "subterfuge": 4,
+    "crafts": 0,
+    "drive": 0,
+    "etiquette": 1,
+    "firearms": 0,
+    "meditation": 0,
+    "melee": 0,
+    "research": 1,
+    "stealth": 2,
+    "survival": 2,
+    "technology": 0,
+    "academics": 0,
+    "computer": 0,
+    "cosmology": 0,
+    "enigmas": 1,
+    "esoterica": 2,
+    "investigation": 2,
+    "law": 2,
+    "medicine": 2,
+    "occult": 1,
+    "science": 0
+  },
+  "backgrounds": {
+    "allies": 0,
+    "backup": 0,
+    "contacts": 2,
+    "spies": 3,
+    "fame": 0,
+    "influence": 2,
+    "wonder": 0,
+    "mentor": 0,
+    "patron": 0,
+    "resources": 0,
+    "sanctum": 0,
+    "dream": 0,
+    "pastLives": 0
+  },
+  "identity": {
+    "experience": 0,
+    "name": "Alice Kyteler",
+    "chronicle": "Idade Média",
+    "image": "imagens/alice_kyteler.png",
+    "lineage": "Kyteler"
+  },
+  "health": {
+    "damage": [],
+    "level": "healthy"
+  },
+  "creationSnapshot": {
+    "capturedAt": "2026-09-25T22:09:33.693Z",
+    "identity": {
+      "experience": 0,
+      "name": "Alice Kyteler",
+      "chronicle": "Idade Média",
+      "image": "imagens/alice_kyteler.png",
+      "lineage": "Kyteler"
+    },
+    "attributes": {
+      "strength": 0,
+      "dexterity": 2,
+      "stamina": 1,
+      "charisma": 3,
+      "manipulation": 2,
+      "appearance": 2,
+      "perception": 2,
+      "intelligence": 2,
+      "wits": 1
+    },
+    "abilities": {
+      "alertness": 3,
+      "athletics": 0,
+      "awareness": 2,
+      "brawl": 0,
+      "empathy": 2,
+      "expression": 3,
+      "intimidation": 0,
+      "leadership": 0,
+      "streetwise": 0,
+      "subterfuge": 4,
+      "crafts": 0,
+      "drive": 0,
+      "etiquette": 1,
+      "firearms": 0,
+      "meditation": 0,
+      "melee": 0,
+      "research": 1,
+      "stealth": 2,
+      "survival": 2,
+      "technology": 0,
+      "academics": 0,
+      "computer": 0,
+      "cosmology": 0,
+      "enigmas": 1,
+      "esoterica": 2,
+      "investigation": 2,
+      "law": 2,
+      "medicine": 2,
+      "occult": 1,
+      "science": 0
+    },
+    "spheres": {
+      "fate": 0,
+      "space": 0,
+      "spirit": 0,
+      "forces": 0,
+      "matter": 0,
+      "mind": 3,
+      "death": 3,
+      "prime": 0,
+      "time": 0,
+      "life": 0
+    },
+    "advantages": {
+      "arcana": 3,
+      "willpower": 1,
+      "willpowerTemporary": 0,
+      "quintessence": 0,
+      "paradox": 0
+    },
+    "backgrounds": {
+      "allies": 0,
+      "backup": 0,
+      "contacts": 2,
+      "spies": 3,
+      "fame": 0,
+      "influence": 2,
+      "wonder": 0,
+      "mentor": 0,
+      "patron": 0,
+      "resources": 0,
+      "sanctum": 0,
+      "dream": 0,
+      "pastLives": 0
+    },
+    "backgroundJustifications": {},
+    "origin": "",
+    "aspirations": "",
+    "obsession": "",
+    "world": {},
+    "creation": {
+      "mode": true,
+      "attributePriorities": {
+        "primary": "social",
+        "secondary": "mental",
+        "tertiary": "physical"
+      },
+      "abilityPriorities": {
+        "primary": "talents",
+        "secondary": "knowledges",
+        "tertiary": "skills"
+      }
+    }
+  }
+}

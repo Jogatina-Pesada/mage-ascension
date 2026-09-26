@@ -98,7 +98,7 @@ const fieldDescriptions = {
   'spheres.life': 'Organismos vivos, cura, mutação e biologia.',
 
   'advantages.arcana': 'Capacidade de impor vontade à realidade e realizar magia.',
-  'advantages.willpower': 'O preenchimento mostra a Força de Vontade temporária. A borda mostra o limite permanente, que só aumenta com experiência.',
+  'advantages.willpower': 'O preenchimento mostra a Força de Vontade temporária. Durante a edição, cliques sucessivos preenchem, removem o preenchimento e removem a borda permanente, devolvendo o ponto gasto.',
   'advantages.quintessence': 'Energia mágica primordial usada para alimentar efeitos.',
   'advantages.paradox': 'Acúmulo da reação da realidade contra magia impossível.',
   'backgrounds.allies': 'Amigos e aliados mundanos que ajudam o personagem.',

@@ -5,8 +5,7 @@
       "name": "default",
       "passwordHash": "",
       "characters": [
-        "baba_yaga.json",
-        "alice_kyteler.json"
+        "baba_yaga.json"
       ]
     },
     {
@@ -21,6 +20,13 @@
       "passwordHash": "0b9403ca6cf8a604640266c088be873c4c21eb59ff46dcffc100fa6d201ed295",
       "characters": [
         "caim.json"
+      ]
+    },
+    {
+      "name": "Vitu",
+      "passwordHash": "c9121936a1e8f06339cb0b08c8a63d71dc9855d3ee8fe2e341aaab2f5bdf9aa7",
+      "characters": [
+        "alice_kyteler.json"
       ]
     }
   ]

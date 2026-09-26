@@ -92,7 +92,8 @@
   "identity": {
     "experience": 0,
     "name": "Irma Carmen",
-    "lineage": "Linhagem"
+    "lineage": "Linhagem",
+    "image": "imagens/irma_carmen.png"
   },
   "health": {
     "damage": [],

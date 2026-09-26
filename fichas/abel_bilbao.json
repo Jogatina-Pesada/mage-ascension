@@ -1,0 +1,205 @@
+{
+  "creation": {
+    "mode": false,
+    "attributePriorities": {
+      "primary": "mental",
+      "secondary": "social",
+      "tertiary": "physical"
+    },
+    "abilityPriorities": {
+      "primary": "knowledges",
+      "secondary": "skills",
+      "tertiary": "talents"
+    }
+  },
+  "spheres": {
+    "fate": 4,
+    "space": 2,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 0,
+    "death": 0,
+    "prime": 0,
+    "time": 0,
+    "life": 0
+  },
+  "advantages": {
+    "arcana": 4,
+    "willpower": 0,
+    "willpowerTemporary": 0,
+    "quintessence": 0,
+    "paradox": 0
+  },
+  "attributes": {
+    "strength": 0,
+    "dexterity": 2,
+    "stamina": 1,
+    "charisma": 2,
+    "manipulation": 3,
+    "appearance": 0,
+    "perception": 5,
+    "intelligence": 2,
+    "wits": 0
+  },
+  "abilities": {
+    "alertness": 0,
+    "athletics": 0,
+    "awareness": 0,
+    "brawl": 0,
+    "empathy": 3,
+    "expression": 2,
+    "intimidation": 0,
+    "leadership": 0,
+    "streetwise": 0,
+    "subterfuge": 0,
+    "crafts": 0,
+    "drive": 0,
+    "etiquette": 0,
+    "firearms": 0,
+    "meditation": 2,
+    "melee": 1,
+    "research": 0,
+    "stealth": 3,
+    "survival": 3,
+    "technology": 0,
+    "academics": 0,
+    "computer": 0,
+    "cosmology": 4,
+    "enigmas": 2,
+    "esoterica": 3,
+    "investigation": 1,
+    "law": 0,
+    "medicine": 1,
+    "occult": 3,
+    "science": 0
+  },
+  "backgrounds": {
+    "allies": 0,
+    "backup": 0,
+    "contacts": 0,
+    "spies": 0,
+    "fame": 3,
+    "influence": 3,
+    "wonder": 2,
+    "mentor": 0,
+    "patron": 0,
+    "resources": 0,
+    "sanctum": 0,
+    "dream": 0,
+    "pastLives": 0
+  },
+  "identity": {
+    "experience": 0,
+    "name": "Abel Bilbao",
+    "lineage": "Linhagem",
+    "chronicle": "Idade Média"
+  },
+  "health": {
+    "damage": [],
+    "level": "healthy"
+  },
+  "creationSnapshot": {
+    "capturedAt": "2026-09-26T18:29:36.493Z",
+    "identity": {
+      "experience": 0,
+      "name": "Abel Bilbao",
+      "lineage": "Linhagem"
+    },
+    "attributes": {
+      "strength": 0,
+      "dexterity": 2,
+      "stamina": 1,
+      "charisma": 2,
+      "manipulation": 3,
+      "appearance": 0,
+      "perception": 5,
+      "intelligence": 2,
+      "wits": 0
+    },
+    "abilities": {
+      "alertness": 0,
+      "athletics": 0,
+      "awareness": 0,
+      "brawl": 0,
+      "empathy": 3,
+      "expression": 2,
+      "intimidation": 0,
+      "leadership": 0,
+      "streetwise": 0,
+      "subterfuge": 0,
+      "crafts": 0,
+      "drive": 0,
+      "etiquette": 0,
+      "firearms": 0,
+      "meditation": 2,
+      "melee": 1,
+      "research": 0,
+      "stealth": 3,
+      "survival": 3,
+      "technology": 0,
+      "academics": 0,
+      "computer": 0,
+      "cosmology": 4,
+      "enigmas": 2,
+      "esoterica": 3,
+      "investigation": 1,
+      "law": 0,
+      "medicine": 1,
+      "occult": 3,
+      "science": 0
+    },
+    "spheres": {
+      "fate": 4,
+      "space": 2,
+      "spirit": 0,
+      "forces": 0,
+      "matter": 0,
+      "mind": 0,
+      "death": 0,
+      "prime": 0,
+      "time": 0,
+      "life": 0
+    },
+    "advantages": {
+      "arcana": 4,
+      "willpower": 0,
+      "willpowerTemporary": 0,
+      "quintessence": 0,
+      "paradox": 0
+    },
+    "backgrounds": {
+      "allies": 0,
+      "backup": 0,
+      "contacts": 0,
+      "spies": 0,
+      "fame": 3,
+      "influence": 3,
+      "wonder": 2,
+      "mentor": 0,
+      "patron": 0,
+      "resources": 0,
+      "sanctum": 0,
+      "dream": 0,
+      "pastLives": 0
+    },
+    "backgroundJustifications": {},
+    "origin": "",
+    "aspirations": "",
+    "obsession": "",
+    "world": {},
+    "creation": {
+      "mode": true,
+      "attributePriorities": {
+        "primary": "mental",
+        "secondary": "social",
+        "tertiary": "physical"
+      },
+      "abilityPriorities": {
+        "primary": "knowledges",
+        "secondary": "skills",
+        "tertiary": "talents"
+      }
+    }
+  }
+}

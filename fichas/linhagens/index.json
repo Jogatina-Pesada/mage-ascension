@@ -26,5 +26,9 @@
   {
     "file": "linhagem.json",
     "name": "Linhagem"
+  },
+  {
+    "file": "akashka.json",
+    "name": "Akashka"
   }
 ]

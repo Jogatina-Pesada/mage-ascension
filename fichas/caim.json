@@ -75,7 +75,7 @@
     "science": 0
   },
   "backgrounds": {
-    "allies": 0,
+    "allies": 1,
     "backup": 0,
     "contacts": 0,
     "spies": 0,
@@ -87,7 +87,7 @@
     "resources": 1,
     "sanctum": 0,
     "dream": 0,
-    "pastLives": 1
+    "pastLives": 0
   },
   "identity": {
     "experience": 0,
@@ -207,7 +207,8 @@
     "patron": "Marbas, poderosa entidade idolatrada pelo primeiro coven de Caim.",
     "fame": "Família Castillo, antigos condes da província de Urgell, Catalunha",
     "resources": "Pouca herança do que sobrou da família Castillo.",
-    "pastLives": "Conhecimentos adquiridos por meio das outras vezes que Caim morreu e voltou à vida."
+    "pastLives": "Conhecimentos adquiridos por meio das outras vezes que Caim morreu e voltou à vida.",
+    "allies": "Professor da universidade "
   },
   "world": {
     "magic": {

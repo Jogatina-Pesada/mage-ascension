@@ -101,7 +101,9 @@
   },
   "backgroundJustifications": {
     "backup": "Convento ",
-    "contacts": "comunidade da igreja ou convento"
+    "contacts": "comunidade da igreja ou convento",
+    "allies": "Madre convento",
+    "sanctum": "Quarto no convento"
   },
   "creationSnapshot": {
     "capturedAt": "2026-09-26T18:29:37.785Z",

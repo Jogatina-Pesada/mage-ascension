@@ -37,6 +37,13 @@
       "characters": [
         "natalia_nadya.json"
       ]
+    },
+    {
+      "name": "Giu",
+      "passwordHash": "4a165184e6848049287dd45ff79e4162e074e70057b8345ad43ec8f01b8f9473",
+      "characters": [
+        "irma_carmen.json"
+      ]
     }
   ]
 }

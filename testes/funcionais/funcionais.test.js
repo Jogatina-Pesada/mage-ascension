@@ -1607,6 +1607,12 @@ test('abrir pelo GitHub filtra personagens pela lista e sua senha', async () => 
   await tick();
   assert.equal(doc.getElementById('resetGitListPasswordBtn').hidden, false);
   assert.equal(doc.getElementById('gitSheetList').children.length, 0);
+  input(doc.getElementById('gitListPassword'), 'errada');
+  await tick();
+  assert.equal(doc.getElementById('gitSheetList').children.length, 0);
+  input(doc.getElementById('gitListPassword'), 'bruxinhas');
+  await tick();
+  assert.equal(doc.getElementById('gitSheetList').children.length, 1);
   input(doc.getElementById('gitListPassword'), 'lua');
   await tick();
   assert.equal(doc.getElementById('gitSheetList').children.length, 1);

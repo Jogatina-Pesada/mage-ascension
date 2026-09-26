@@ -52,7 +52,7 @@
     "intimidation": 0,
     "leadership": 0,
     "streetwise": 0,
-    "subterfuge": 4,
+    "subterfuge": 3,
     "crafts": 0,
     "drive": 0,
     "etiquette": 1,
@@ -90,7 +90,7 @@
     "pastLives": 3
   },
   "identity": {
-    "experience": 0,
+    "experience": 2,
     "name": "Alice Kyteler",
     "chronicle": "Idade Média",
     "image": "imagens/alice_kyteler.png",

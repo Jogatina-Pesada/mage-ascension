@@ -22,5 +22,9 @@
   {
     "file": "asd.json",
     "name": "asd"
+  },
+  {
+    "file": "linhagem.json",
+    "name": "Linhagem"
   }
 ]

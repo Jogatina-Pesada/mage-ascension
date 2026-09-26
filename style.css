@@ -1768,8 +1768,57 @@ textarea.large { min-height: 220px; }
 @media print {
   @page { margin: 14mm; }
   .no-print { display: none; }
-  body { background: #080605; }
+  body { background: #fff; }
   .sheet { width: 100%; margin: 0; }
+
+  body.sheet-printing {
+    color: #000 !important;
+    background: #fff !important;
+    color-scheme: light;
+  }
+  body.sheet-printing::before { display: none; }
+  body.sheet-printing .sheet,
+  body.sheet-printing .panel,
+  body.sheet-printing input,
+  body.sheet-printing textarea,
+  body.sheet-printing select,
+  body.sheet-printing .health-box,
+  body.sheet-printing .health-penalty,
+  body.sheet-printing .coven-pantry-slot,
+  body.sheet-printing .lineage-member {
+    color: #000 !important;
+    border-color: #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body.sheet-printing .sheet * {
+    color: #000 !important;
+    border-color: #000 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    text-shadow: none !important;
+  }
+  body.sheet-printing .dot {
+    border-color: #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+  }
+  body.sheet-printing .dot.filled,
+  body.sheet-printing .dot.lineage-bonus-dot {
+    background: #000 !important;
+  }
+  body.sheet-printing img {
+    filter: grayscale(1) contrast(1.25);
+  }
+  body.sheet-printing .panel,
+  body.sheet-printing .dot-row,
+  body.sheet-printing .lineage-dot-row,
+  body.sheet-printing .coven-layout,
+  body.sheet-printing .coven-pantry-slot {
+    break-inside: avoid;
+  }
 
   body.wiki-printing > * { display: none !important; }
   body.wiki-printing > .wiki-page-shell,

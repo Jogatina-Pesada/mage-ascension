@@ -93,7 +93,8 @@
     "experience": 0,
     "name": "Natalia / Nadya",
     "chronicle": "Idade Média",
-    "lineage": "Akashka"
+    "lineage": "Akashka",
+    "image": "imagens/natalia_nadya.png"
   },
   "health": {
     "damage": [],

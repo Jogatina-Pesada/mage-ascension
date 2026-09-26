@@ -16,11 +16,11 @@
     "fate": 0,
     "space": 0,
     "spirit": 0,
-    "forces": 0,
+    "forces": 1,
     "matter": 0,
     "mind": 2,
     "death": 3,
-    "prime": 1,
+    "prime": 0,
     "time": 0,
     "life": 0
   },

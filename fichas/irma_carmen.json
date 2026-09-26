@@ -75,14 +75,14 @@
     "science": 2
   },
   "backgrounds": {
-    "allies": 2,
+    "allies": 0,
     "backup": 3,
     "contacts": 1,
     "spies": 0,
     "fame": 0,
     "influence": 0,
     "wonder": 0,
-    "mentor": 0,
+    "mentor": 2,
     "patron": 0,
     "resources": 1,
     "sanctum": 1,

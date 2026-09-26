@@ -683,7 +683,7 @@ test('inicializacao renderiza controles principais', () => withApp((win, doc) =>
   assert.includes(doc.getElementById('healthStatus').textContent, 'Saud');
 }));
 
-test('impressao da ficha ativa o modo de alto contraste e restaura a pagina', () => withApp((win, doc) => {
+test('impressao da ficha ativa o modelo em branco e restaura os dados da pagina', () => withApp((win, doc) => {
   const originalPrint = win.print;
   const originalTitle = doc.title;
   let printCalled = false;
@@ -699,6 +699,7 @@ test('impressao da ficha ativa o modo de alto contraste e restaura a pagina', ()
   win.dispatchEvent(new win.Event('afterprint'));
   assert.equal(doc.body.classList.contains('sheet-printing'), false);
   assert.equal(doc.title, originalTitle);
+  assert.equal(doc.querySelector('[data-field="identity.name"]').value, 'Lari');
   win.print = originalPrint;
 }));
 
@@ -727,7 +728,8 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
   assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('[data-wiki-topic="notes"]'), null);
-  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'alto contraste em preto e branco');
+  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'preservando apenas a foto');
+  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'alinhadas horizontalmente');
 
   const originalPrint = win.print;
   let printedTitle = '';

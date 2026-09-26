@@ -1208,17 +1208,29 @@ test('forca de vontade temporaria e livre e limitada pelo valor permanente', () 
   assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 3);
 }));
 
-test('forca de vontade permanente so aumenta na edicao por XP', () => withApp((win, doc) => {
-  resetApp(win, { identity: { experience: 20 }, advantages: { willpower: 3, willpowerTemporary: 2 } });
+test('forca de vontade permanente percorre preenchimento, borda e reembolso na edicao', () => withApp((win, doc) => {
+  resetApp(win, { identity: { experience: 20 }, advantages: { willpower: 3, willpowerTemporary: 3 } });
   const state = appState(win);
   click(doc.getElementById('levelEditBtn'));
   click(dot(doc, 'advantages.willpower', 4));
   assert.equal(win.getPath(state, 'advantages.willpower'), 4);
-  assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 2);
+  assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 4);
   assert.equal(win.getPath(state, 'identity.experience'), 16);
-  click(dot(doc, 'advantages.willpower', 3));
-  assert.equal(win.getPath(state, 'advantages.willpower'), 4);
+  assert.equal(dot(doc, 'advantages.willpower', 4).classList.contains('filled'), true);
+  assert.equal(dot(doc, 'advantages.willpower', 4).classList.contains('permanent-dot'), true);
+  click(dot(doc, 'advantages.willpower', 4));
   assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 3);
+  assert.equal(win.getPath(state, 'identity.experience'), 16);
+  assert.equal(dot(doc, 'advantages.willpower', 4).classList.contains('filled'), false);
+  assert.equal(dot(doc, 'advantages.willpower', 4).classList.contains('permanent-dot'), true);
+  click(dot(doc, 'advantages.willpower', 4));
+  assert.equal(win.getPath(state, 'advantages.willpower'), 3);
+  assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 3);
+  assert.equal(win.getPath(state, 'identity.experience'), 20);
+  assert.equal(dot(doc, 'advantages.willpower', 4).classList.contains('permanent-dot'), false);
+  click(dot(doc, 'advantages.willpower', 4));
+  assert.equal(win.getPath(state, 'advantages.willpower'), 4);
+  assert.equal(win.getPath(state, 'advantages.willpowerTemporary'), 4);
   assert.equal(win.getPath(state, 'identity.experience'), 16);
 }));
 

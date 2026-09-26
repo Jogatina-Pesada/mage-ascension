@@ -122,6 +122,19 @@ function changeWillpower(level, container) {
 
   if (level <= permanent) {
     const temporary = temporaryWillpower();
+    if (levelEditMode && level === permanent && temporary === level - 1) {
+      const target = level - 1;
+      if (creationMode && !canSetCreationLevel('advantages.willpower', target)) return;
+      const cost = dotChangeCost('advantages.willpower', permanent, target);
+      setPath(state, 'advantages.willpower', target);
+      if (creationMode) setFreebies(currentExperience() - cost);
+      else setExperience(currentExperience() - cost);
+      renderDots(container);
+      renderCreationSummary();
+      updateAllDotCosts();
+      updateLineageSphereBonusButton();
+      return;
+    }
     setPath(state, 'advantages.willpowerTemporary', temporary === level ? level - 1 : level);
     renderDots(container);
     return;
@@ -137,11 +150,7 @@ function changeWillpower(level, container) {
   }
 
   setPath(state, 'advantages.willpower', level);
-  if (creationMode) {
-    setPath(state, 'advantages.willpowerTemporary', level);
-  } else if (getPath(state, 'advantages.willpowerTemporary', null) === null) {
-    setPath(state, 'advantages.willpowerTemporary', permanent);
-  }
+  setPath(state, 'advantages.willpowerTemporary', level);
   if (creationMode) setFreebies(experience - cost);
   else setExperience(experience - cost);
   renderDots(container);

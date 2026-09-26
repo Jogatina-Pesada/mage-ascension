@@ -1799,18 +1799,61 @@ textarea.large { min-height: 220px; }
     background-image: none !important;
     text-shadow: none !important;
   }
+  body.sheet-printing input,
+  body.sheet-printing textarea,
+  body.sheet-printing select {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  body.sheet-printing input::placeholder,
+  body.sheet-printing textarea::placeholder {
+    color: transparent !important;
+  }
+  body.sheet-printing .stepper-btn,
+  body.sheet-printing .xp-cost {
+    display: none !important;
+  }
+  body.sheet-printing .dot-row,
+  body.sheet-printing .lineage-dot-row {
+    grid-template-columns: minmax(0, 1fr) max-content !important;
+    gap: 6px !important;
+    min-width: 0;
+  }
+  body.sheet-printing .dots {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    gap: 4px !important;
+    min-width: max-content;
+    white-space: nowrap;
+  }
   body.sheet-printing .dot {
     border-color: #000 !important;
     background: #fff !important;
     box-shadow: none !important;
     opacity: 1 !important;
+    flex: 0 0 7px !important;
   }
   body.sheet-printing .dot.filled,
   body.sheet-printing .dot.lineage-bonus-dot {
-    background: #000 !important;
+    background: #fff !important;
   }
-  body.sheet-printing img {
+  body.sheet-printing img:not(#characterImagePreview),
+  body.sheet-printing .coven-pantry-slot img {
+    visibility: hidden !important;
+  }
+  body.sheet-printing #characterImagePreview {
     filter: grayscale(1) contrast(1.25);
+  }
+  body.sheet-printing .health-box,
+  body.sheet-printing .health-status,
+  body.sheet-printing .health-penalty,
+  body.sheet-printing .lineage-xp-value,
+  body.sheet-printing .lineage-members,
+  body.sheet-printing .coven-fame-description,
+  body.sheet-printing .coven-pantry-slot > :not(img) {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
   }
   body.sheet-printing .panel,
   body.sheet-printing .dot-row,

@@ -683,7 +683,7 @@ test('inicializacao renderiza controles principais', () => withApp((win, doc) =>
   assert.includes(doc.getElementById('healthStatus').textContent, 'Saud');
 }));
 
-test('impressao da ficha ativa o modelo em branco e restaura os dados da pagina', () => withApp((win, doc) => {
+test('impressao preenche secoes selecionadas, inclui antecedentes e restaura a pagina', () => withApp((win, doc) => {
   const originalPrint = win.print;
   const originalTitle = doc.title;
   let printCalled = false;
@@ -692,12 +692,24 @@ test('impressao da ficha ativa o modelo em branco e restaura os dados da pagina'
     printCalled = true;
     assert.equal(doc.body.classList.contains('sheet-printing'), true);
     assert.equal(doc.title, 'Lari - Ficha');
+    const printPage = doc.querySelector('.print-backgrounds-page');
+    assert(printPage);
+    assert.equal(printPage.querySelectorAll('[data-backgrounds-modal-panel]').length, 2);
+    assert.equal(printPage.querySelector('[data-backgrounds-modal-panel="world"]').hidden, false);
+    const printCss = Array.from(doc.styleSheets)
+      .flatMap(sheet => Array.from(sheet.cssRules || []))
+      .map(rule => rule.cssText)
+      .join('\n');
+    assert.includes(printCss, '.attributes-panel .dot.filled::after');
+    assert.includes(printCss, '[data-dots="advantages.arcana"] .dot.filled::after');
+    assert.includes(printCss, 'body.sheet-printing .notes-focus-section');
   };
 
   click(doc.getElementById('printSheetBtn'));
   assert.equal(printCalled, true);
   win.dispatchEvent(new win.Event('afterprint'));
   assert.equal(doc.body.classList.contains('sheet-printing'), false);
+  assert.equal(doc.querySelector('.print-backgrounds-page'), null);
   assert.equal(doc.title, originalTitle);
   assert.equal(doc.querySelector('[data-field="identity.name"]').value, 'Lari');
   win.print = originalPrint;

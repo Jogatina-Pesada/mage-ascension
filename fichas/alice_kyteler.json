@@ -77,7 +77,7 @@
   "backgrounds": {
     "allies": 0,
     "backup": 0,
-    "contacts": 2,
+    "contacts": 1,
     "spies": 1,
     "fame": 0,
     "influence": 2,
@@ -87,7 +87,7 @@
     "resources": 0,
     "sanctum": 0,
     "dream": 0,
-    "pastLives": 0
+    "pastLives": 3
   },
   "identity": {
     "experience": 0,

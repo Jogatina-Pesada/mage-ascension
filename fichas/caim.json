@@ -208,5 +208,10 @@
     "fame": "Família Castillo, antigos condes da província de Urgell, Catalunha",
     "resources": "Pouca herança do que sobrou da família Castillo.",
     "pastLives": "Conhecimentos adquiridos por meio das outras vezes que Caim morreu e voltou à vida."
+  },
+  "world": {
+    "magic": {
+      "belief": "Por que acredit"
+    }
   }
 }

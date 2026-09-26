@@ -1809,6 +1809,21 @@ textarea.large { min-height: 220px; }
   body.sheet-printing textarea::placeholder {
     color: transparent !important;
   }
+  body.sheet-printing .identity-fields label:nth-child(3),
+  body.sheet-printing .backgrounds-panel,
+  body.sheet-printing .creation-world-panel,
+  body.sheet-printing #covenSection,
+  body.sheet-printing #lineageSection {
+    display: none !important;
+  }
+  body.sheet-printing .identity-fields label:nth-child(-n + 2) input,
+  body.sheet-printing .identity-fields label:nth-child(-n + 2) select,
+  body.sheet-printing .print-backgrounds-page input,
+  body.sheet-printing .print-backgrounds-page textarea,
+  body.sheet-printing .print-backgrounds-page select {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+  }
   body.sheet-printing .stepper-btn,
   body.sheet-printing .xp-cost {
     display: none !important;
@@ -1837,6 +1852,13 @@ textarea.large { min-height: 220px; }
   body.sheet-printing .dot.lineage-bonus-dot {
     background: #fff !important;
   }
+  body.sheet-printing .attributes-panel .dot.filled,
+  body.sheet-printing .abilities-panel .dot.filled,
+  body.sheet-printing .spheres-advantages > .panel:first-child .dot.filled,
+  body.sheet-printing [data-dots="advantages.arcana"] .dot.filled,
+  body.sheet-printing .print-backgrounds-page .dot.filled {
+    background: #000 !important;
+  }
   body.sheet-printing img:not(#characterImagePreview),
   body.sheet-printing .coven-pantry-slot img {
     visibility: hidden !important;
@@ -1862,6 +1884,30 @@ textarea.large { min-height: 220px; }
   body.sheet-printing .coven-pantry-slot {
     break-inside: avoid;
   }
+  body.sheet-printing .print-backgrounds-page {
+    display: block;
+    break-before: page;
+    color: #000;
+  }
+  body.sheet-printing .print-backgrounds-page * {
+    color: #000 !important;
+    border-color: #000 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body.sheet-printing .print-backgrounds-page .dot.filled {
+    background-color: #000 !important;
+  }
+  body.sheet-printing .print-backgrounds-page h1,
+  body.sheet-printing .print-backgrounds-page h2 {
+    text-align: center;
+  }
+  body.sheet-printing .print-backgrounds-page [hidden] {
+    display: none !important;
+  }
+  body:not(.sheet-printing) .print-backgrounds-page { display: none; }
 
   body.wiki-printing > * { display: none !important; }
   body.wiki-printing > .wiki-page-shell,

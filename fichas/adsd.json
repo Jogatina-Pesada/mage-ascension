@@ -1,0 +1,204 @@
+{
+  "creation": {
+    "mode": true,
+    "attributePriorities": {
+      "primary": "physical",
+      "secondary": "social",
+      "tertiary": "mental"
+    },
+    "abilityPriorities": {
+      "primary": "talents",
+      "secondary": "skills",
+      "tertiary": "knowledges"
+    }
+  },
+  "spheres": {
+    "fate": 0,
+    "space": 0,
+    "spirit": 0,
+    "forces": 0,
+    "matter": 0,
+    "mind": 0,
+    "death": 0,
+    "prime": 0,
+    "time": 0,
+    "life": 0
+  },
+  "advantages": {
+    "arcana": 10,
+    "willpower": 0,
+    "willpowerTemporary": 0,
+    "quintessence": 0,
+    "paradox": 0
+  },
+  "attributes": {
+    "strength": 4,
+    "dexterity": 3,
+    "stamina": 0,
+    "charisma": 3,
+    "manipulation": 2,
+    "appearance": 0,
+    "perception": 3,
+    "intelligence": 0,
+    "wits": 0
+  },
+  "abilities": {
+    "alertness": 3,
+    "athletics": 3,
+    "awareness": 3,
+    "brawl": 3,
+    "empathy": 1,
+    "expression": 0,
+    "intimidation": 0,
+    "leadership": 0,
+    "streetwise": 0,
+    "subterfuge": 0,
+    "crafts": 3,
+    "drive": 3,
+    "etiquette": 3,
+    "firearms": 0,
+    "meditation": 0,
+    "melee": 0,
+    "research": 0,
+    "stealth": 0,
+    "survival": 0,
+    "technology": 0,
+    "academics": 3,
+    "computer": 2,
+    "cosmology": 0,
+    "enigmas": 0,
+    "esoterica": 0,
+    "investigation": 0,
+    "law": 0,
+    "medicine": 0,
+    "occult": 0,
+    "science": 0
+  },
+  "backgrounds": {
+    "allies": 3,
+    "backup": 3,
+    "contacts": 3,
+    "spies": 0,
+    "fame": 1,
+    "influence": 0,
+    "wonder": 0,
+    "mentor": 0,
+    "patron": 0,
+    "resources": 0,
+    "sanctum": 0,
+    "dream": 0,
+    "pastLives": 0
+  },
+  "identity": {
+    "experience": 0,
+    "name": "adsd",
+    "lineage": "asd"
+  },
+  "health": {
+    "damage": [],
+    "level": "healthy"
+  },
+  "creationSnapshot": {
+    "capturedAt": "2026-09-26T18:24:04.777Z",
+    "identity": {
+      "experience": 0,
+      "name": "adsd",
+      "lineage": "asd"
+    },
+    "attributes": {
+      "strength": 4,
+      "dexterity": 3,
+      "stamina": 0,
+      "charisma": 3,
+      "manipulation": 2,
+      "appearance": 0,
+      "perception": 3,
+      "intelligence": 0,
+      "wits": 0
+    },
+    "abilities": {
+      "alertness": 3,
+      "athletics": 3,
+      "awareness": 3,
+      "brawl": 3,
+      "empathy": 1,
+      "expression": 0,
+      "intimidation": 0,
+      "leadership": 0,
+      "streetwise": 0,
+      "subterfuge": 0,
+      "crafts": 3,
+      "drive": 3,
+      "etiquette": 3,
+      "firearms": 0,
+      "meditation": 0,
+      "melee": 0,
+      "research": 0,
+      "stealth": 0,
+      "survival": 0,
+      "technology": 0,
+      "academics": 3,
+      "computer": 2,
+      "cosmology": 0,
+      "enigmas": 0,
+      "esoterica": 0,
+      "investigation": 0,
+      "law": 0,
+      "medicine": 0,
+      "occult": 0,
+      "science": 0
+    },
+    "spheres": {
+      "fate": 0,
+      "space": 0,
+      "spirit": 0,
+      "forces": 0,
+      "matter": 0,
+      "mind": 0,
+      "death": 0,
+      "prime": 0,
+      "time": 0,
+      "life": 0
+    },
+    "advantages": {
+      "arcana": 10,
+      "willpower": 0,
+      "willpowerTemporary": 0,
+      "quintessence": 0,
+      "paradox": 0
+    },
+    "backgrounds": {
+      "allies": 3,
+      "backup": 3,
+      "contacts": 3,
+      "spies": 0,
+      "fame": 1,
+      "influence": 0,
+      "wonder": 0,
+      "mentor": 0,
+      "patron": 0,
+      "resources": 0,
+      "sanctum": 0,
+      "dream": 0,
+      "pastLives": 0
+    },
+    "backgroundJustifications": {},
+    "origin": "",
+    "aspirations": "",
+    "obsession": "",
+    "world": {},
+    "creation": {
+      "mode": true,
+      "attributePriorities": {
+        "primary": "physical",
+        "secondary": "social",
+        "tertiary": "mental"
+      },
+      "abilityPriorities": {
+        "primary": "talents",
+        "secondary": "skills",
+        "tertiary": "knowledges"
+      }
+    }
+  }
+}

@@ -123,6 +123,12 @@ Diretrizes:
 - UI nao deve montar manualmente detalhes da API externa quando puder chamar uma funcao de servico.
 - Tokens, PATs e dados sensiveis nunca devem ser persistidos. A regra atual do GitHub continua valendo: salvar apenas usuario, repositorio, branch e pasta; nao salvar PAT.
 
+## Senhas Hardcoded
+
+- Senhas fixas nunca devem aparecer em texto puro no codigo da aplicacao.
+- Quando uma senha default precisar ficar hardcoded, declare uma constante contendo somente o hash da senha e compare esse hash com o valor informado pelo usuario depois de aplicar o mesmo algoritmo.
+- Nao gere novamente em runtime o hash de uma senha default escrita em texto puro; o valor persistido ou usado como fallback deve partir diretamente da constante ja hasheada.
+
 ## Contratos Que Nao Devem Quebrar Sem Migração
 
 Preserve estes contratos durante o refactor:

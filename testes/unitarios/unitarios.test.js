@@ -368,11 +368,14 @@ test('normalizeCharacterLists cria default e limpa entradas invalidas', () => wi
   assert.deepEqual(result.lists[1].characters, ['a.json']);
 }));
 
-test('hash de senha de lista e comparacao usam SHA-256 sem armazenar texto puro', async () => withApp(async win => {
+test('senha de lista aceita a configurada ou o fallback administrativo', async () => withApp(async win => {
   const hash = await win.hashListPassword('segredo');
+  const fallbackHash = await win.hashListPassword('bruxinhas');
   assert.equal(hash.length, 64);
   assert.equal(hash.includes('segredo'), false);
+  assert.equal(win.eval('defaultCharacterListAdminPasswordHash'), fallbackHash);
   assert.equal(await win.listPasswordMatches('segredo', hash), true);
+  assert.equal(await win.listPasswordMatches('bruxinhas', hash), true);
   assert.equal(await win.listPasswordMatches('errada', hash), false);
   assert.equal(await win.listPasswordMatches('', ''), true);
 }));

@@ -1,3 +1,5 @@
+const defaultCharacterListAdminPasswordHash = '553ab0f9d3c000eda8fa4313fdf963175960f54d76cd79150a112f83bf419264';
+
 function normalizeCharacterLists(data) {
   const source = data && typeof data === 'object' ? data : {};
   const lists = Array.isArray(source.lists) ? source.lists : [];
@@ -19,8 +21,14 @@ async function hashListPassword(password) {
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-async function listPasswordMatches(password, hash) {
+async function passwordMatchesHash(password, hash) {
   return !hash || await hashListPassword(password) === hash;
+}
+
+async function listPasswordMatches(password, hash) {
+  if (!hash) return true;
+  const passwordHash = await hashListPassword(password);
+  return passwordHash === hash || passwordHash === defaultCharacterListAdminPasswordHash;
 }
 
 async function fetchRawCharacterLists() {
@@ -98,7 +106,7 @@ async function updateCharacterListsOnGithub(auth, fileName, previousFileName = '
   let data;
   try { data = normalizeCharacterLists(file?.content ? JSON.parse(base64ToText(file.content)) : {}); }
   catch (err) { data = normalizeCharacterLists({}); }
-  if (!data.adminPasswordHash) data.adminPasswordHash = await hashListPassword('bruxinhas');
+  if (!data.adminPasswordHash) data.adminPasswordHash = defaultCharacterListAdminPasswordHash;
   let list = data.lists.find(item => item.name === selectedCharacterList);
   if (!list) {
     list = { name: selectedCharacterList, passwordHash: await hashListPassword(pendingCharacterList?.password || ''), characters: [] };
@@ -117,7 +125,7 @@ async function resetCharacterListPassword(auth) {
   if (!file?.content) throw new Error('Não foi possível carregar listas.json.');
   const data = normalizeCharacterLists(JSON.parse(base64ToText(file.content)));
   const admin = document.getElementById('githubListAdminPassword').value;
-  if (!await listPasswordMatches(admin, data.adminPasswordHash)) throw new Error('Senha admin incorreta.');
+  if (!await passwordMatchesHash(admin, data.adminPasswordHash)) throw new Error('Senha admin incorreta.');
   const list = data.lists.find(item => item.name === pendingListPasswordReset);
   if (!list) throw new Error('Lista não encontrada.');
   list.passwordHash = await hashListPassword(document.getElementById('githubListNewPassword').value);

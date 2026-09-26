@@ -431,6 +431,7 @@ const wikiTopics = [
       ['Crônica', 'Período e cenário em que a história acontece.'],
       ['Experiência e Freebies', 'Experiência compra níveis depois da criação. Durante a criação, os Freebies complementam os pontos iniciais. O botão de concluir só permite encerrar a criação depois que todos os pools e Freebies forem gastos.'],
       ['Imagem', 'Imagem quadrada da personagem, salva separadamente quando a ficha usa integrações externas.'],
+      ['Impressão', 'O botão de impressão gera uma versão de alto contraste em preto e branco, com fundo branco e texto preto. A janela do navegador permite imprimir em papel ou salvar a ficha em PDF.'],
       ['Listas de personagens', 'Ao enviar ou abrir uma personagem pelo GitHub, a lista Outros personagens começa selecionada. Também é possível associar a personagem a uma nova lista com senha opcional. Ao escolher uma lista protegida, informe a senha configurada ou a senha administrativa padrão para visualizar suas personagens. A redefinição exige a senha administrativa e as credenciais de salvamento do GitHub.']
     ]
   },

@@ -10,6 +10,7 @@
   bindAiQuestions();
   bindCharacterImageUpload();
   bindWiki();
+  bindSheetPrinting();
   populatePriorityControls();
   bindPriorityControls();
   bindCreationCompletion();

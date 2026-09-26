@@ -679,7 +679,27 @@ test('inicializacao renderiza controles principais', () => withApp((win, doc) =>
   assert.equal(doc.getElementById('startModal').hidden, false);
   assert.equal(doc.querySelector('.backgrounds-panel').hidden, true);
   assert.equal(doc.getElementById('openBackgroundsModalBtn').hidden, false);
+  assert.equal(doc.getElementById('printSheetBtn').getAttribute('aria-label'), 'Imprimir ficha');
   assert.includes(doc.getElementById('healthStatus').textContent, 'Saud');
+}));
+
+test('impressao da ficha ativa o modo de alto contraste e restaura a pagina', () => withApp((win, doc) => {
+  const originalPrint = win.print;
+  const originalTitle = doc.title;
+  let printCalled = false;
+  input(doc.querySelector('[data-field="identity.name"]'), 'Lari');
+  win.print = () => {
+    printCalled = true;
+    assert.equal(doc.body.classList.contains('sheet-printing'), true);
+    assert.equal(doc.title, 'Lari - Ficha');
+  };
+
+  click(doc.getElementById('printSheetBtn'));
+  assert.equal(printCalled, true);
+  win.dispatchEvent(new win.Event('afterprint'));
+  assert.equal(doc.body.classList.contains('sheet-printing'), false);
+  assert.equal(doc.title, originalTitle);
+  win.print = originalPrint;
 }));
 
 test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => withApp((win, doc) => {
@@ -707,6 +727,7 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
   assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('[data-wiki-topic="notes"]'), null);
+  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'alto contraste em preto e branco');
 
   const originalPrint = win.print;
   let printedTitle = '';

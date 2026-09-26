@@ -13,6 +13,13 @@ function shellHeaderTemplate() {
             <path d="M8 10h6"></path>
           </svg>
         </button>
+        <button id="printSheetBtn" class="icon-btn" type="button" aria-label="Imprimir ficha" title="Imprimir ficha em preto e branco">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 9V3h10v6"></path>
+            <path d="M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path>
+            <path d="M7 14h10v7H7z"></path>
+          </svg>
+        </button>
         <button id="saveBtn" class="icon-btn" type="button" aria-label="Baixar ficha" title="Baixar ficha">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 3v12"></path>

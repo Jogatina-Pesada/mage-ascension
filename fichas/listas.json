@@ -30,6 +30,13 @@
       "characters": [
         "alice_kyteler.json"
       ]
+    },
+    {
+      "name": "MComp",
+      "passwordHash": "",
+      "characters": [
+        "natalia_nadya.json"
+      ]
     }
   ]
 }

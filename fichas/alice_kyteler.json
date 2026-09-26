@@ -63,7 +63,7 @@
     "stealth": 2,
     "survival": 2,
     "technology": 0,
-    "academics": 0,
+    "academics": 1,
     "computer": 0,
     "cosmology": 0,
     "enigmas": 1,
@@ -71,7 +71,7 @@
     "investigation": 2,
     "law": 2,
     "medicine": 2,
-    "occult": 1,
+    "occult": 0,
     "science": 0
   },
   "backgrounds": {

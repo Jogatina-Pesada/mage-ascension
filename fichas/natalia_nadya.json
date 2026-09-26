@@ -97,8 +97,10 @@
     "image": "imagens/natalia_nadya.png"
   },
   "health": {
-    "damage": [],
-    "level": "healthy"
+    "damage": [
+      "/"
+    ],
+    "level": "bruised"
   },
   "creationSnapshot": {
     "capturedAt": "2026-09-26T20:28:49.716Z",

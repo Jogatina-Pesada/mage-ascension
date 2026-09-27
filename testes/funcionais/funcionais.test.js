@@ -702,6 +702,13 @@ test('impressao preenche secoes selecionadas, inclui antecedentes e restaura a p
     assert.equal(printPage.querySelector('[data-field="world.magic.belief"]').value, 'Eu vi a magia acontecer');
     assert.equal(doc.querySelectorAll('.print-filled-field').length, 2);
     assert.equal(doc.querySelectorAll('.print-filled-dots').length, 4);
+    assert.equal(doc.querySelector('.notes-focus-section').classList.contains('print-excluded-section'), true);
+    assert.equal(doc.getElementById('healthDamageButtons').classList.contains('no-print'), false);
+    assert.deepEqual(
+      Array.from(doc.querySelectorAll('.health-type-label')).map(label => label.textContent),
+      ['/Contusão', 'XLetal', '*Agravado']
+    );
+    assert(doc.querySelector('#healthPenalty .health-dice'));
     assert.equal(doc.getElementById('covenSection').classList.contains('print-excluded-section'), true);
     assert.equal(doc.getElementById('lineageSection').classList.contains('print-excluded-section'), true);
   };

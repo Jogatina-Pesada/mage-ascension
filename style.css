@@ -1853,8 +1853,14 @@ textarea.large { min-height: 220px; }
   body.sheet-printing .print-filled-dots .dot.filled,
   body.sheet-printing .print-backgrounds-page .dot.filled {
     background: #000 !important;
+    border-width: 4px !important;
+    width: 1px !important;
+    height: 1px !important;
+    flex-basis: 1px !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-  body.sheet-printing img:not(#characterImagePreview),
+  body.sheet-printing img:not(#characterImagePreview):not(.health-dice),
   body.sheet-printing .coven-pantry-slot img {
     visibility: hidden !important;
   }
@@ -1863,7 +1869,6 @@ textarea.large { min-height: 220px; }
   }
   body.sheet-printing .health-box,
   body.sheet-printing .health-status,
-  body.sheet-printing .health-penalty,
   body.sheet-printing .lineage-xp-value,
   body.sheet-printing .lineage-members,
   body.sheet-printing .coven-fame-description,
@@ -1871,6 +1876,24 @@ textarea.large { min-height: 220px; }
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
     text-shadow: none !important;
+  }
+  body.sheet-printing .health-damage-buttons {
+    gap: 6px;
+  }
+  body.sheet-printing .health-type-actions {
+    display: block;
+  }
+  body.sheet-printing .health-damage-btn,
+  body.sheet-printing .health-heal-btn {
+    display: none !important;
+  }
+  body.sheet-printing .health-penalty {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+  body.sheet-printing .health-dice {
+    visibility: visible !important;
+    filter: grayscale(1) contrast(2);
   }
   body.sheet-printing .panel,
   body.sheet-printing .dot-row,

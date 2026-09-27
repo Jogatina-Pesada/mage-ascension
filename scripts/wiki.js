@@ -601,8 +601,9 @@ const wikiTopics = [
     title: 'Linhagem',
     intro: 'Registra a herança mágica compartilhada entre personagens.',
     entries: [
+      ['Nome', 'Na criação, o nome da personagem também é usado como nome da linhagem quando nenhum outro for informado. Ao sair do campo, uma linhagem existente com esse nome é carregada do GitHub. Renomear a linhagem atualiza o arquivo e as referências das personagens no próximo salvamento no GitHub.'],
       ['Esferas', 'A experiência acumulada pela linhagem determina os níveis disponíveis em cada Esfera.'],
-      ['Membros', 'Cada membro registra personagem, crônica, estado de vida e contribuição de experiência.'],
+      ['Membros', 'Cada membro registra personagem, crônica, estado de vida e contribuição de experiência. Durante a criação, o nome da personagem preenche automaticamente a lista.'],
       ['Morte e herança', 'Ao morrer, metade da experiência conquistada depois da criação pode passar para a linhagem.'],
       ['Bônus de criação', 'Uma nova personagem pode herdar níveis inteiros de Esferas compráveis pela experiência da linhagem.']
     ]

@@ -57,7 +57,7 @@ function identityHealthTemplate() {
       <div class="panel health-panel">
       <label><span class="health-title">Saúde</span>
         <span class="health-control">
-          <span id="healthDamageButtons" class="health-damage-buttons no-print"></span>
+          <span id="healthDamageButtons" class="health-damage-buttons"></span>
           <span id="healthBoxes" class="health-boxes" aria-label="Dano de saude"></span>
           <span class="health-summary">
             <span id="healthStatus" class="health-status">Saudável</span>
@@ -267,7 +267,7 @@ function backgroundsTemplate() {
 
 function notesFocusTemplate() {
   return `
-<section class="panel notes-focus-section">
+<section class="panel notes-focus-section print-excluded-section">
   <h2>Anotações</h2>
   <textarea class="large" data-field="notes" placeholder="Rotes, grimório, contatos, histórico, equipamentos..."></textarea>
 </section>

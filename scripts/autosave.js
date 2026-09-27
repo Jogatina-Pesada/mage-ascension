@@ -46,6 +46,9 @@ async function uploadSheetToGithub({ repo, branch, sheetsPath, token }, fileName
 
 async function uploadLineageToGithub(auth, message) {
   if (!lineageHasData() || !lineageName()) return '';
+  ensureLineageDefaults();
+  const previousFileName = currentLineageFile && currentLineageFile !== lineageFileName() ? currentLineageFile : '';
+  const previousName = previousFileName ? previousFileName.replace(/\.json$/i, '') : '';
   const lineagePath = joinGitHubPath(auth.sheetsPath, lineageRelativePath());
   await upsertGitHubFile(auth.repo, auth.branch, lineagePath, lineageJson(), message, auth.token);
   await updateGitHubManifest(
@@ -54,9 +57,18 @@ async function uploadLineageToGithub(auth, message) {
     joinGitHubPath(auth.sheetsPath, 'linhagens'),
     lineageFileName(),
     auth.token,
-    '',
+    previousFileName,
     lineageName()
   );
+  if (previousFileName) {
+    await updateLineageReferencesOnGithub(auth, previousName, lineageName());
+    await removeGitHubSheetFile(
+      { ...auth, sheetsPath: joinGitHubPath(auth.sheetsPath, 'linhagens') },
+      previousFileName,
+      lineageFileName()
+    );
+  }
+  currentLineageFile = lineageFileName();
   return lineagePath;
 }
 

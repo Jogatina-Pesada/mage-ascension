@@ -262,6 +262,7 @@ function startNewCharacter() {
   pendingCharacterImageRemovalPath = '';
   currentSheetAssetBaseUrl = 'fichas';
   currentSheetFile = '';
+  currentLineageFile = '';
   state.creation = {
     mode: true,
     attributePriorities: { ...creationDefaults.attributePriorities },

@@ -292,6 +292,20 @@ test('lineageData filtra membro vazio e preserva morto com contribuicao', () => 
   assert.deepEqual(data.members[0].lineageContribution, { life: 7 });
 }));
 
+test('lineageData usa nome da personagem e inclui a personagem durante a criacao', () => withApp(win => {
+  resetApp(win, { identity: { name: 'Lari' }, creation: { mode: true } });
+  win.eval('creationMode = true');
+  const lineage = lineageState(win);
+  lineage.name = '';
+  lineage.members = [];
+
+  const data = win.lineageData();
+
+  assert.equal(data.name, 'Lari');
+  assert.equal(data.members[0].name, 'Lari');
+  assert.equal(win.getPath(appState(win), 'identity.lineage'), 'Lari');
+}));
+
 test('sheetJson normaliza saude, linhagem e creationSnapshot', () => withApp(win => {
   resetApp(win, {
     identity: { name: 'Teste', lineage: 'Casa Teste' },

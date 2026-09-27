@@ -1558,6 +1558,29 @@ test('pull da linhagem bloqueia a secao enquanto busca o GitHub', async () => wi
   assert.equal(doc.getElementById('lineageNameInput').disabled, false);
 }));
 
+test('sair do nome da linhagem mostra loading e carrega linhagem existente', async () => withApp(async (win, doc) => {
+  resetApp(win, { identity: { name: 'Lari' }, creation: { mode: true } });
+  const nameInput = doc.getElementById('lineageNameInput');
+  let releaseFetch;
+  win.fetch = () => new Promise(resolve => { releaseFetch = resolve; });
+  input(nameInput, 'Casa Existente');
+
+  nameInput.dispatchEvent(new win.FocusEvent('blur'));
+  assert.equal(doc.getElementById('lineageSection').getAttribute('aria-busy'), 'true');
+  releaseFetch({ ok: true, json: async () => ({
+    name: 'Casa Existente',
+    spheres: { life: 2 },
+    sphereExperience: { life: 21 },
+    members: [{ name: 'Ancestral', chronicle: 'Urbana' }]
+  }) });
+  await tick();
+  await tick();
+
+  assert.equal(doc.getElementById('lineageSection').getAttribute('aria-busy'), 'false');
+  assert.equal(lineageState(win).name, 'Casa Existente');
+  assert.equal(lineageState(win).members[0].name, 'Ancestral');
+}));
+
 test('Escape fecha modais abertos', () => withApp((win, doc) => {
   resetApp(win, { identity: { name: 'Lari' } });
   click(doc.getElementById('githubUploadBtn'));

@@ -1812,12 +1812,10 @@ textarea.large { min-height: 220px; }
   body.sheet-printing .identity-fields label:nth-child(3),
   body.sheet-printing .backgrounds-panel,
   body.sheet-printing .creation-world-panel,
-  body.sheet-printing #covenSection,
-  body.sheet-printing #lineageSection {
+  body.sheet-printing .print-excluded-section {
     display: none !important;
   }
-  body.sheet-printing .identity-fields label:nth-child(-n + 2) input,
-  body.sheet-printing .identity-fields label:nth-child(-n + 2) select,
+  body.sheet-printing .print-filled-field,
   body.sheet-printing .print-backgrounds-page input,
   body.sheet-printing .print-backgrounds-page textarea,
   body.sheet-printing .print-backgrounds-page select {
@@ -1852,10 +1850,7 @@ textarea.large { min-height: 220px; }
   body.sheet-printing .dot.lineage-bonus-dot {
     background: #fff !important;
   }
-  body.sheet-printing .attributes-panel .dot.filled,
-  body.sheet-printing .abilities-panel .dot.filled,
-  body.sheet-printing .spheres-advantages > .panel:first-child .dot.filled,
-  body.sheet-printing [data-dots="advantages.arcana"] .dot.filled,
+  body.sheet-printing .print-filled-dots .dot.filled,
   body.sheet-printing .print-backgrounds-page .dot.filled {
     background: #000 !important;
   }

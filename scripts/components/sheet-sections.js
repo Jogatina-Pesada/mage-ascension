@@ -18,10 +18,10 @@ function identityHealthTemplate() {
           <input id="characterImageInput" class="character-photo-input" type="file" accept="image/*" />
         </section>
         <div class="identity-fields">
-          <label>Nome<input data-field="identity.name" placeholder="Nome do personagem" required /></label>
+          <label>Nome<input class="print-filled-field" data-field="identity.name" placeholder="Nome do personagem" required /></label>
           <label>Crônica
             <span class="chronicle-control">
-              <select data-field="identity.chronicle">
+              <select class="print-filled-field" data-field="identity.chronicle">
                 <option value="Idade Média">Idade Média</option>
                 <option value="Urbana">Urbano</option>
                 <option value="Futurista">Futurista</option>
@@ -113,7 +113,7 @@ function creationPanelTemplate() {
 function spheresAdvantagesTemplate() {
   return `
 <section class="grid spheres-advantages">
-      <div class="panel">
+      <div class="panel print-filled-dots">
         <h2>Esferas</h2>
         <div class="sphere-grid">
           <div data-dots="spheres.fate" data-label="Destino"></div>
@@ -130,7 +130,7 @@ function spheresAdvantagesTemplate() {
       </div>
       <div class="panel">
         <h2>Vantagens</h2>
-        <div data-dots="advantages.arcana" data-label="Arcana" data-max="10"></div>
+        <div class="print-filled-dots" data-dots="advantages.arcana" data-label="Arcana" data-max="10"></div>
         <div data-dots="advantages.willpower" data-label="Força de Vontade" data-max="10"></div>
         <label class="number-row">
           <span class="dot-label" data-wiki-path="advantages.quintessence" data-wiki-query="Quintessência">Quintessência</span>
@@ -155,7 +155,7 @@ function spheresAdvantagesTemplate() {
 
 function attributesTemplate() {
   return `
-<section class="panel attributes-panel">
+<section class="panel attributes-panel print-filled-dots">
       <h2>Atributos</h2>
       <div class="attribute-columns">
         <div class="attribute-column">
@@ -183,7 +183,7 @@ function attributesTemplate() {
 
 function abilitiesTemplate() {
   return `
-<section class="panel abilities-panel">
+<section class="panel abilities-panel print-filled-dots">
       <h2>Habilidades</h2>
       <div class="ability-columns">
         <div class="ability-column">
@@ -276,7 +276,7 @@ function notesFocusTemplate() {
 
 function covenantTemplate() {
   return `
-<section class="panel covenant-panel" id="covenSection">
+<section class="panel covenant-panel print-excluded-section" id="covenSection">
   <div class="section-heading">
     <h2>Coven</h2>
     <button id="covenEditBtn" class="icon-btn level-edit-btn no-print" type="button" aria-label="Editar coven" title="Editar coven">
@@ -315,7 +315,7 @@ function covenantTemplate() {
 
 function lineageTemplate() {
   return `
-<section class="grid lineage-section" id="lineageSection" aria-busy="false">
+<section class="grid lineage-section print-excluded-section" id="lineageSection" aria-busy="false">
       <div class="lineage-sync-loading no-print" id="lineageSyncLoading" hidden role="status" aria-live="polite">
         <span class="lineage-sync-spinner" aria-hidden="true"></span>
         <span>Sincronizando linhagem...</span>

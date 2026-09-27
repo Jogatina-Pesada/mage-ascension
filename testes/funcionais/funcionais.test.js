@@ -688,6 +688,8 @@ test('impressao preenche secoes selecionadas, inclui antecedentes e restaura a p
   const originalTitle = doc.title;
   let printCalled = false;
   input(doc.querySelector('[data-field="identity.name"]'), 'Lari');
+  input(doc.querySelector('#backgroundsModal [data-field="aspirations"]'), 'Encontrar o grimório');
+  input(doc.querySelector('#backgroundsModal [data-field="world.magic.belief"]'), 'Eu vi a magia acontecer');
   win.print = () => {
     printCalled = true;
     assert.equal(doc.body.classList.contains('sheet-printing'), true);
@@ -696,6 +698,12 @@ test('impressao preenche secoes selecionadas, inclui antecedentes e restaura a p
     assert(printPage);
     assert.equal(printPage.querySelectorAll('[data-backgrounds-modal-panel]').length, 2);
     assert.equal(printPage.querySelector('[data-backgrounds-modal-panel="world"]').hidden, false);
+    assert.equal(printPage.querySelector('[data-field="aspirations"]').value, 'Encontrar o grimório');
+    assert.equal(printPage.querySelector('[data-field="world.magic.belief"]').value, 'Eu vi a magia acontecer');
+    assert.equal(doc.querySelectorAll('.print-filled-field').length, 2);
+    assert.equal(doc.querySelectorAll('.print-filled-dots').length, 4);
+    assert.equal(doc.getElementById('covenSection').classList.contains('print-excluded-section'), true);
+    assert.equal(doc.getElementById('lineageSection').classList.contains('print-excluded-section'), true);
   };
 
   click(doc.getElementById('printSheetBtn'));

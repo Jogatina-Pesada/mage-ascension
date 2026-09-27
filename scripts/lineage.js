@@ -8,7 +8,7 @@
 }
 
 function lineageName() {
-  return (lineageState.name || getPath(state, 'identity.lineage', '')).trim();
+  return (lineageState.name || getPath(state, 'identity.lineage', '') || characterName()).trim();
 }
 
 function lineageFileName() {
@@ -29,6 +29,27 @@ function lineageHasData() {
 
 function ensureLineageMember() {
   if (!lineageState.members.length) addLineageMember(false);
+}
+
+function syncCurrentCharacterLineageMember() {
+  if (!creationMode) return;
+  ensureLineageMember();
+  const name = characterName();
+  if (!name || lineageState.members.some(item => item.name === name)) return;
+  let member = lineageState.members.find(item => !item.name);
+  if (!member) {
+    addLineageMember(false);
+    member = lineageState.members[lineageState.members.length - 1];
+  }
+  member.name = name;
+}
+
+function ensureLineageDefaults() {
+  if (!lineageState.name && !getPath(state, 'identity.lineage', '')) {
+    lineageState.name = characterName();
+  }
+  if (lineageState.name) setPath(state, 'identity.lineage', lineageState.name);
+  syncCurrentCharacterLineageMember();
 }
 
 function addLineageMember(render = true) {
@@ -380,6 +401,25 @@ function renderLineage() {
   updateLineageSphereBonusButton();
 }
 
+async function loadLineageByNameOnBlur() {
+  const requestedName = document.getElementById('lineageNameInput')?.value.trim();
+  if (!requestedName) return null;
+  const requestedFile = `${snakeCase(requestedName)}.json`;
+  setLineageSyncLoading(true);
+  try {
+    const data = await fetchGithubRawJson(githubSheetsRawBase(), `linhagens/${requestedFile}`);
+    if (!data) return null;
+    applyLineageData(data, requestedFile);
+    githubLineageSyncBase = syncClone(data);
+    return data;
+  } catch (err) {
+    console.warn('[lineage] Nao foi possivel verificar a linhagem no GitHub.', err);
+    return null;
+  } finally {
+    setLineageSyncLoading(false);
+  }
+}
+
 function focusLineageSection() {
   const nameInput = document.getElementById('lineageNameInput');
   nameInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -388,6 +428,7 @@ function focusLineageSection() {
 
 function startNewLineage() {
   clearLineageState();
+  currentLineageFile = '';
   setPath(state, 'identity.lineage', '');
   addLineageMember(false);
   renderLineage();
@@ -465,6 +506,7 @@ function bindLineage() {
     event.target.setCustomValidity('');
     updateLineageSphereBonusButton();
   });
+  document.getElementById('lineageNameInput')?.addEventListener('blur', loadLineageByNameOnBlur);
   document.getElementById('addLineageMemberBtn')?.addEventListener('click', () => addLineageMember());
   document.getElementById('applyLineageSphereBonusBtn')?.addEventListener('click', applyLineageSphereBonus);
   document.getElementById('closeLineageDeathModal')?.addEventListener('click', closeLineageDeathModal);

@@ -103,6 +103,33 @@ async function upsertGitHubFileBase64(repo, branch, path, base64Content, message
   await putGitHubFileBase64(repo, branch, path, base64Content, message, token, existingFile?.sha || null);
 }
 
+async function updateLineageReferencesOnGithub(auth, previousName, nextName) {
+  if (!previousName || previousName === nextName) return;
+  const candidates = new Set(lineageState.members
+    .map(member => member.name && `${snakeCase(member.name)}.json`)
+    .filter(Boolean));
+  if (currentSheetFile) candidates.add(currentSheetFile);
+
+  for (const fileName of candidates) {
+    const path = joinGitHubPath(auth.sheetsPath, fileName);
+    const file = await getGitHubFile(auth.repo, auth.branch, path, auth.token);
+    if (!file?.content) continue;
+    const data = JSON.parse(base64ToText(file.content));
+    const reference = String(data.identity?.lineage || '');
+    if (reference !== previousName && snakeCase(reference) !== snakeCase(previousName)) continue;
+    data.identity.lineage = nextName;
+    await putGitHubFile(
+      auth.repo,
+      auth.branch,
+      path,
+      JSON.stringify(data, null, 2),
+      `Renomeia referencia de linhagem para ${nextName}`,
+      auth.token,
+      file.sha
+    );
+  }
+}
+
 async function uploadCharacterImageToGithub(auth, message) {
   if (!pendingCharacterImage) return '';
   const imagePath = ensureCharacterImagePath();

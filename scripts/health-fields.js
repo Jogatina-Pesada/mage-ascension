@@ -196,6 +196,10 @@ function bindFields() {
       setPath(state, e.target.dataset.field, value);
       if (e.target.dataset.field === 'identity.name') {
         e.target.setCustomValidity('');
+        syncCurrentCharacterLineageMember();
+        if (creationMode && !lineageState.name && !getPath(state, 'identity.lineage', '')) {
+          renderLineageMembers();
+        }
       }
       if (e.target.dataset.field === 'identity.experience') {
         setExperienceError('');

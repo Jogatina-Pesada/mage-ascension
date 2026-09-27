@@ -5,6 +5,7 @@ const lineageState = {
   sphereExperience: {},
   members: []
 };
+let currentLineageFile = '';
 const healthLevels = [
   { value: 'healthy', label: 'Saudável', dicePenalty: 0 },
   { value: 'bruised', label: 'Escoriado', dicePenalty: 0 },

@@ -27,6 +27,7 @@ function requireCharacterName(onError = () => {}) {
 }
 
 function requireLineageName(onError = () => {}) {
+  ensureLineageDefaults();
   if (!lineageHasData() || lineageName()) return true;
 
   const nameInput = document.getElementById('lineageNameInput');
@@ -61,6 +62,7 @@ function applySheetData(data, fileName = '', assetBaseUrl = 'fichas') {
   clearAiPreview();
   clearState();
   clearLineageState();
+  currentLineageFile = '';
   pendingCharacterImage = null;
   pendingCharacterImageRemovalPath = '';
   currentSheetAssetBaseUrl = assetBaseUrl;
@@ -89,7 +91,7 @@ function applySheetData(data, fileName = '', assetBaseUrl = 'fichas') {
   renderLineage();
 }
 
-function applyLineageData(data) {
+function applyLineageData(data, fileName = '') {
   clearLineageState();
   lineageState.name = data.name || lineageName();
   lineageState.spheres = { ...(data.spheres || {}) };
@@ -99,6 +101,7 @@ function applyLineageData(data) {
     ? data.members.map(normalizeLineageMember)
     : [];
   if (lineageState.name) setPath(state, 'identity.lineage', lineageState.name);
+  currentLineageFile = fileName || (lineageState.name ? lineageFileName() : '');
   renderLineage();
 }
 
@@ -113,7 +116,7 @@ async function loadLineageFromUrl(baseUrl) {
       url,
       data
     });
-    applyLineageData(data);
+    applyLineageData(data, lineageFileName());
     return data;
   } catch (err) {
     console.warn('[lineage] Nao foi possivel carregar a linhagem.', err);
@@ -155,7 +158,7 @@ async function loadLineageFromGithubItem(item) {
       url,
       data
     });
-    applyLineageData(data);
+    applyLineageData(data, item.file);
     closeLineageLoadModal();
     focusLineageSection();
   } catch (err) {
@@ -229,6 +232,7 @@ function setLineageLoadModalStatus(message) {
 }
 
 function sheetJson() {
+  ensureLineageDefaults();
   setPath(state, 'advantages.willpowerTemporary', temporaryWillpower());
   ensureHealthDamage();
   clampCharacterCovenResources();
@@ -265,6 +269,7 @@ function ensureCreationSnapshot() {
 }
 
 function lineageData() {
+  ensureLineageDefaults();
   const sphereExperience = Object.fromEntries(spherePaths.map(path => {
     const key = path.split('.')[1];
     return [key, lineageSphereXp(key)];

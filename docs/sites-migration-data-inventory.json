@@ -1,0 +1,263 @@
+[
+  {
+    "path": "fichas/abel_bilbao.json",
+    "bytes": 3941,
+    "sha256": "07f821c377f4bc2fd1ba47162a24bf0591ac17fe51fe0679025985309dfbfa5a",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "creationSnapshot"
+    ]
+  },
+  {
+    "path": "fichas/alice_kyteler.json",
+    "bytes": 4063,
+    "sha256": "700fbd1e28616a6c78fe3df53b941756800704e686491cf44124fede84410735",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "creationSnapshot"
+    ]
+  },
+  {
+    "path": "fichas/baba_yaga.json",
+    "bytes": 1521,
+    "sha256": "1bb781a377790472dec9648af08f352486ffbd2ca3b53d2d1f21d0d3ea557e7b",
+    "type": "dict",
+    "keys": [
+      "identity",
+      "attributes",
+      "creation",
+      "spheres",
+      "health",
+      "advantages",
+      "creationSnapshot",
+      "world",
+      "aspirations"
+    ]
+  },
+  {
+    "path": "fichas/caim.json",
+    "bytes": 6554,
+    "sha256": "f446623056c93568e3cc3f10fa4d229706045cc5e9fe7bc845973709653bb804",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "creationSnapshot",
+      "backgroundJustifications",
+      "world",
+      "origin",
+      "obsession",
+      "aspirations"
+    ]
+  },
+  {
+    "path": "fichas/coven.json",
+    "bytes": 295,
+    "sha256": "d39b26e5945e632659558b029edbfd1279c14ce1626e596b069cd6f86a7deaeb",
+    "type": "dict",
+    "keys": [
+      "name",
+      "quintessence",
+      "paradox",
+      "obolOfTheDead",
+      "fame",
+      "lab",
+      "pantry",
+      "lock"
+    ]
+  },
+  {
+    "path": "fichas/fatima.json",
+    "bytes": 8943,
+    "sha256": "49ac8b7a2a55eb949e6c17d6a0eac2bd3d20f65e3aacab15d956776bca2ce481",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "backgroundJustifications",
+      "creationSnapshot",
+      "aspirations",
+      "world",
+      "obsession",
+      "origin"
+    ]
+  },
+  {
+    "path": "fichas/index.json",
+    "bytes": 453,
+    "sha256": "66d8f55eb423f2cc016116761625fdec4e73257eed04591169c9d26d8724a6e1",
+    "type": "list",
+    "keys": null
+  },
+  {
+    "path": "fichas/irma_carmen.json",
+    "bytes": 4248,
+    "sha256": "6c77cf1a8d9dda1d4aa5bf8554ffd6a9d1e88980210968db224196af8ec36d74",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "backgroundJustifications",
+      "creationSnapshot"
+    ]
+  },
+  {
+    "path": "fichas/itens.json",
+    "bytes": 1936,
+    "sha256": "e904ec34ea8430a2cc1e41da6a740e79f54a9515d369072ed66e153d6e49efd9",
+    "type": "list",
+    "keys": null
+  },
+  {
+    "path": "fichas/linhagens/akashka.json",
+    "bytes": 551,
+    "sha256": "385c0f00f04c19765e37f008195fbcca7322937c9e01a27d2dfa8eff8dda5ab5",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/linhagens/castillo.json",
+    "bytes": 552,
+    "sha256": "9149955ef48976cac40b11612ed94eee1adb0b5d765e5afd9e1a2d29d0545828",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/linhagens/index.json",
+    "bytes": 391,
+    "sha256": "c8318ba8f7f752895fc516e760e1c6fabdd3bfc8c81ca8e2169bfd38f9f946e3",
+    "type": "list",
+    "keys": null
+  },
+  {
+    "path": "fichas/linhagens/irmas_da_lilith.json",
+    "bytes": 710,
+    "sha256": "9bcee257ef14a1cc949905e37c8c9100a37be5b8e64e35528bd26c96823fb0d9",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/linhagens/kyteler.json",
+    "bytes": 551,
+    "sha256": "6930532f9d1356f0268097bb563c8cb30c630c98a8f4fcfcadfec479bdb0ca93",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/linhagens/linhagem.json",
+    "bytes": 552,
+    "sha256": "7f60f4407672872f26456427695b793a28a47b1fb660d9f1e6b80e1e8db1bdb4",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/linhagens/linhagem_teste.json",
+    "bytes": 898,
+    "sha256": "4fe2532ced70a746a1daaf16acccb367468c0bde0c6d1df5b8e89204cc239298",
+    "type": "dict",
+    "keys": [
+      "name",
+      "spheres",
+      "sphereExperience",
+      "members"
+    ]
+  },
+  {
+    "path": "fichas/listas.json",
+    "bytes": 1092,
+    "sha256": "c9c47d14371c55c879cdf41a9514cd10657c123cb4f61bc1847b25b7b0359fbc",
+    "type": "dict",
+    "keys": [
+      "adminPasswordHash",
+      "lists"
+    ]
+  },
+  {
+    "path": "fichas/natalia_nadya.json",
+    "bytes": 14358,
+    "sha256": "cae9ec76b09b8387c4102eb88a3d918922fbade5e28b8b16e1791dcdbc911ca0",
+    "type": "dict",
+    "keys": [
+      "creation",
+      "spheres",
+      "advantages",
+      "attributes",
+      "abilities",
+      "backgrounds",
+      "identity",
+      "health",
+      "creationSnapshot",
+      "backgroundJustifications",
+      "origin",
+      "aspirations",
+      "obsession",
+      "world"
+    ]
+  },
+  {
+    "path": "itens.json",
+    "bytes": 3331,
+    "sha256": "b95d2c4c858ec4a428aaedac8551a410fb370b5029eddc80bdf7f5430a37c64b",
+    "type": "list",
+    "keys": null
+  }
+]

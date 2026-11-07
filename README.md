@@ -73,3 +73,75 @@ As respostas ficam armazenadas em `ai` dentro dos dados da ficha e so sao persis
 Para funcionar no GitHub Pages, mantenha `prompt.js` publicado na raiz do projeto junto com `index.html`. O arquivo deve definir `window.aiPromptTemplate`.
 
 Nao usa frameworks, build ou dependencias externas.
+
+## Migração para ChatGPT Sites (em validação)
+
+O GitHub existente permanece a fonte principal. O Site privado registrado ainda **não foi publicado**. Consulte `docs/sites-migration.md` para auditoria, decisões, resultados e bloqueios. Os dados reais ainda não foram enviados ao Sites.
+
+### Execução e debug local
+
+A aplicação original continua sem dependências: abra `index.html` ou sirva a pasta com `python -m http.server 8000 --bind 127.0.0.1`. O modo original mantém suas integrações anteriores; não use PAT para validar o novo modo Sites.
+
+O backend e o build novo exigem Node.js 24 (SQLite nativo, sem instalar pacotes):
+
+```sh
+node sites/scripts/build.mjs
+node sites/scripts/dev.mjs
+```
+
+Acesse `http://127.0.0.1:8787`. Para debug: `node --inspect sites/scripts/dev.mjs`; use também o console e a aba Network do navegador. O build inclui somente HTML/CSS/JS e assets de interface no Worker. Não copia registros nem imagens privadas para assets públicos.
+
+O servidor local remove headers de identidade recebidos e retorna 401 para APIs protegidas. Ele permite editar/importar/exportar offline, mas **não simula Entrar com ChatGPT**. O login real pertence à infraestrutura Sites. Dados locais de desenvolvimento ficam em `work/mage-local.sqlite`, ignorado pelo Git. Não há segredo de autenticação no frontend.
+
+### Testes
+
+O pedido explícito desta migração autoriza executar testes, prevalecendo sobre a proibição histórica nos AGENTS.md. Sem essa autorização em tarefas futuras, observe as instruções locais aplicáveis.
+
+```sh
+node testes/sites/server.test.mjs
+node sites/scripts/build.mjs
+node testes/sites/browser.mjs
+```
+
+O teste de navegador usa Playwright e Chromium como ferramentas de desenvolvimento, sem dependência de runtime. Configure `PLAYWRIGHT_MODULE` com o caminho de uma instalação local de Playwright e `CHROMIUM_PATH` com o executável Chromium quando os caminhos do ambiente não existirem. O servidor com identidade fictícia existe somente nesse teste e não é empacotado.
+
+As suites originais continuam em `testes/index.html`: execute `python testes/serve-tests.py`, abra `http://127.0.0.1:8765/testes/index.html` e consulte `testes/test-results.json`. As correções do harness e de asserções antigas não mudam regras da aplicação.
+
+### Permissões e sessões
+
+Configure `MAGE_BOOTSTRAP_ADMIN_EMAIL` exclusivamente no runtime do Sites com o e-mail da proprietária confirmado no painel. O primeiro login correspondente vincula esse e-mail ao ID estável deste Site. Remova a configuração de bootstrap depois de confirmar o cadastro. Mantenha o Site privado; nenhum jogador foi convidado automaticamente.
+
+`GET /api/session` informa o ID da sessão e o papel cadastrado. IDs do painel de compartilhamento não devem ser usados como IDs de sessão sem confirmação. Somente o narrador pode usar `POST /api/members` com `{id,email,role:"player"}`; `active:false` revoga acesso sem apagar fichas. `POST /api/access` recebe `{path,userId,permission:"read"|"write"|"remove"}` para compartilhamento explícito. Imagens privadas exigem permissão própria ao compartilhar uma ficha; não se concede acesso a uma imagem apenas porque seu caminho foi inserido em um JSON. Não há tela nova de administração; essas operações são APIs autenticadas.
+
+Os campos ownerId/listName do cliente não substituem autorização. Cada operação consulta associação e permissões no servidor. O papel admin pode gerenciar todos os registros; jogador lê/escreve somente registros próprios ou compartilhados, e pode editar coven com lock válido. O catálogo é editável pelo narrador. Listas organizam personagens; suas senhas antigas não concedem acesso no Sites.
+
+Em 401, exporte o rascunho antes de entrar novamente. Em 409, exporte as alterações, recarregue a versão salva e reconcilie o conteúdo. A aplicação não sobrescreve automaticamente um conflito. Renomeações mantêm compatibilidade com nomes de arquivos; limpeza de referências antigas ocorre após salvar os novos documentos e pode exigir ação do narrador se não houver permissão sobre todas as referências.
+
+### Migração, backup e restauração
+
+Prepare um mapa privado em `work/owners.json`, com `adminId` do Site de destino, `byPath` associando caminhos a IDs e, opcionalmente, `access` com `{path,user_id,permission}`. Caminhos sem associação ficam com o narrador. Confirme esse mapa com os responsáveis antes de aplicar.
+
+```sh
+node sites/scripts/prepare-import.mjs --owners work/owners.json
+node sites/scripts/prepare-import.mjs --owners work/owners.json --output work/import.json
+```
+
+O primeiro comando somente valida. O segundo cria um arquivo novo, privado, e falha se o destino já existir. Nenhum comando acima envia dados. Cadastre membros no backend antes de importar. Em sessão autenticada de narrador, `POST /api/restore` com o arquivo preparado faz dry-run; só `apply:true` aplica o lote. Repetições pulam documentos idênticos e recusam sobrescrever documentos divergentes. O backup preserva bytes do JSON e imagens, sem normalização pela UI.
+
+`GET /api/backup` exporta os registros e permissões, somente para narrador. Guarde fora do repositório e dos assets públicos. A restauração insere registros ausentes; recuperar sobre registros existentes exige revisão, backup atual e exclusão explícita com a versão lida, seguida de restauração. Não restaure membros/IDs de outro Site automaticamente: IDs de usuário são específicos de cada Site. Fichas podem ser importadas/exportadas individualmente pela interface como antes.
+
+### Build, publicação e rollback
+
+`node sites/scripts/build.mjs` gera `dist/server/index.js`, um Worker ES module com fetch, conforme o formato suportado pelo Sites. `.openai/hosting.json` guarda a identidade do Site; `origin` continua apontando para o GitHub. O repositório técnico Sites é apenas espelho autorizado.
+
+**Deploy ainda bloqueado:** o ambiente não disponibiliza os helpers Sites de lifecycle nem o contrato completo dos metadados D1/migrations para este Worker. Os bindings estão null deliberadamente; não há banco hospedado validado. `sites/server/schema.sql` é o schema local idempotente, não uma migration hospedada já registrada. Quando o tooling estiver disponível, configurar binding DB e migrations pelo fluxo suportado, validar em D1 real, sincronizar o commit exato para o espelho e salvar uma versão **sem deploy**. Não executar comandos genéricos `wrangler deploy` nem criar infraestrutura fora do Sites para contornar o bloqueio.
+
+Após testes locais e hospedados, revisão das permissões e aprovação explícita do usuário, publicar a versão salva pela ferramenta Sites. Nenhuma URL é anunciada como ativa antes do retorno de sucesso da publicação. A URL e os identificadores da versão/deployment devem ser registrados em `docs/sites-migration.md` nesse momento.
+
+A tag `pre-sites-migration` aponta para o commit anterior à migração. Para inspecionar sem perder alterações:
+
+```sh
+git worktree add --detach ../mage-pre-sites pre-sites-migration
+```
+
+Para rollback futuro de publicação, reimplante uma versão salva anterior no mesmo Site. Se for necessário voltar ao GitHub Pages, ele permanece disponível até o aceite. Para rollback de código, reverta os commits de migração na branch de trabalho. Rollback de código não restaura banco: preserve backup e estado de migrations antes de qualquer deploy. Migrations aplicadas devem permanecer imutáveis; mudanças posteriores exigem nova migration compatível com a versão anterior.

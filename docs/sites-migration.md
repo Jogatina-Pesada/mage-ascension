@@ -1,6 +1,6 @@
 # Migração para ChatGPT Sites
 
-Auditoria em 2026-11-04. Estado: fase 1 concluída; fase 2 com decisão arquitetural pendente. Nenhuma publicação, registro de Site, alteração de produção ou migração de dados executada.
+Auditoria em 2026-11-04. Estado atualizado em 07/11: adaptação e testes locais preparados; integração hospedada e publicação pendentes (detalhes ao final). Nenhuma publicação, registro de Site, alteração de produção ou migração de dados executada.
 
 ## 1. Origem e rollback
 
@@ -121,3 +121,28 @@ Schema em `sites/server/schema.sql`; adaptador SQLite real em `sites/scripts/loc
 Limite de infraestrutura: os scripts de lifecycle do plugin não estão instalados neste executor, e os recursos detalhados do starter não puderam ser lidos. A documentação consultada confirma D1 mas não especifica o formato completo de binding e metadados de migration para um Worker nativo. Por isso d1/r2 continuam null no manifesto, sem adivinhar campos, criar tabelas durante requests ou simular provisionamento. Não há D1 hospedado validado. Este bloqueio impede declarar a fase concluída e publicar. Nenhum serviço pago externo adicionado. O próximo passo hospedado exige o tooling/contrato completo suportado do Sites.
 
 Validação inicial do backend: 20 testes de contrato com SQLite real, cobrindo identidade, bootstrap, origem, isolamento, ACL, CRUD, concorrência, rollback de lote, preservação dos JSONs existentes, backup/restore e locks/imagens. Esses testes não substituem SIWC e D1 reais no Sites.
+
+## Fase 5 — resultado final local em 07/11
+
+- Suites originais: **123/123 passaram** (45 unitários, 78 funcionais), contra 93/123 na baseline sem alterações. Após alinhar módulos do harness, eram 115/123. As oito falhas restantes eram: espera insuficiente de FileReader, textos/seletor/título de fixture antigos, três asserções contraditórias sobre Arcana, expectativa antiga de limite 20 de Quintessência (regra atual 10), e exportação que já inclui coven. Foram corrigidos testes, sem mudar essas regras ou textos existentes para fazê-los passar.
+- Backend: **23/23 passaram**, incluindo restauração repetida dos 41 registros e imagens existentes com conteúdo idêntico, revogação de usuário, listas sem concessão de acesso, lotes com rollback e versões antigas.
+- Browser no Worker construído: passou em 1440×1000 e 390×844 para salvar, importar JSON, preservar campos extras, substituir imagem após recarregar, adquirir/liberar lock e transferir recursos ao coven. Sem erros JS, requisições externas ou overflow horizontal nos fluxos testados. Inventário abre sem senha/PAT; seu CRUD completo não foi exercitado no browser novo.
+- Servidor local comum: respondeu 401 mesmo com headers de identidade forjados; interface offline respondeu 200. Identidade fictícia existe somente no runner de teste.
+- Build e sintaxe: Worker gerado com 37 assets públicos; 40 arquivos JS/MJS verificados; git diff --check passou.
+- Relatório resumido: `docs/sites-migration-test-results.json`. Scripts novos em `testes/sites/`; instruções de execução em README e AGENTS.md.
+
+Melhorias após os primeiros testes: salvamento de ficha/linhagem/imagem em lote atômico; metadados de versão da imagem são carregados junto da ficha para permitir substituição segura; listas preservam seleção/criação e associação de personagens como metadados; narrador pode revogar membros mantendo seus registros; wiki mostra a ajuda de autenticação/persistência correspondente ao modo Sites. Gravações de renomeação e limpeza de referências ocorrem depois do lote, podendo exigir reconciliação se falharem; o backend não ignora falta de permissão nessas referências.
+
+### Limites que impedem o aceite completo
+
+1. D1/SIWC hospedados ainda não foram testados; não há deploy. Tooling de lifecycle e contrato completo de migrations/bindings para o Worker precisam estar disponíveis para finalizar a integração, sem campos inventados.
+2. A maior imagem existente tem 1.673.139 bytes (mais de 2,2 MB em base64). A opção atual de armazenar base64 no banco foi validada apenas em SQLite local. É obrigatório validar limites de tamanho do D1 e, se necessário, usar R2 com o binding suportado antes de migrar dados reais. Não assumir que o teste local comprova capacidade do banco hospedado.
+3. Falta a associação real narrador/jogadores/fichas solicitada ao usuário; não há jogadores convidados nem backfill executado. Compartilhamento de imagens privadas exige ACL própria, além da ficha.
+4. Cobertura nova de browser não inclui todos os fluxos originais no transporte Sites (por exemplo, herança/morte de linhagem com múltiplos proprietários e CRUD completo do catálogo). As suites originais exercitam vários desses fluxos com GitHub mockado, o que não comprova a nova integração. Completar antes de aprovação para produção.
+5. Helpers de sincronização/publicação ausentes impedem preparar e salvar uma versão com o fluxo recomendado no espelho técnico. O Site existe, mas ainda não recebeu versão salva/publicada. A existência de expected_url não é evidência de publicação.
+
+## Fase 6 — preparação documental, publicação bloqueada
+
+README atualizado com execução, debug, testes, permissões, importação/exportação, backup/restauração, build e rollback. Mantidas integração antiga e hospedagem GitHub Pages. Arquivo de produção não alterado; secrets/runtime do Sites não configurados; bindings permanecem null até confirmação do contrato. A aprovação final de publicação ainda não foi solicitada, pois a validação hospedada não está concluída. Não se deve aprovar uma publicação que ainda não pode ser revisada como funcional.
+
+Estado: fase 1 concluída; adaptação e autenticação implementadas/testadas localmente; fase 4 bloqueada na integração hospedada; fase 5 local aprovada com limites explícitos; fase 6 sem publicação. Próximas intervenções necessárias: disponibilizar tooling de desenvolvimento/publicação Sites com configuração D1/R2 suportada e definir usuários/proprietários. Continuar no mesmo project_id, origin e branch.

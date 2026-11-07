@@ -77,10 +77,12 @@ export async function writeRecord(db,user,path,body,stage=false) {
     if(/^imagens\//.test(path)||path.startsWith('fichas/imagens/itens/'))throw new HttpError(403,'Somente o narrador pode alterar imagens do catálogo.');
     if(path.startsWith('fichas/imagens/coven/')){const coven=await lookup(db,'fichas/coven.json');const lock=coven&&decodeContent(coven.content,'coven').data.lock;if(!lock||lock.userId!==user.id||lock.sessionId!==body.sessionId||Date.parse(lock.expiresAt)<=Date.now())throw new HttpError(409,'Adquira o lock do coven antes de enviar imagens.');}
   }
+  const listName=body.listName??row?.list_name??'default';
+  if(typeof listName!=='string'||!listName.trim()||listName.length>80)throw new HttpError(400,'Nome de lista inválido.');
   const version=crypto.randomUUID(),updated=new Date().toISOString();
   let statement;
-  if(row)statement= db.prepare('UPDATE records SET content=?,version=?,updated_at=?,source_sha256=NULL WHERE path=? AND version=?').bind(body.content,version,updated,path,row.version);
-  else statement= db.prepare('INSERT INTO records(path,kind,owner_id,content,version,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(path) DO NOTHING').bind(path,kind,body.ownerId||user.id,body.content,version,updated);
+  if(row)statement= db.prepare('UPDATE records SET content=?,version=?,updated_at=?,list_name=?,source_sha256=NULL WHERE path=? AND version=?').bind(body.content,version,updated,listName,path,row.version);
+  else statement= db.prepare('INSERT INTO records(path,kind,owner_id,content,version,updated_at,list_name) VALUES(?,?,?,?,?,?,?) ON CONFLICT(path) DO NOTHING').bind(path,kind,body.ownerId||user.id,body.content,version,updated,listName);
   if(stage)return {path,version,statement,expected:row?.version??null};
   const result=await statement.run();
   if(result.meta.changes!==1)throw new HttpError(409,'Conflito de gravação. Recarregue o registro.');
@@ -91,13 +93,13 @@ export async function dataRoute(request,env,user) {
   if(url.pathname==='/api/session')return json(user);
   if(url.pathname==='/api/members') {
     requireAdmin(user);
-    if(request.method==='GET')return json((await db.prepare('SELECT user_id,email,role FROM members ORDER BY email').all()).results);
+    if(request.method==='GET')return json((await db.prepare('SELECT user_id,email,role,active FROM members ORDER BY email').all()).results);
     if(request.method!=='POST')throw new HttpError(405,'Método não permitido.');
     const b=await readBody(request);
     if(typeof b.id!=='string'||!b.id||b.id.length>200||typeof b.email!=='string'||!['admin','player'].includes(b.role))throw new HttpError(400,'Associação inválida.');
     // Avoid accidentally removing the final administrator.
-    if(b.id===user.id&&b.role!=='admin')throw new HttpError(400,'Não remova seu próprio papel de narrador.');
-    await db.prepare('INSERT INTO members(user_id,email,role) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET email=excluded.email,role=excluded.role').bind(b.id,b.email,b.role).run();return json({ok:true});
+    if(b.id===user.id&&(b.role!=='admin'||b.active===false))throw new HttpError(400,'Não remova seu próprio papel de narrador.');
+    await db.prepare('INSERT INTO members(user_id,email,role,active) VALUES(?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET email=excluded.email,role=excluded.role,active=excluded.active').bind(b.id,b.email,b.role,b.active===false?0:1).run();return json({ok:true});
   }
   if(url.pathname==='/api/access') {
     requireAdmin(user);if(request.method!=='POST')throw new HttpError(405,'Método não permitido.');const b=await readBody(request);
@@ -130,12 +132,15 @@ export async function dataRoute(request,env,user) {
     }
     // Password-based list restrictions are replaced by server authorization; only return authorized names.
     if(path==='fichas/listas.json') {
-      const sheets=await allowedRecords(db,user,'sheet'); const allowed=new Set(sheets.map(r=>r.path.slice(7)));
-      const lists=await lookup(db,path);let parsed=lists?decodeContent(lists.content,'lists').data:{lists:[]};
-      return json({lists:[{name:'default',passwordHash:'',characters:[...allowed]},...(parsed.lists||[]).filter(l=>l.name!=='default').map(l=>({name:l.name,passwordHash:'',characters:(l.characters||[]).filter(p=>allowed.has(p))}))]});
+      const sheets=await allowedRecords(db,user,'sheet');
+      const grouped=new Map([['default',[]]]);
+      for(const row of sheets){const name=row.list_name||'default';if(!grouped.has(name))grouped.set(name,[]);grouped.get(name).push(row.path.slice(7));}
+      return json({lists:[...grouped].map(([name,characters])=>({name,passwordHash:'',characters}))});
     }
     recordKind(path);const row=await lookup(db,path);if(!await canRead(db,user,row))throw new HttpError(404,'Registro não encontrado.');const decoded=decodeContent(row.content,row.kind);
-    return new Response(decoded.bytes,{headers:{'Content-Type':row.kind==='image'?(path.endsWith('.png')?'image/png':path.endsWith('.webp')?'image/webp':path.endsWith('.gif')?'image/gif':'image/jpeg'):'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','ETag':row.version}});
+    let imageVersions={};
+    if(row.kind==='sheet'&&typeof decoded.data.identity?.image==='string'){const imagePath='fichas/'+decoded.data.identity.image.replace(/^fichas\//,'');const image=await lookup(db,imagePath);if(image&&await canRead(db,user,image))imageVersions[imagePath]=image.version;}
+    return new Response(decoded.bytes,{headers:{'Content-Type':row.kind==='image'?(path.endsWith('.png')?'image/png':path.endsWith('.webp')?'image/webp':path.endsWith('.gif')?'image/gif':'image/jpeg'):'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','ETag':row.version,'X-Mage-Asset-Versions':JSON.stringify(imageVersions)}});
   }
   if(url.pathname==='/api/bundle'&&request.method==='POST') {
     const b=await readBody(request,8*1024*1024);
@@ -156,11 +161,11 @@ export async function dataRoute(request,env,user) {
       if(record.kind!==kind||typeof record.owner_id!=='string')throw new HttpError(400,'Metadados inválidos.');
       if(!await db.prepare('SELECT user_id FROM members WHERE user_id=?').bind(record.owner_id).first())throw new HttpError(400,'Cadastre todos os proprietários antes de restaurar.');
       const existing=await lookup(db,record.path);
-      if(existing){if(existing.content===record.content&&existing.owner_id===record.owner_id&&existing.kind===kind){skipped++;continue;}throw new HttpError(409,'A restauração não sobrescreve registros existentes: '+record.path);}
+      if(existing){if(existing.content===record.content&&existing.owner_id===record.owner_id&&existing.kind===kind&&existing.list_name===(record.list_name||'default')){skipped++;continue;}throw new HttpError(409,'A restauração não sobrescreve registros existentes: '+record.path);}
       const bytes=Uint8Array.from(atob(record.content),c=>c.charCodeAt(0));
       const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
       if(record.source_sha256&&record.source_sha256!==digest)throw new HttpError(400,'Hash de origem não confere.');
-      statements.push(db.prepare('INSERT INTO records(path,kind,owner_id,content,version,updated_at,source_sha256) VALUES(?,?,?,?,?,?,?)').bind(record.path,kind,record.owner_id,record.content,crypto.randomUUID(),new Date().toISOString(),digest));
+      statements.push(db.prepare('INSERT INTO records(path,kind,owner_id,content,version,updated_at,source_sha256,list_name) VALUES(?,?,?,?,?,?,?,?)').bind(record.path,kind,record.owner_id,record.content,crypto.randomUUID(),new Date().toISOString(),digest,typeof record.list_name==='string'&&record.list_name.length<=80?record.list_name:'default'));
     }
     for(const grant of b.access||[]){
       if(!seen.has(grant.path)||!['read','write'].includes(grant.permission)||!await db.prepare('SELECT user_id FROM members WHERE user_id=?').bind(grant.user_id).first())throw new HttpError(400,'Permissão de backup inválida.');

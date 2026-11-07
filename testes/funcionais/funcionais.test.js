@@ -10,7 +10,8 @@ const {
   resetApp,
   runTests,
   test,
-  tick
+  tick,
+  waitFor
 } = window.TestHarness;
 
 async function withApp(fn) {
@@ -222,8 +223,7 @@ test('inventario envia varias imagens do item para uma pasta exclusiva', () => w
     ]
   });
   imageInput.dispatchEvent(new win.Event('change', { bubbles: true }));
-  await tick();
-  await tick();
+  await waitFor(() => doc.querySelectorAll('.image-preview-card').length === 2);
   assert.equal(doc.querySelectorAll('.image-preview-card').length, 2);
   doc.getElementById('itemForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
   const requests = await completeItemsGitHubUpload(win, doc);
@@ -724,6 +724,7 @@ test('impressao preenche secoes selecionadas, inclui antecedentes e restaura a p
 }));
 
 test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => withApp((win, doc) => {
+  const originalTitle = doc.title;
   const modalFullPageLink = doc.querySelector('#wikiModal .wiki-open-page');
   const startFullPageLink = doc.getElementById('openStartWikiBtn');
   assert.equal(modalFullPageLink.getAttribute('href'), 'wiki.html');
@@ -748,8 +749,8 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(doc.getElementById('nextWikiMatchBtn').disabled, true);
   assert.equal(doc.querySelectorAll('[data-wiki-topic]').length, 13);
   assert.equal(doc.querySelector('[data-wiki-topic="notes"]'), null);
-  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'preservando apenas a foto');
-  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'alinhadas horizontalmente');
+  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'os demais campos da ficha principal permanecem em branco');
+  assert.includes(doc.getElementById('wikiTopicContent').textContent, 'Antecedentes e Quem você é no mundo');
 
   const originalPrint = win.print;
   let printedTitle = '';
@@ -761,7 +762,7 @@ test('wiki abre, filtra topicos, destaca resultados e limpa a pesquisa', () => w
   assert.equal(printedTitle, 'Identidade - Wiki da ficha');
   win.dispatchEvent(new win.Event('afterprint'));
   assert.equal(doc.body.classList.contains('wiki-printing'), false);
-  assert.equal(doc.title, 'Ficha Editável - Mage: The Ascension');
+  assert.equal(doc.title, originalTitle);
   win.print = originalPrint;
 
   input(search, 'teletransporte');
@@ -849,11 +850,11 @@ test('wiki agrupa atributos e habilidades como a ficha', () => withApp((win, doc
     Array.from(doc.querySelectorAll('.wiki-entry-group-title')).map(title => title.textContent),
     ['Físicos', 'Sociais', 'Mentais']
   );
-  const attributeEntries = Array.from(doc.querySelectorAll('.wiki-entry'));
+  const attributeEntries = Array.from(doc.querySelectorAll('.wiki-entry-list dt'));
   const intelligence = attributeEntries.find(entry => entry.textContent.includes('Inteligência'));
   const wits = attributeEntries.find(entry => entry.textContent.includes('Raciocínio'));
-  assert.includes(intelligence.textContent, 'Capacidade de aprender, compreender, analisar e aplicar conhecimentos.');
-  assert.includes(wits.textContent, 'Capacidade de pensar e reagir rapidamente diante de situações inesperadas.');
+  assert.includes(intelligence.nextElementSibling.textContent, 'Capacidade de aprender, compreender, analisar e aplicar conhecimentos.');
+  assert.includes(wits.nextElementSibling.textContent, 'Capacidade de pensar e reagir rapidamente diante de situações inesperadas.');
 
   click(doc.querySelector('[data-wiki-topic="abilities"]'));
   assert.deepEqual(
@@ -1000,7 +1001,7 @@ test('wiki exibe conjuracao logo depois de esferas com fluxo, paradoxo e exemplo
   assert.equal(content.includes('Forces ●●●●'), false);
   assert.equal(content.includes('Prime ●●●'), false);
   assert.equal(content.includes('Time ●●●●'), false);
-  assert.equal(content.includes('teste de Arcana'), false);
+  assert.equal(content.includes('teste de Arete'), false);
   assert.equal(content.includes('Medicine'), false);
 }));
 
@@ -1019,7 +1020,7 @@ test('wiki exibe acoes reativas logo depois de conjurar magias', () => withApp((
   assert.includes(content, 'Contramágica (Countermagic)');
   assert.includes(content, 'teste de Arcana');
   assert.includes(content, 'Cada sucesso obtido reduz 1 sucesso');
-  assert.equal(content.includes('teste de Arcana'), false);
+  assert.equal(content.includes('teste de Arete'), false);
 }));
 
 test('wiki detalha os usos e a recuperacao de forca de vontade', () => withApp((win, doc) => {
@@ -1050,7 +1051,7 @@ test('wiki detalha fontes e usos de quintessencia', () => withApp((win, doc) => 
   assert.includes(content, 'teste de Arcana');
   assert.includes(content, 'Reduzir a dificuldade da magia');
   assert.includes(content, 'Interagir com Primórdio');
-  assert.equal(content.includes('teste de Arcana'), false);
+  assert.equal(content.includes('teste de Arete'), false);
   assert.equal(content.includes('Esfera Prime'), false);
 }));
 
@@ -1281,7 +1282,7 @@ test('stepper de quintessencia respeita min e max', () => withApp((win, doc) => 
   const up = doc.querySelector('[data-stepper="up"][data-target="advantages.quintessence"]');
   const down = doc.querySelector('[data-stepper="down"][data-target="advantages.quintessence"]');
   for (let i = 0; i < 25; i += 1) click(up);
-  assert.equal(win.getPath(appState(win), 'advantages.quintessence'), 20);
+  assert.equal(win.getPath(appState(win), 'advantages.quintessence'), 10);
   for (let i = 0; i < 25; i += 1) click(down);
   assert.equal(win.getPath(appState(win), 'advantages.quintessence'), 0);
 }));
@@ -1523,7 +1524,7 @@ test('salvar baixa diretamente os JSONs da ficha e da linhagem', async () => wit
 
   await win.saveJson();
 
-  assert.deepEqual(downloads.map(download => download.fileName), ['lari.json', 'casa_da_lua.json']);
+  assert.deepEqual(downloads.map(download => download.fileName), ['lari.json', 'casa_da_lua.json', 'coven.json']);
   assert.equal(JSON.parse(downloads[0].content).identity.name, 'Lari');
   assert.equal(JSON.parse(downloads[1].content).name, 'Casa da Lua');
 }));

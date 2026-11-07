@@ -54,6 +54,14 @@ async function tick() {
   await new Promise(resolve => setTimeout(resolve, 0));
 }
 
+async function waitFor(predicate, timeout = 2000) {
+  const deadline = performance.now() + timeout;
+  while (!predicate()) {
+    if (performance.now() > deadline) throw new Error('Condição assíncrona não foi satisfeita.');
+    await tick();
+  }
+}
+
 function click(element) {
   const EventCtor = element.ownerDocument.defaultView.MouseEvent;
   element.dispatchEvent(new EventCtor('click', { bubbles: true, cancelable: true }));
@@ -207,5 +215,6 @@ window.TestHarness = {
   runTests,
   setAppVar,
   test,
-  tick
+  tick,
+  waitFor
 };

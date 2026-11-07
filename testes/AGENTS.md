@@ -163,3 +163,13 @@ Inclui modal inicial, fichas, Antecedentes, GitHub, IA, carregar linhagem, morte
 ### Acessibilidade E Estado Visual
 
 Inclui `aria-label`, `role=checkbox`, `aria-checked`, estados disabled, classes de sugestao da IA e classes de bonus de linhagem. Mudancas funcionais devem preservar sinais visuais e atributos acessiveis que comunicam estado. Nomes de campos com ajuda contextual devem abrir o topico correspondente da wiki por clique, toque, Enter ou Espaco, sem depender de tooltip `title`.
+
+## Cobertura Da Migração Sites
+
+Runners adicionais (Node 24):
+
+- `node testes/sites/server.test.mjs`: contrato de autenticação, autorização, persistência, concorrência, backups e preservação dos dados com SQLite local.
+- `node sites/scripts/build.mjs` e depois `node testes/sites/browser.mjs`: interface Sites em desktop/mobile usando Chromium/Playwright e identidade exclusivamente de teste.
+- `node testes/sites/local-auth.mjs`: verifica que o servidor offline remove headers de identidade forjados.
+
+Os comandos são documentados para execução humana ou quando o usuário autorizar explicitamente a execução pelo Codex, como no pedido desta migração. Nenhum desses testes comprova login SIWC ou D1 hospedados. A identidade fictícia do browser runner nunca deve ser copiada para o servidor local comum ou Worker publicado. O helper `waitFor` espera condições assíncronas, evitando supor que FileReader termine após dois ticks.

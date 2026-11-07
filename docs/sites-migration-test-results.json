@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-07",
+  "originalSuites": {
+    "passed": 123,
+    "failed": 0,
+    "total": 123
+  },
+  "serverContract": {
+    "passed": 23,
+    "failed": 0,
+    "runtime": "Node 24 + SQLite local; não é D1 hospedado"
+  },
+  "browser": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "save": true,
+      "import": true,
+      "unknownFields": true,
+      "imageReplacement": true,
+      "covenTransfer": true,
+      "noExternalRequests": true,
+      "noPageErrors": true,
+      "noOverflow": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "save": true,
+      "import": true,
+      "unknownFields": true,
+      "imageReplacement": true,
+      "covenTransfer": true,
+      "noExternalRequests": true,
+      "noPageErrors": true,
+      "noOverflow": true
+    },
+    {
+      "inventory": true,
+      "noPassword": true
+    }
+  ],
+  "hosted": {
+    "siwc": "provisionado, login real não testado",
+    "d1": "não provisionado",
+    "deployment": "não publicado"
+  },
+  "baseline": {
+    "beforeHarnessFix": {
+      "passed": 93,
+      "total": 123
+    },
+    "afterHarnessFix": {
+      "passed": 115,
+      "total": 123
+    },
+    "testCorrections": "módulos omitidos, espera de FileReader, seletores DOM e expectativas antigas/contraditórias; regras preservadas"
+  }
+}

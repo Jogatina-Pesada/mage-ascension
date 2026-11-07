@@ -14,6 +14,7 @@
   const read=async path=>{try{const value=await api(recordUrl(path));versions.set(path,value.version);return {content:value.content,sha:value.version};}catch(e){if(e.status===404)return null;throw e;}};
   const write=async(path,content,version)=>{
     const body={content,version:version??null,sessionId:covenEditorSessionId};
+    if(/^fichas\/[^/]+\.json$/.test(path)&&!['fichas/coven.json','fichas/listas.json','fichas/itens.json'].includes(path))body.listName=selectedCharacterList||'default';
     if(path==='fichas/coven.json') {
       const data=JSON.parse(base64ToText(content));if(data.lock)data.lock.userId=identity?.id;
       body.content=textToBase64(JSON.stringify(data,null,2));
@@ -24,8 +25,10 @@
   window.fetch=async(input,options)=>{
     const response=await nativeFetch(input,options);const url=new URL(typeof input==='string'?input:input.url||input,location.href);
     if(url.origin===location.origin&&response.ok&&response.headers.get('ETag')&&url.pathname.startsWith('/api/source/'))versions.set(decodeURIComponent(url.pathname.slice('/api/source/'.length)),response.headers.get('ETag'));
+    if(response.ok&&response.headers.get('X-Mage-Asset-Versions')){for(const [path,version] of Object.entries(JSON.parse(response.headers.get('X-Mage-Asset-Versions'))))versions.set(path,version);}
     return response;
   };
+  githubSheetsRawBase=()=>location.origin+'/api/source/fichas';
   getGitHubFile=(_repo,_branch,path)=>read(path);
   putGitHubFileBase64=(_repo,_branch,path,content,_message,_token,sha=null)=>write(path,content,sha);
   putGitHubFile=(_repo,_branch,path,content,_message,_token,sha=null)=>write(path,textToBase64(content),sha);
@@ -36,19 +39,49 @@
   // Manifests are synthesized server-side from authorized records, not writable client ACLs.
   updateGitHubManifest=async()=>{};
   updateCharacterListsOnGithub=async()=>{};
-  openGithubModal=async()=>{
-    if(!requireCharacterName()||!requireLineageName())return;
-    const button=document.getElementById('githubUploadBtn');button.disabled=true;
+  let saving=false;
+  const saveToSites=async(interactive=true)=>{
+    if(saving)return;
+    if(!requireCharacterName()||!requireLineageName()||(interactive&&!captureGithubCharacterList()))return;
+    saving=true;
+    const button=document.getElementById('githubUploadBtn'),submit=document.getElementById('githubSubmitBtn');button.disabled=true;submit.disabled=true;
     try{
       await verifyGithubUser();ensureHealthDamage();ensureNumberDefaults();
-      await uploadCharacterImageToGithub(auth(),'Salva imagem');
-      const fileName=currentSheetName(),previous=currentSheetFile&&currentSheetFile!==fileName?currentSheetFile:'';
-      await uploadSheetToGithub(auth(),fileName,sheetJson(),'Salva ficha',previous);
-      await uploadLineageToGithub(auth(),'Salva linhagem');
+      const fileName=currentSheetName(),path='fichas/'+fileName,previous=currentSheetFile&&currentSheetFile!==fileName?currentSheetFile:'';
+      const pendingImage=pendingCharacterImage;
+      if(pendingImage)ensureCharacterImagePath();
+      const records=[{path,content:textToBase64(sheetJson()),version:versions.get(path)||null,listName:selectedCharacterList||'default'}];
+      if(pendingImage){const imagePath='fichas/'+ensureCharacterImagePath();records.push({path:imagePath,content:dataUrlBase64(pendingImage.dataUrl),version:versions.get(imagePath)||null});}
+      const previousLineageFile=currentLineageFile;
+      if(lineageHasData()&&lineageName()){const lineagePath='fichas/'+lineageRelativePath();records.push({path:lineagePath,content:textToBase64(lineageJson()),version:versions.get(lineagePath)||null});}
+      const result=await api('/api/bundle',{method:'POST',body:JSON.stringify({records})});
+      for(const row of result)versions.set(row.path,row.version);
+      if(pendingCharacterImage===pendingImage)pendingCharacterImage=null;
+      currentSheetFile=fileName;
+      if(previous)await removeGitHubSheetFile(auth(),previous,fileName);
+      if(lineageHasData()&&lineageName()){
+        if(previousLineageFile&&previousLineageFile!==lineageFileName()){
+          await updateLineageReferencesOnGithub(auth(),previousLineageFile.replace(/\.json$/i,''),lineageName());
+          await removeGitHubSheetFile({...auth(),sheetsPath:'fichas/linhagens'},previousLineageFile,lineageFileName());
+        }
+        currentLineageFile=lineageFileName();
+      }
       await removeCharacterImageFromGithub(auth(),getPath(state,'identity.image',''));
-      startAutosave(auth());setAutosaveFeedback('Ficha salva no Sites.');
-    }catch(error){setAutosaveFeedback(error.message,true);}finally{button.disabled=false;}
+      if(interactive){startAutosave(auth());closeGithubModal();}
+      setAutosaveFeedback('Ficha salva no Sites.');
+    }catch(error){setGithubModalStatus(error.message);setAutosaveFeedback(error.message,true);}finally{saving=false;button.disabled=false;submit.disabled=false;}
   };
+  runAutosave=async()=>{if(!autosaveAuth)return;try{await saveToSites(false);if(covenEditMode)await uploadCovenToGithub(auth(),'Autosave coven');}catch(error){setAutosaveFeedback(error.message,true);}finally{scheduleAutosave();}};
+  openGithubModal=async()=>{
+    if(!requireCharacterName())return;
+    try{await verifyGithubUser();document.getElementById('githubModalTitle').textContent='Salvar no Sites';
+      for(const id of ['githubUser','githubPat','newGithubCharacterListPassword']){const field=document.getElementById(id);field.required=false;field.closest('label').hidden=true;}
+      document.getElementById('githubListResetFields').hidden=true;
+      document.getElementById('githubSubmitBtn').textContent='Salvar ficha';
+      setGithubModalStatus('');await prepareGithubCharacterLists();document.getElementById('githubModal').hidden=false;
+    }catch(error){setAutosaveFeedback(error.message,true);}
+  };
+  uploadJsonToGithub=event=>{event.preventDefault();return saveToSites();};
   openCovenGithubModal=async()=>{try{await verifyGithubUser();covenSyncAuth=auth();await beginCovenEditing();}catch(error){setCovenStatus(error.message,true);}};
   const transfer=transferCharacterResourceToCoven;
   let transferBusy=false;

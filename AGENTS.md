@@ -202,3 +202,7 @@ Antecedentes disponiveis na UI, em ordem alfabetica e com nomes em portugues:
 - Mantenha comentarios apenas onde a regra nao for obvia.
 - Nao introduza framework ou build step sem necessidade clara.
 - Se for introduzido um runner ou bundler, documente o comando aqui e em `testes/AGENTS.md`.
+
+## Ferramentas Da Migração Sites
+
+A adaptação preserva o frontend nativo e mantém o código de servidor/build em `sites/`. Build local: `node sites/scripts/build.mjs`. Debug offline do Worker: `node --inspect sites/scripts/dev.mjs` (Node 24). Os runners adicionais e seus limites estão em `testes/AGENTS.md` e no README. Não incluir dados de `work/`, credenciais ou registros de fichas em assets públicos.

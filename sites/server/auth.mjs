@@ -22,9 +22,9 @@ export async function authorize(request, env) {
   if (!env.DB) throw new HttpError(503,'Banco de dados não configurado.');
   // Bind the bootstrap email to a stable Site ID once. Never grant first-visitor admin.
   if (env.MAGE_BOOTSTRAP_ADMIN_EMAIL && email.toLowerCase()===env.MAGE_BOOTSTRAP_ADMIN_EMAIL.toLowerCase()) {
-    await env.DB.prepare("INSERT INTO members (user_id,email,role) SELECT ?,?,'admin' WHERE NOT EXISTS (SELECT 1 FROM members WHERE role='admin') ON CONFLICT(user_id) DO NOTHING").bind(id,email).run();
+    await env.DB.prepare("INSERT INTO members (user_id,email,role) SELECT ?,?,'admin' WHERE NOT EXISTS (SELECT 1 FROM members WHERE role='admin' AND active=1) ON CONFLICT(user_id) DO NOTHING").bind(id,email).run();
   }
-  const membership=await env.DB.prepare('SELECT role FROM members WHERE user_id=?').bind(id).first();
+  const membership=await env.DB.prepare('SELECT role FROM members WHERE user_id=? AND active=1').bind(id).first();
   user.role=membership?.role || null;
   // Let a visitor learn their Site-specific ID; this grants no record access.
   if(new URL(request.url).pathname==='/api/session' && request.method==='GET') return user;

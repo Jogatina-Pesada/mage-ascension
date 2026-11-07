@@ -99,3 +99,11 @@ A skill atual confirma explicitamente Worker ES module em `dist/server/index.js`
 Baseline real em Chromium: **93/123 passaram, 30 falharam** antes de mudanças de aplicação. Relatório em `sites-migration-baseline.json`. O harness omitia dois módulos da página real; corrigido para carregar character-lists e printing. Outras divergências serão avaliadas sem alterar regras para satisfazer testes antigos. Browser local agora disponível no perfil portable, substituindo a limitação de ambiente registrada em 04/11.
 
 Arquivos desta fase: `.openai/hosting.json`, `.gitignore`, `sites/scripts/build.mjs`, `sites/server/worker.mjs`, `testes/test-harness.js`, relatório de baseline e este documento. Nenhuma integração hospedada é considerada validada.
+
+## Fase 3 — autenticação implementada, validação hospedada pendente
+
+`sites/server/auth.mjs` lê somente a identidade injetada pelo dispatch do Sites, exige associação no backend, verifica origem em operações de escrita e diferencia admin/jogador. Não aceita ID/papel do frontend como identidade. O bootstrap só admite o e-mail exato da proprietária configurado no runtime, vincula-o uma única vez ao ID estável e não concede privilégios ao primeiro visitante arbitrário. E-mail não é usado como chave de propriedade de fichas. Sessões ausentes resultam em 401; usuários sem associação recebem 403; configuração ausente resulta em 503. `/api/session` permite conhecer o próprio ID, sem liberar registros.
+
+Links de entrada/saída devem usar as rotas SIWC reservadas e navegação top-level; nenhum endpoint OAuth ou cookie de autenticação foi implementado. O servidor local removerá headers de identidade recebidos: não é um provedor alternativo. Testes de identidade injetada serão de contrato; login ChatGPT real continua não testado até haver publicação autorizada.
+
+Solicitada associação narrador/jogadores/fichas ao usuário. Até a resposta, nenhum backfill real nem concessão a jogadores. `.env.example` contém somente o nome da configuração. O cliente SIWC está confirmado por get_site; não foi inferido do retorno inicial de criação, onde ainda estava null.

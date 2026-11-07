@@ -101,11 +101,13 @@ function appFrameHtml() {
   <script src="scripts/coven.js?v=${appVersion}"></script>
   <script src="scripts/sheets-serialization.js?v=${appVersion}"></script>
   <script src="scripts/github-sync.js?v=${appVersion}"></script>
+  <script src="scripts/character-lists.js?v=${appVersion}"></script>
   <script src="scripts/autosave.js?v=${appVersion}"></script>
   <script src="scripts/sheet-loading-creation.js?v=${appVersion}"></script>
   <script src="scripts/github-ui.js?v=${appVersion}"></script>
   <script src="scripts/ai.js?v=${appVersion}"></script>
   <script src="scripts/wiki.js?v=${appVersion}"></script>
+  <script src="scripts/printing.js?v=${appVersion}"></script>
   <script src="scripts/integrations/github.js?v=${appVersion}"></script>
   <script src="scripts/integrations/local-files.js?v=${appVersion}"></script>
   <script src="scripts/bootstrap.js?v=${appVersion}"></script>

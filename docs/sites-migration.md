@@ -89,3 +89,13 @@ Se autorizado, caminho candidato: preservar frontend estático e suas regras; ad
 5. Testes: baseline antes/depois, XP, todos os pools, JSON/legados/campos desconhecidos, inventário de bytes preservado, 401/403, isolamento entre usuários, narrador, CRUD, concorrência/409, locks do coven, imagens, import/export, backup/restauração/idempotência e viewport desktop/mobile. Diferenciar testes mockados de autenticação real da plataforma. A ausência de navegador é limite de validação, não aprovação implícita.
 
 6. Publicação: somente após passar testes e aprovação explícita do usuário. Não existe URL publicada nova. Antes disso validar secrets runtime, bindings, ACL e política de acesso; manter GitHub Pages funcionando e documentar comandos locais/build/debug/deploy/rollback no README quando a arquitetura estiver implementada. Não apagar integração antiga antes de comprovar equivalência e rollback.
+
+## Retomada em 2026-11-07 — fase 2
+
+O usuário autorizou o espelho técnico do Sites. O origin GitHub foi preservado. Site privado registrado: `appgprj_6aef1e5005b48191957573a1044d4216`; consulta get_site confirmou o cliente SIWC provisionado e acesso somente da proprietária. Não há versão publicada nem URL ativa. `.openai/hosting.json` persiste a identidade do Site.
+
+A skill atual confirma explicitamente Worker ES module em `dist/server/index.js` como formato suportado. Escolha: manter frontend nativo e gerar Worker com assets públicos embutidos, sem novo framework/dependências. Registros em fichas, senhas de listas e imagens de personagens ficam fora dos assets. Backend e adaptador serão módulos separados; index.html original continua executável no GitHub Pages/local.
+
+Baseline real em Chromium: **93/123 passaram, 30 falharam** antes de mudanças de aplicação. Relatório em `sites-migration-baseline.json`. O harness omitia dois módulos da página real; corrigido para carregar character-lists e printing. Outras divergências serão avaliadas sem alterar regras para satisfazer testes antigos. Browser local agora disponível no perfil portable, substituindo a limitação de ambiente registrada em 04/11.
+
+Arquivos desta fase: `.openai/hosting.json`, `.gitignore`, `sites/scripts/build.mjs`, `sites/server/worker.mjs`, `testes/test-harness.js`, relatório de baseline e este documento. Nenhuma integração hospedada é considerada validada.

@@ -2,3 +2,13 @@
 testes/test-results.json
 testes/*.log
 testes/__pycache__/
+
+# Sites build, local DB and development files
+work/
+dist/
+.sites-runtime/
+.wrangler/
+.env
+.env.*
+!.env.example
+.dev.vars*

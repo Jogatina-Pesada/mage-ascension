@@ -6,7 +6,9 @@ const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset
 async function add(file) {
   const data = await readFile(path.join(root, file));
   let content = data.toString('utf8');
+  if(file.endsWith('.html')) content = content.replace('<head>', '<head><script>window.mageSitesMode=true;</script>');
   if(file === 'index.html') content = content.replace('<script src="scripts/bootstrap.js">', '<script src="scripts/integrations/sites.js"></script>\n  <script src="scripts/bootstrap.js">');
+  if(file === 'itens.html') content=content.replace('<script src="scripts/items-inventory.js">', '<script src="scripts/integrations/sites-items.js"></script><script src="scripts/items-inventory.js">');
   assets['/'+file] = {type:mime[path.extname(file)], body:path.extname(file)==='.png' ? data.toString('base64'):content, binary:path.extname(file)==='.png'};
 }
 async function directory(dir) {for(const entry of await readdir(path.join(root,dir),{withFileTypes:true})){const file=dir+'/'+entry.name;if(entry.isDirectory()) await directory(file);else if(mime[path.extname(file)]) await add(file);}}

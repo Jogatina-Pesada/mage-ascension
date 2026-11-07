@@ -1,4 +1,4 @@
-﻿const state = {};
+const state = {};
 const lineageState = {
   name: '',
   spheres: {},
@@ -199,7 +199,7 @@ const backgroundPaths = ['backgrounds.allies', 'backgrounds.backup', 'background
 const spherePaths = ['spheres.fate', 'spheres.space', 'spheres.spirit', 'spheres.forces', 'spheres.matter', 'spheres.mind', 'spheres.death', 'spheres.prime', 'spheres.time', 'spheres.life'];
 const sheetsManifest = 'fichas/index.json';
 const characterListsFile = 'listas.json';
-const githubRawBase = 'https://raw.githubusercontent.com/uneluneravie/mage-ascension/main';
+const githubRawBase = window.mageSitesMode ? `${location.origin}/api/source` : 'https://raw.githubusercontent.com/uneluneravie/mage-ascension/main';
 const sheetsHandleDbName = 'mage-ascension-sheets';
 const sheetsHandleStoreName = 'handles';
 const sheetsDirHandleKey = 'fichas';

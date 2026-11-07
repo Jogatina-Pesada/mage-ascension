@@ -117,6 +117,7 @@
 
   async function loadItems() {
     try {
+      if(window.mageSitesMode){items=(await window.mageItemsRead()).map(sanitizeItem).filter(item=>item.name);return items;}
       const response = await fetch(inventoryUrl(), { cache: 'no-store' });
       if (!response.ok) throw new Error(`Falha ao carregar itens.json (${response.status}).`);
       const catalog = await response.json();
@@ -125,6 +126,7 @@
       saveItems();
       return items;
     } catch (error) {
+      if(window.mageSitesMode)throw error;
       const stored = readStoredItems();
       if (stored.length) return stored;
       throw error;
@@ -132,7 +134,7 @@
   }
 
   function saveItems() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    if(!window.mageSitesMode)localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 
   function loadGitHubSettings() {
@@ -345,6 +347,7 @@
 
   function requestGitHubSync(nextItems, message, onSuccess) {
     pendingSync = { nextItems, message, onSuccess };
+    if (window.mageSitesMode) { syncPendingItems({user:'ChatGPT',repo:GITHUB_REPO,branch:GITHUB_BRANCH,folder:''},false);return; }
     if (githubSessionAuth) {
       syncPendingItems(githubSessionAuth, false);
       return;
@@ -433,7 +436,7 @@
       );
       items = sync.nextItems;
       saveItems();
-      storeGitHubSettings({ user, repo, branch, folder });
+      if(!window.mageSitesMode)storeGitHubSettings({ user, repo, branch, folder });
       githubSessionAuth = { user, token, repo, branch, folder };
       pendingSync = null;
       elements.itemFormError.textContent = '';
@@ -441,6 +444,7 @@
       if (elements.githubDialog.open) elements.githubDialog.close();
       sync.onSuccess();
     } catch (error) {
+      if(window.mageSitesMode){elements.itemFormError.textContent=error.message;elements.inventorySummary.textContent=error.message;return;}
       if (!cameFromDialog) {
         githubSessionAuth = null;
         openGitHubDialog(error.message || 'O reenvio automático falhou. Confira os dados do GitHub.');
@@ -491,7 +495,8 @@
       event.preventDefault();
       elements.accessError.textContent = '';
       try {
-        if (!await checkPassword(elements.passwordInput.value)) {
+        if (window.mageSitesMode) { await window.mageItemsSession(); }
+        else if (!await checkPassword(elements.passwordInput.value)) {
           elements.accessError.textContent = 'Senha incorreta.';
           elements.passwordInput.select();
           return;
@@ -557,6 +562,7 @@
       'closeGithubDialogBtn', 'cancelGithubBtn'
     ].forEach(id => { elements[id] = document.getElementById(id); });
     bindEvents();
+    if(window.mageSitesMode){elements.passwordInput.required=false;elements.passwordInput.closest('label').hidden=true;elements.accessForm.querySelector('button[type=submit]').textContent='Acessar com ChatGPT';}
   }
 
   window.ItemsInventory = {

@@ -146,3 +146,25 @@ Melhorias após os primeiros testes: salvamento de ficha/linhagem/imagem em lote
 README atualizado com execução, debug, testes, permissões, importação/exportação, backup/restauração, build e rollback. Mantidas integração antiga e hospedagem GitHub Pages. Arquivo de produção não alterado; secrets/runtime do Sites não configurados; bindings permanecem null até confirmação do contrato. A aprovação final de publicação ainda não foi solicitada, pois a validação hospedada não está concluída. Não se deve aprovar uma publicação que ainda não pode ser revisada como funcional.
 
 Estado: fase 1 concluída; adaptação e autenticação implementadas/testadas localmente; fase 4 bloqueada na integração hospedada; fase 5 local aprovada com limites explícitos; fase 6 sem publicação. Próximas intervenções necessárias: disponibilizar tooling de desenvolvimento/publicação Sites com configuração D1/R2 suportada e definir usuários/proprietários. Continuar no mesmo project_id, origin e branch.
+
+## Tentativa de configuração nesta sessão — 08/11/2026
+
+O usuário autorizou usar a própria conta como administradora e tentar concluir a infraestrutura nesta sessão.
+
+Operação real bem-sucedida: `sites_update_environment_variables` configurou `MAGE_BOOTSTRAP_ADMIN_EMAIL` como secret no projeto existente, revisão de runtime **1**. O valor foi obtido do e-mail da proprietária confirmado por `get_site`; não está neste documento, no source ou no frontend. Nenhuma outra chave foi alterada. O código de bootstrap já existe em `sites/server/auth.mjs`; o vínculo ao ID estável só ocorrerá depois de existir DB e a proprietária autenticar. Portanto, associação administrativa no banco ainda não foi criada nem testada em produção. A revisão de runtime será aplicada em um deployment futuro.
+
+Confirmações: projeto permanece sem URL ativa e com acesso apenas à proprietária. Nenhum jogador foi adicionado. Não houve deploy nem envio de fichas.
+
+Diagnóstico repetido com ferramentas atuais:
+
+- Busca no executor por `site-workflow.mjs` e `project-setup.mjs`: nenhum arquivo encontrado. Diretórios montados `.agents` e `.codex` não contêm os helpers do plugin.
+- Skill Sites e `references/storage.md` foram lidas novamente. Confirmam D1/R2 e provisionamento pela plataforma, mas não detalham o schema completo do binding/migrations para o Worker nativo.
+- Leitura de `templates/vinext-starter/.openai/hosting.json`: disponível, contém somente d1/r2 null. `package.json` do starter disponível, mas não resolve o contrato de provisionamento.
+- Leitura de `templates/vinext-starter/vite.config.ts`, `vite.config.mjs`, `drizzle.config.ts` e caminhos do helper `scripts/site-workflow.mjs`: todas falharam com `failed to read skill resource`.
+- A superfície nativa disponível tem configuração de runtime, save/deploy e leitura de banco já publicado; não foi encontrada uma operação para provisionar binding/schema diretamente.
+
+O fluxo da skill exige empacotamento com o source helper, que não está disponível. Não há evidência suficiente para preencher bindings ou metadados de migrations sem suposição. Não substituir essa ausência por uma conta Cloudflare externa, credenciais novas ou tabelas criadas em requests.
+
+Para destravar: disponibilizar os helpers executáveis do plugin Sites neste ambiente e sua referência/starter com contrato de bindings/migrations D1/R2 para Worker ES module. O suporte pode usar este relato e o project_id registrado acima para identificar o problema. Não é necessário fornecer PAT nem segredo de banco pelo chat.
+
+Testes: não repetidos nesta tentativa, pois nenhum código funcional foi alterado. A única mutação remota foi a chave de bootstrap, confirmada pelo retorno do Sites com revisão 1. Configuração hospedada de DB/R2 e login real continuam não validados.

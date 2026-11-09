@@ -59,5 +59,40 @@
       "total": 123
     },
     "testCorrections": "módulos omitidos, espera de FileReader, seletores DOM e expectativas antigas/contraditórias; regras preservadas"
+  },
+  "latestSession": {
+    "date": "2026-11-09",
+    "branch": "feature/chatgpt-sites-migration",
+    "commitBeforeSession": "22d33a920b397b00ddeb829c97dacf2f38de623b",
+    "serverContract": {
+      "passed": 26,
+      "failed": 0,
+      "runtime": "Node 24 + SQLite local com fake R2; não é D1/R2 hospedado"
+    },
+    "build": {
+      "passed": true,
+      "publicAssets": 37,
+      "privateCharacterDataIncluded": false
+    },
+    "localAuth": {
+      "passed": true,
+      "forgedIdentityHeadersRejected": true
+    },
+    "managedPreview": {
+      "started": true,
+      "interfaceLoaded": true
+    },
+    "browserAutomation": {
+      "passed": false,
+      "blockedBy": "Chromium socket() failed: Operation not permitted"
+    },
+    "hosted": {
+      "site": "created private; owner-only access; no deployment",
+      "runtimeSecret": "MAGE_BOOTSTRAP_ADMIN_EMAIL configured as secret, revision 1; value not read back",
+      "d1": "not provisioned or tested",
+      "r2": "not provisioned or tested",
+      "login": "not tested",
+      "deployment": "not published"
+    }
   }
 }

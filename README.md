@@ -76,7 +76,7 @@ Nao usa frameworks, build ou dependencias externas.
 
 ## Migração para ChatGPT Sites (em validação)
 
-O GitHub existente permanece a fonte principal. O Site privado registrado ainda **não foi publicado**. Consulte `docs/sites-migration.md` para auditoria, decisões, resultados e bloqueios. Os dados reais ainda não foram enviados ao Sites.
+O GitHub existente permanece a fonte principal. O projeto Sites anterior não existe mais. Um novo Site privado foi criado para continuar a validação; ainda não há versão publicada nem dados reais no Sites. Consulte `docs/sites-migration.md` para o estado e os próximos passos.
 
 ### Execução e debug local
 
@@ -134,7 +134,7 @@ O primeiro comando somente valida. O segundo cria um arquivo novo, privado, e fa
 
 `node sites/scripts/build.mjs` gera `dist/server/index.js`, um Worker ES module com fetch, conforme o formato suportado pelo Sites. `.openai/hosting.json` guarda a identidade do Site; `origin` continua apontando para o GitHub. O repositório técnico Sites é apenas espelho autorizado.
 
-**Deploy ainda bloqueado:** o ambiente não disponibiliza os helpers Sites de lifecycle nem o contrato completo dos metadados D1/migrations para este Worker. Os bindings estão null deliberadamente; não há banco hospedado validado. `sites/server/schema.sql` é o schema local idempotente, não uma migration hospedada já registrada. Quando o tooling estiver disponível, configurar binding DB e migrations pelo fluxo suportado, validar em D1 real, sincronizar o commit exato para o espelho e salvar uma versão **sem deploy**. Não executar comandos genéricos `wrangler deploy` nem criar infraestrutura fora do Sites para contornar o bloqueio.
+**Deploy pendente:** o helper oficial do Sites agora está disponível em `~/.codex/plugins/cache/openai-curated-remote/sites/1.1.4/scripts/site-workflow.mjs`; o contrato documentado aceita bindings lógicos `DB`/`BUCKET` e migrations versionadas em `drizzle/`. `.openai/hosting.json` declara esses bindings. Ainda não há D1/R2 hospedados, migration aplicada ou versão salva; o antigo `project_id` retorna `NOT_FOUND` e precisará ser substituído pelo fluxo autorizado de recriação do Site. O armazenamento de imagens usa R2 quando disponível, mantendo base64 na API e nos backups. Não executar comandos genéricos `wrangler deploy` nem criar infraestrutura fora do Sites.
 
 Após testes locais e hospedados, revisão das permissões e aprovação explícita do usuário, publicar a versão salva pela ferramenta Sites. Nenhuma URL é anunciada como ativa antes do retorno de sucesso da publicação. A URL e os identificadores da versão/deployment devem ser registrados em `docs/sites-migration.md` nesse momento.
 

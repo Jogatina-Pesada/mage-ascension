@@ -4,6 +4,10 @@ import worker from '../../dist/server/index.js';
 import { mkdirSync } from 'node:fs';
 mkdirSync('work',{recursive:true});
 const DB=openDatabase('work/mage-local.sqlite');
+const args=process.argv.slice(2);
+const option=(name,fallback)=>{const i=args.indexOf(name);return i>=0?args[i+1]||fallback:fallback;};
+const port=Number(process.env.PORT||option('--port','8787'));
+const host=process.env.HOST||option('--host','127.0.0.1');
 const server=createServer(async(req,res)=>{
   try{
     const headers=new Headers(req.headers);
@@ -14,5 +18,5 @@ const server=createServer(async(req,res)=>{
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
   }catch{res.writeHead(500);res.end('Erro local.');}
 });
-server.listen(8787,'127.0.0.1',()=>console.log('Local: http://127.0.0.1:8787 — edição/exportação offline; login ChatGPT somente no Sites.'));
+server.listen(port,host,()=>console.log(`Local: http://${host}:${port} — edição/exportação offline; login ChatGPT somente no Sites.`));
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.close(()=>{DB.close();process.exit();}));

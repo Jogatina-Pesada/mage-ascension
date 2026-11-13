@@ -18,7 +18,8 @@ await directory('scripts');await directory('assets');
 await rm(path.join(root,'dist'),{recursive:true,force:true});
 await mkdir(path.join(root,'dist/server'),{recursive:true});
 let code='const bundledAssets = '+JSON.stringify(assets)+';\n';
-for(const name of ['auth.mjs','data.mjs','worker.mjs']) {
+code+='const sourceManifest = '+await readFile(path.join(root,'sites/server/source-manifest.json'),'utf8')+';\n';
+for(const name of ['auth.mjs','data.mjs','import-existing.mjs','worker.mjs']) {
   const file=path.join(root,'sites/server',name);
   let source;try{source=await readFile(file,'utf8');}catch(e){if(e.code==='ENOENT')continue;throw e;}
   code+=source.replace(/^import .*;\n/gm,'').replace(/^export (?!default)/gm,'')+'\n';

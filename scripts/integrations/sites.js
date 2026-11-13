@@ -112,8 +112,43 @@
   document.getElementById('githubUploadBtn').title='Salvar no Sites';
   document.getElementById('githubUploadBtn').setAttribute('aria-label','Salvar no Sites');
   document.getElementById('loadGitSheetsBtn').textContent='Carregar fichas salvas';
-  const links=document.createElement('div');links.style.cssText='display:flex;gap:1rem;justify-content:flex-end;padding:.5rem';
-  for(const [label,href] of [['Entrar com ChatGPT','/signin-with-chatgpt?return_to=%2F'],['Sair','/signout-with-chatgpt?return_to=%2F']]){const a=document.createElement('a');a.textContent=label;a.href=href;a.target='_top';links.append(a);}
+  const links=document.createElement('div');links.className='sites-session-bar';
+  links.style.cssText='display:flex;gap:1rem;align-items:center;justify-content:flex-end;flex-wrap:wrap;padding:.5rem';
+  const sessionStatus=document.createElement('span');sessionStatus.setAttribute('role','status');sessionStatus.textContent='Verificando sessão…';links.append(sessionStatus);
+  const signIn=document.createElement('a');signIn.textContent='Entrar com ChatGPT';signIn.href='/signin-with-chatgpt?return_to=%2F';signIn.target='_top';signIn.hidden=true;links.append(signIn);
+  const signOut=document.createElement('a');signOut.textContent='Sair';signOut.href='/signout-with-chatgpt?return_to=%2F';signOut.target='_top';signOut.hidden=true;links.append(signOut);
+  const importButton=document.createElement('button');importButton.type='button';importButton.textContent='Importar fichas originais';importButton.hidden=true;links.append(importButton);
   document.body.prepend(links);
-  api('/api/session').then(user=>{identity=user;if(user.role)covenSyncAuth=auth();else setAutosaveFeedback('Solicite autorização ao narrador. Seu ID: '+user.id,true);}).catch(error=>setAutosaveFeedback(error.message,true));
+  let importing=null;
+  async function importOriginalRecords(){
+    if(identity?.role!=='admin')return;
+    if(importing)return importing;
+    importing=(async()=>{
+      importButton.disabled=true;
+      try{
+        const manifest=await api('/api/import-existing');const pending=manifest.records.filter(row=>!row.exists);
+        for(let i=0;i<pending.length;i++){
+          const message=`Importando acervo original: ${i+1}/${pending.length}…`;sessionStatus.textContent=message;setStartModalStatus(message);
+          await api('/api/import-existing',{method:'POST',body:JSON.stringify({path:pending[i].path})});
+        }
+        importButton.hidden=true;sessionStatus.textContent='Conectada como narradora. Acervo disponível.';await loadCoven();
+      }catch(error){sessionStatus.textContent=error.message;importButton.hidden=false;throw error;}
+      finally{importButton.disabled=false;importing=null;}
+    })();return importing;
+  }
+  const loadSavedSheets=loadGitSheetList;
+  loadGitSheetList=async()=>{
+    try{
+      await verifyGithubUser();
+      await importOriginalRecords();
+      await loadSavedSheets();
+    }catch(error){setStartModalStatus(error.message);}
+  };
+  importButton.addEventListener('click',async()=>{try{await importOriginalRecords();await loadSavedSheets();}catch(error){setStartModalStatus(error.message);}});
+  api('/api/session').then(async user=>{
+    identity=user;signIn.hidden=true;signOut.hidden=false;
+    if(user.role){covenSyncAuth=auth();sessionStatus.textContent=user.role==='admin'?'Conectada como narradora.':'Conta conectada.';}
+    else{sessionStatus.textContent='Conta conectada, mas sem autorização. Solicite acesso ao narrador.';return;}
+    if(user.role==='admin'){const manifest=await api('/api/import-existing');importButton.hidden=!manifest.records.some(row=>!row.exists);}
+  }).catch(error=>{signIn.hidden=error.status!==401;sessionStatus.textContent=error.status===401?'Entre com ChatGPT para acessar suas fichas.':error.message;});
 })();

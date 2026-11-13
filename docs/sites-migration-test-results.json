@@ -94,5 +94,51 @@
       "login": "not tested",
       "deployment": "not published"
     }
+  },
+  "repair_2026_11_13": {
+    "backendPassed": 26,
+    "importPassed": 5,
+    "sourceFilesVerified": 41,
+    "sourceHashMismatches": 0,
+    "localAuth": "forged headers rejected",
+    "browser": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "save": true,
+        "import": true,
+        "unknownFields": true,
+        "imageReplacement": true,
+        "covenTransfer": true,
+        "initialImportAndLoad": true,
+        "authenticatedControls": true,
+        "noExternalRequests": true,
+        "noPageErrors": true,
+        "noOverflow": true
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "save": true,
+        "import": true,
+        "unknownFields": true,
+        "imageReplacement": true,
+        "covenTransfer": true,
+        "initialImportAndLoad": true,
+        "authenticatedControls": true,
+        "noExternalRequests": true,
+        "noPageErrors": true,
+        "noOverflow": true
+      },
+      {
+        "inventory": true,
+        "noPassword": true
+      }
+    ],
+    "hostedVerification": "pendente de acesso autenticado; saída do executor para o domínio bloqueada por política HTTP"
   }
 }

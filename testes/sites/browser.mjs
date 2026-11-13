@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import assert from 'node:assert/strict';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import worker from '../../dist/server/index.js';
 import { openDatabase } from '../../sites/scripts/local-db.mjs';
 import { base64Text,writeRecord } from '../../sites/server/data.mjs';
@@ -12,12 +12,19 @@ const admin={id:'test-admin',email:'test@example.test',role:'admin'};
 await DB.prepare('INSERT INTO members(user_id,email,role) VALUES(?,?,?)').bind(admin.id,admin.email,admin.role).run();
 await writeRecord(DB,admin,'fichas/coven.json',{content:base64Text(JSON.stringify({name:'Test Coven',quintessence:0,paradox:0,obolOfTheDead:0,fame:0,lab:'',pantry:Array(16).fill(null),lock:null}))});
 await writeRecord(DB,admin,'itens.json',{content:base64Text('[]')});
+const objects=new Map();const BUCKET={async put(key,value){objects.set(key,Uint8Array.from(value));},async get(key){const bytes=objects.get(key);return bytes?{arrayBuffer:async()=>bytes.slice().buffer}:null;},async delete(key){objects.delete(key);}};
+const originalFetch=globalThis.fetch;
+globalThis.fetch=async(input,options)=>{
+  const url=String(input),prefix='https://raw.githubusercontent.com/Jogatina-Pesada/mage-ascension/63d98dcfb7c7034652d4213b6d51d5b07f9e44c8/';
+  if(url.startsWith(prefix))return new Response(await readFile(new URL('../../'+url.slice(prefix.length),import.meta.url)));
+  return originalFetch(input,options);
+};
 const server=createServer(async(req,res)=>{
   try{
     // Test-only identity injection: this file is never included in the Sites build or local dev server.
     const headers=new Headers(req.headers);headers.set('oai-authenticated-user-id',admin.id);headers.set('oai-authenticated-user-email',admin.email);
     const init={method:req.method,headers};if(!['GET','HEAD'].includes(req.method)){init.body=req;init.duplex='half';}
-    const response=await worker.fetch(new Request('http://127.0.0.1:8788'+req.url,init),{DB});
+    const response=await worker.fetch(new Request('http://127.0.0.1:8788'+req.url,init),{DB,BUCKET});
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
   }catch(e){res.writeHead(500);res.end(String(e));}
 });
@@ -56,13 +63,21 @@ try{
     assert.equal(await page.evaluate(()=>getPath(state,'advantages.quintessence')),2);
     const covenSaved=await page.evaluate(async()=>(await fetch('/api/raw?path=fichas/coven.json')).json());assert.ok(covenSaved.quintessence>=1);
     await page.locator('#covenEditBtn').click();await page.waitForFunction(()=>!window.eval('covenEditMode'));
+    assert.equal(await page.locator('.sites-session-bar a[href^="/signin"]').isVisible(),false);
+    assert.equal(await page.locator('.sites-session-bar a[href^="/signout"]').isVisible(),true);
+    await page.evaluate(()=>{document.querySelector('#startModal').hidden=false;});
+    await page.locator('#loadGitSheetsBtn').click();
+    await page.waitForFunction(()=>document.querySelector('.sites-session-bar [role="status"]').textContent.includes('Acervo disponível')&&document.querySelectorAll('#gitSheetList .sheet-list-btn').length>0);
+    const importedRecord=await page.evaluate(async()=>(await fetch('/api/raw?path=fichas/abel_bilbao.json')).json());
+    assert.ok(importedRecord.identity.name);
+    await page.evaluate(()=>{document.querySelector('#startModal').hidden=true;});
     const size=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
     assert.ok(size.scroll<=size.width+1,`Overflow ${size.scroll}/${size.width}`);
     assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
-    results.push({viewport,save:true,import:true,unknownFields:true,imageReplacement:true,covenTransfer:true,noExternalRequests:true,noPageErrors:true,noOverflow:true});await page.close();
+    results.push({viewport,save:true,import:true,unknownFields:true,imageReplacement:true,covenTransfer:true,initialImportAndLoad:true,authenticatedControls:true,noExternalRequests:true,noPageErrors:true,noOverflow:true});await page.close();
   }
   const page=await browser.newPage();await page.goto('http://127.0.0.1:8788/itens.html');await page.locator('#accessForm button[type=submit]').click();await page.waitForFunction(()=>!document.querySelector('#inventoryApp').hidden);await page.locator('#newItemBtn').click();await page.locator('#itemName').fill('Item Teste');
   // Inventory form has required effects; verify the page is available without a password/PAT.
   assert.equal(await page.locator('#passwordInput').isVisible(),false);results.push({inventory:true,noPassword:true});await page.close();
   console.log(JSON.stringify(results,null,2));await writeFile('work/sites-browser-results.json',JSON.stringify(results,null,2)+'\n');
-}finally{await browser.close();await new Promise(resolve=>server.close(resolve));DB.close();}
+}finally{globalThis.fetch=originalFetch;await browser.close();await new Promise(resolve=>server.close(resolve));DB.close();}

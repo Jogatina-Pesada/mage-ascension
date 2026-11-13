@@ -188,3 +188,23 @@ A documentação oficial atual do D1 limita tamanho de string/BLOB/linha a 2.000
 
 
 A substituição do Site foi realizada nesta sessão após a consulta do ID antigo retornar `NOT_FOUND` e a listagem não encontrar projetos existentes. O novo Site está ativo como projeto, em modo de acesso custom com a proprietária como única usuária autorizada. Isso confirma audiência privada, não publicação. `MAGE_BOOTSTRAP_ADMIN_EMAIL` foi configurada novamente como secret no runtime novo, revisão 1; a API mascara o valor. Ainda não houve login, bootstrap no banco ou deployment. O campo `expected_url` não foi tratado como URL publicada.
+
+## Correção do novo Site — 13/11/2026
+
+Projeto selecionado pelo usuário: `appgprj_6af205707d988191a055d509e013367f`. Foi lido o código real de sua origem, commit `b202ea2c38b094cad9aca1008140885f44758be4`, correspondente à versão publicada 1. Esse commit já configura `d1:"DB"`, `r2:"BUCKET"` e migrations versionadas; os bloqueios de configuração descritos nas sessões anteriores não se aplicam a este novo projeto.
+
+Diagnóstico real pela plataforma: DB contém as tabelas members/records/record_access/write_guards; há uma administradora ativa, mas **zero registros** em records. Logs de requisições autenticadas da usuária mostram 404 em `/api/source/fichas/coven.json`. Há também 401 em requisições de crawler sem ID autenticado; esses eventos não comprovam falha do login da usuária. Nenhum header de identidade foi forjado para contornar login. O erro exato apresentado pelo botão Entrar foi solicitado à usuária.
+
+Correções:
+
+- Importador `/api/import-existing`, exclusivo do narrador, usa inventário versionado de 41 arquivos e commit GitHub imutável. Cada arquivo exige tamanho e SHA-256 conferidos antes de restaurar. A origem, o hash esperado e o proprietário são definidos no servidor; URLs, owners ou permissões enviados pelo cliente não são usados.
+- Documentos já existentes são pulados, inclusive se alterados pelo usuário. Importação interrompida pode continuar sem sobrescrever dados. Cada arquivo usa o restore existente; imagens vão para R2, com referências no D1.
+- A barra de sessão mostra o estado conectado e oculta Entrar quando a identidade já está presente. Não implementa OAuth nem substitui as rotas reservadas do Sites. Usuário sem sessão vê o link normal com target=_top; usuário sem associação vê mensagem de autorização.
+- A administradora tem o botão Importar fichas originais. Carregar fichas salvas também importa registros ausentes antes de listar, com progresso visível. Isso exige sessão ChatGPT válida; o acervo não é publicado como asset.
+- Validados todos os 41 arquivos da origem remota: nenhum hash divergente.
+
+URL: solicitado e concluído o slug `jogatina-pesada`. A URL retornada pelo Sites é `https://jogatina-pesada.larissa95-amaral.chatgpt.site`. A operação altera o rótulo do Site, mas preserva o namespace da conta. Não há ferramenta disponível para renomear esse namespace. Remover esse trecho exige domínio próprio ou suporte da plataforma; não foi criado nem comprado domínio.
+
+Validação antes de publicar: 26 testes backend existentes + 5 testes novos do importador, servidor local rejeitando headers forjados, browser em 1440×1000 e 390×844 com sessão de teste, importação inicial e leitura de ficha, salvamento, imagens em R2 simulado e coven. A saída HTTP do executor para o domínio do Site foi explicitamente bloqueada com 403 pelo proxy; não foi contornada. Assim, o teste autenticado real de login/importação permanece dependente de acesso da usuária e dos logs/estado nativos da plataforma. Não afirmar que o login real foi reproduzido ou corrigido só por esses testes.
+
+Rollback: versão publicada anterior 1, commit b202ea2; migrations permanecem inalteradas. O importador não apaga nem sobrescreve fichas. Para desfazer dados importados, primeiro exportar backup e revisar registros por source_sha256/versão, preservando quaisquer documentos editados depois. Não executar limpeza automática.

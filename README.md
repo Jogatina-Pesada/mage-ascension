@@ -145,3 +145,13 @@ git worktree add --detach ../mage-pre-sites pre-sites-migration
 ```
 
 Para rollback futuro de publicação, reimplante uma versão salva anterior no mesmo Site. Se for necessário voltar ao GitHub Pages, ele permanece disponível até o aceite. Para rollback de código, reverta os commits de migração na branch de trabalho. Rollback de código não restaura banco: preserve backup e estado de migrations antes de qualquer deploy. Migrations aplicadas devem permanecer imutáveis; mudanças posteriores exigem nova migration compatível com a versão anterior.
+
+### Novo Site: carregamento inicial e sessão (13/11/2026)
+
+O novo projeto usa bindings `DB` e `BUCKET` já provisionados no Sites. Sua conta está cadastrada como administradora. Após entrar, use **Carregar fichas salvas** ou **Importar fichas originais** para trazer o acervo versionado do GitHub. O progresso é exibido na página. Se a operação falhar ou for interrompida, repita: registros existentes não são substituídos. Os arquivos são conferidos por tamanho/hash e ficam privados, associados à administradora; imagens são armazenadas em R2. A importação não usa PAT.
+
+A barra superior informa quando a sessão já está conectada; nesse caso Entrar fica oculto. Se aparecer mensagem de sessão ausente, use o link Entrar com ChatGPT no topo. Não forneça credenciais ao formulário antigo do GitHub. Registre a mensagem exata caso a rota de login da plataforma ainda falhe.
+
+O rótulo do Site foi alterado para `jogatina-pesada`; o namespace da conta no domínio padrão é controlado pela plataforma. Alterar apenas o slug não remove esse namespace. Um domínio próprio exige configuração separada e não foi contratado.
+
+Teste do importador: `node testes/sites/import-existing.test.mjs`.

@@ -208,3 +208,18 @@ URL: solicitado e concluído o slug `jogatina-pesada`. A URL retornada pelo Site
 Validação antes de publicar: 26 testes backend existentes + 5 testes novos do importador, servidor local rejeitando headers forjados, browser em 1440×1000 e 390×844 com sessão de teste, importação inicial e leitura de ficha, salvamento, imagens em R2 simulado e coven. A saída HTTP do executor para o domínio do Site foi explicitamente bloqueada com 403 pelo proxy; não foi contornada. Assim, o teste autenticado real de login/importação permanece dependente de acesso da usuária e dos logs/estado nativos da plataforma. Não afirmar que o login real foi reproduzido ou corrigido só por esses testes.
 
 Rollback: versão publicada anterior 1, commit b202ea2; migrations permanecem inalteradas. O importador não apaga nem sobrescreve fichas. Para desfazer dados importados, primeiro exportar backup e revisar registros por source_sha256/versão, preservando quaisquer documentos editados depois. Não executar limpeza automática.
+
+### Publicação confirmada — 13/11/2026
+
+A ferramenta nativa `sites_save_version_and_deploy_private` retornou **succeeded**, sem failure_message, para o commit `775615d5abf835956a365bce42028bd989e36b77`.
+
+- URL: https://jogatina-pesada.larissa95-amaral.chatgpt.site
+- Versão: `appgprj_6af205707d988191a055d509e013367f~appgver_607cce4222988191996f45438f2b57b1`
+- Deployment: `appgdep_6af6ffbf38c881918633343188c29f2f`
+- Runtime: revisão 1, preservada.
+- Acesso: somente proprietária, sem grupos; audiência não alterada.
+- GitHub: correções sincronizadas na branch feature/chatgpt-sites-migration; main e GitHub Pages não alterados.
+
+O repositório técnico foi aberto via Git com a credencial oficial temporária, passada somente por stdin e mantida no processo, pois o source helper continua ausente. O artefato contém somente manifesto, Worker construído e migrations existentes, correspondente ao commit enviado; nenhum dado privado foi transformado em asset. O histórico equivalente enviado anteriormente por outra sessão foi reconciliado sem force-push.
+
+A importação não foi executada no banco em nome de uma sessão fictícia. Para validar no Site publicado, a proprietária deve abrir a URL nova e clicar em Carregar fichas salvas ou Importar fichas originais; as requisições autenticadas farão a importação. O login real e o acesso HTTP ao domínio não puderam ser reproduzidos neste executor (bloqueio de saída da rede e ausência de navegador compartilhado autenticado). Se o botão Entrar continuar falhando, obter sua mensagem exata e correlacionar com logs novos; não atribuir a falha à identidade com base apenas em eventos de crawler.
